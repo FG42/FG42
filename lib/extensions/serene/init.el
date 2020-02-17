@@ -14,7 +14,10 @@
                 (add-hook 'serene-simple-mode-hook #'parinfer-mode))
 
   (add-to-list 'auto-mode-alist
-               '("\\.srns\\'" . serene-simple-mode)))
+               '("\\.srns\\'" . serene-simple-mode))
+  (add-to-list 'auto-mode-alist
+               '("\\.srnl\\'" . serene-simple-mode)))
+
 
 
 (provide 'extensions/serene/init)

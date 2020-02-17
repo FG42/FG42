@@ -1,5 +1,13 @@
 ;;; serene-init --- The entry point for serene extension
 ;;; Commentary:
+;;
+;; In order to connect to Serene's nRepl process, first you have to make
+;; that it's running some where (consult Serene's README for learning more
+;; about it). Then simply use `serene-nrepl-connect' to make a connection.
+;; at this point you can evaluate Serene's expressions by using `serene-eval-expr-at-point'
+;; function which evaluates the expression before point end prints out the
+;; result in minibuffer.
+;;
 ;;; Code:
 (defvar serene-simple-mode-map
   (make-sparse-keymap))
@@ -47,8 +55,8 @@
 
 (define-derived-mode serene-simple-mode
   scheme-mode "Serene(Simple)"
-  "Major mode for Serene simple.")
-
+  "Major mode for Serene simple."
+  (define-key serene-simple-mode-map (kbd "C-x C-e") 'serene-eval-expr-at-point))
 
 
 (defun serene-simple-add-keywords (face-name keyword-rules)
@@ -87,7 +95,7 @@
 	(left-quote ?‘)
 	expr)
     (save-excursion
-      (with-syntax-table emacs-lisp-mode-syntax-table
+      (with-syntax-table serene-simple-mode-syntax-table
 	;; If this sexp appears to be enclosed in `...' or ‘...’
 	;; then ignore the surrounding quotes.
 	(cond ((eq (preceding-char) ?’)
@@ -119,42 +127,26 @@
 	     (looking-back "#s" (- (point) 2))
 	     (forward-char -2))
 
-	;; Skip over `#N='s.
-	(when (eq (preceding-char) ?=)
-	  (let (labeled-p)
-	    (save-excursion
-	      (skip-chars-backward "0-9#=")
-	      (setq labeled-p (looking-at "\\(#[0-9]+=\\)+")))
-	    (when labeled-p
-	      (forward-sexp -1))))
-
 	(save-restriction
 	  (if (eq (following-char) left-quote)
-              ;; vladimir@cs.ualberta.ca 30-Jul-1997: Skip ` in `variable' so
-              ;; that the value is returned, not the name.
 	      (forward-char))
           (when (looking-at ",@?") (goto-char (match-end 0)))
 	  (narrow-to-region (point-min) opoint)
 	  (setq expr (read (current-buffer)))
-          ;; If it's an (interactive ...) form, it's more useful to show how an
-          ;; interactive call would use it.
-          ;; FIXME: Is it really the right place for this?
-          (when (eq (car-safe expr) 'interactive)
-	    (setq expr
-                  `(call-interactively
-                    (lambda (&rest args) ,expr args))))
 	  expr)))))
 
 (defun serene-eval-expr-at-point ()
   "Send the expression at point to the nRepl for evaluation."
   (interactive)
-  (let* ((buf (process-buffer serene-nrepl-process))
-         (expr (format "%s\n" (replace-regexp-in-string
-                               (regexp-quote "\n")
-                               " "
-                               (prin1-to-string (serene-expr-at-point))
-                               nil 'literal))))
-    (process-send-string serene-nrepl-process expr)))
+  (if (and serene-nrepl-process (process-live-p serene-nrepl-process))
+      (let* ((buf (process-buffer serene-nrepl-process))
+             (expr (format "%s\n" (replace-regexp-in-string
+                                   (regexp-quote "\n")
+                                   " "
+                                   (prin1-to-string (serene-expr-at-point))
+                                   nil 'literal))))
+        (process-send-string serene-nrepl-process expr))
+    (message "Error: You need to connect to Serene's nRepl first.")))
 
 
 (defun serene-nrepl-sentinel (process event)
