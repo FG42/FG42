@@ -108,6 +108,7 @@
               :non-normal-prefix "C-SPC"
               "bb" 'switch-to-buffer
               "ff" 'find-file
+
               "ow" 'other-window
               "wc" 'delete-window
               "sv" 'split-window-vertically

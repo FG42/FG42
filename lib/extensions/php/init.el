@@ -2,7 +2,7 @@
 
 (defun extensions/php-initialize ()
   "PHP extensions initialization function"
-  (add-to-list 'auto-mode-alist '("\\.php$" . web-mode))
+  (add-hook 'php-mode-hook (lambda () (lsp)))
   )
 
 (provide 'extensions/php/init)

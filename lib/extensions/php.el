@@ -3,11 +3,11 @@
 (require 'extensions/php/init)
 
 ;; Dependencies ----------------------------------
-(depends-on 'web-mode)
+(depends-on 'php-mode)
 
 ;; Extension -------------------------------------
 (extension php
-	   :version "2.31"
+	   :version "2.32"
 	   :on-initialize extensions/php-initialize)
 
 (provide 'extensions/php)
