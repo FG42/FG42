@@ -3,7 +3,7 @@
 ;;; Code:
 
 (defun fg42-go-hook ()
-  """Setup emacs hooks and turn necessary modes on. """
+  "Setup emacs hooks and turn necessary modes on. "
   (lsp)
   (with-ability yas
     (yas-minor-mode-on))
@@ -15,11 +15,12 @@
 
 
 
-(defun go-path () (concat (getenv "HOME") "/go"))
+(defun go-path () (exec-path-from-shell-copy-env "GOPATH"))
 (defun go-path-binary () (concat (go-path) "/bin"))
 
 (defun extensions/go-initialize ()
   """Initialize Golang extension ."""
+   (exec-path-from-shell-initialize)
    (add-to-list 'exec-path (go-path-binary))
    (add-hook 'go-mode-hook 'fg42-go-hook))
 

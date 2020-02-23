@@ -12,7 +12,7 @@
 (depends-on 'go-stacktracer)
 (depends-on 'go-eldoc)
 (depends-on 'gotest)
-
+(depends-on 'exec-path-from-shell)
 
 
 (extension go
