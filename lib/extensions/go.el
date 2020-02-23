@@ -3,7 +3,7 @@
 ;;; Code:
 (require 'fpkg)
 (require 'fg42/extension)
-(require 'extensions/go-initialize)
+(require 'extensions/go/init)
 
 ;; dependencies
 
@@ -19,6 +19,6 @@
            :version 0.0.1
            :on-initialize extensions/go-initialize
            :docs "lib/extensions/go/readme.org")
-
+(provide 'extensions/go)
 
 ;;; go.el ends here
