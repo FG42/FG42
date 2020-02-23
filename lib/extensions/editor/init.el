@@ -58,8 +58,8 @@
   ;; Font Configuration -----------------------------------
   (ability fira-font ()
            "Sets the default font to Fira Mono"
-           (add-to-list 'default-frame-alist '(font . "Fira Mono"))
-           (set-face-attribute 'default t :font "Fira Mono"))
+           (add-to-list 'default-frame-alist '(font . (get-fg42-font)))
+           (set-face-attribute 'default t :font (get-fg42-font)))
   ;; ------------------------------------------------------
 
   (cheatsheet-add :group '--HELP--

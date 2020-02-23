@@ -65,6 +65,15 @@ with is the buffer."
   "Apply the given FACE-SYMBOL to the given TEXT."
   (put-text-property 0 (length text) 'face face-symbol text))
 
+(setq fg42--default-font "Fira Mono")
+
+(defvar fg42-font "" "FG42 font set by user")
+
+(defun fg42-font (font)
+  (setq fg42-font font))
+
+(defun get-fg42-font ()
+  (if fg42-font fg42-font fg42--default-font))
 
 (provide 'fg42/utils)
 ;;; utils.el ends here
