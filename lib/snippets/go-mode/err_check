@@ -1,0 +1,8 @@
+# name: err_check
+# key: err
+# contributor: amirrezaask <raskarpour@gmail.com>
+# --
+
+if err != nil {
+
+}
