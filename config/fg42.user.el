@@ -104,3 +104,7 @@
 ;; set it up like this:
 ;; (setq irc-auth '(("freenode" nickserv "some_user" "p455w0rd")
 ;;                  ("freenode" chanserv "some_user" "#channel" "passwd99"))
+;;
+;;
+;; If you want to change the default font uncomment the following line
+;;(setq fg42-font "Terminus")

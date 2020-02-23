@@ -7,6 +7,10 @@
 (require 'fg42/vars)
 (require 'fg42/utils/json)
 
+;; Vars -----------------------------------------------------------------------
+(defvar fg42-font "Fira Mono"
+  "The default font to be used with FG42.")
+
 ;;; Buffer helpers ------------------------------------------------------------
 (defun buffer-mode (buffer-or-string)
   "Return the major mode associated with a the given BUFFER-OR-STRING."
@@ -64,13 +68,6 @@ with is the buffer."
 (defun apply-face (face-symbol text)
   "Apply the given FACE-SYMBOL to the given TEXT."
   (put-text-property 0 (length text) 'face face-symbol text))
-
-
-(setq fg42-font "Fira Mono")
-
-(defun fg42-font (font)
-  (setq fg42-font font))
-
 
 (provide 'fg42/utils)
 ;;; utils.el ends here
