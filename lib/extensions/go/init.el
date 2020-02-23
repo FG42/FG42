@@ -5,7 +5,6 @@
 (defun fg42-go-hook ()
   """Setup emacs hooks and turn necessary modes on."""
   (lsp)
-  (flymake-mode-on)
   (yas-minor-mode-on)
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t)
