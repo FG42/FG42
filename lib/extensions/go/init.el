@@ -3,9 +3,10 @@
 ;;; Code:
 
 (defun fg42-go-hook ()
-  """Setup emacs hooks and turn necessary modes on."""
+  """Setup emacs hooks and turn necessary modes on. """
   (lsp)
-  (yas-minor-mode-on)
+  (with-ability yas
+    (yas-minor-mode-on))
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t)
   (add-hook 'go-mode-hook 'go-eldoc-setup)
