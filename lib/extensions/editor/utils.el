@@ -42,5 +42,4 @@ it inserts comment at the end of the line."
                                 (interactive) (join-line -1))))
 
 
-
 (provide 'extensions/editor/utils)

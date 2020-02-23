@@ -56,10 +56,10 @@
   (setq delete-old-versions t)
 
   ;; Font Configuration -----------------------------------
-  (ability fira-font ()
-           "Sets the default font to Fira Mono"
-           (add-to-list 'default-frame-alist '(font . "Fira Mono"))
-           (set-face-attribute 'default t :font "Fira Mono"))
+  (ability font ()
+           "Sets the default font to fg42 font"
+           (add-to-list 'default-frame-alist '(cons 'font fg42-font))
+           (set-face-attribute 'default t :font fg42-font))
   ;; ------------------------------------------------------
 
   (cheatsheet-add :group '--HELP--
