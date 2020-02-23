@@ -98,6 +98,20 @@
            "Highlights the current line."
            (global-hl-line-mode t))
 
+  ;; enhance evil mode with space leader keybindings
+  (ability space-keys
+           "evil mode with space leader keybindings"
+           (when (is-evil?)
+             (general-define-key
+              :states '(normal visual insert emacs)
+              :prefix "SPC"
+              :non-normal-prefix "C-SPC"
+              "bl" 'switch-to-buffer
+              "ff" 'find-file
+              "sv" 'split-window-vertically
+              "sh" 'split-window-horizontally)))
+
+
   (ability flycheck ()
            "Check syntax on the fly using flycheck."
            (require 'flycheck)
@@ -386,7 +400,7 @@
   (require 'extensions/editor/custom)
   (require 'extensions/editor/session-management)
   (require 'extensions/editor/lxdrive-mode)
-  (require 'extensions/editor/lxmodeline))
-  (message "'editor' extension has been initialized.")
+  (require 'extensions/editor/lxmodeline)
+  (message "'editor' extension has been initialized."))
 
 (provide 'extensions/editor/init)
