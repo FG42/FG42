@@ -27,7 +27,7 @@
 
 ;; general for simpler keybindin
 (depends-on 'general)
-
+(depends-on 'exec-path-from-shell)
 ;; Themes
 (depends-on 'spacemacs-theme)
 (depends-on 'doom-themes)

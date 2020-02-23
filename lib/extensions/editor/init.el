@@ -106,10 +106,22 @@
               :states '(normal visual insert emacs)
               :prefix "SPC"
               :non-normal-prefix "C-SPC"
-              "bl" 'switch-to-buffer
+              "bb" 'switch-to-buffer
               "ff" 'find-file
+              "ow" 'other-window
+              "wc" 'delete-window
               "sv" 'split-window-vertically
-              "sh" 'split-window-horizontally)))
+              "sh" 'spit-window-horizontally
+              "kb" 'kill-buffer
+              "ss" 'isearch-forward
+              "ee" 'eval-last-sexp
+              "eb" 'eval-buffer
+              ";" 'comment-dwim-line
+              ;; describers
+              "dk" 'describe-key
+              "df" 'describe-function)))
+
+
 
 
   (ability flycheck ()
