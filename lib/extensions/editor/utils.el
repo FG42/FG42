@@ -40,6 +40,8 @@ it inserts comment at the end of the line."
   (global-set-key (kbd "M-;") 'comment-dwim-line)
   (global-set-key (kbd "M-j") (lambda ()
                                 (interactive) (join-line -1))))
+(defun callable-command (command)
+  '(lambda '() (,command)))
 
 
 (provide 'extensions/editor/utils)

@@ -9,7 +9,6 @@
 (depends-on 'yasnippet)
 (depends-on 'yasnippet-snippets)
 (depends-on 'smart-mode-line)
-(depends-on 'dockerfile-mode)
 (depends-on 'quickrun)
 (depends-on 'dash)
 (depends-on 'websocket)

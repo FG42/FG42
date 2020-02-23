@@ -99,28 +99,32 @@
            (global-hl-line-mode t))
 
   ;; enhance evil mode with space leader keybindings
-  (ability space-keys
+  (ability dark-lord
            "evil mode with space leader keybindings"
            (when (is-evil?)
              (general-define-key
               :states '(normal visual insert emacs)
               :prefix "SPC"
               :non-normal-prefix "C-SPC"
+              "/" 'undo-tree-undo
+              "cc" 'counsel-M-x
               "bb" 'switch-to-buffer
               "ff" 'find-file
-
+              "lf" #'move-beginning-of-line
+              "le" #'move-end-of-line
+              "sb" 'save-buffer
               "ow" 'other-window
-              "wc" 'delete-window
+              "cw" 'delete-window
               "sv" 'split-window-vertically
-              "sh" 'spit-window-horizontally
+              "sh" 'split-window-horizontally
               "kb" 'kill-buffer
               "ss" 'isearch-forward
               "ee" 'eval-last-sexp
               "eb" 'eval-buffer
               ";" 'comment-dwim-line
-              ;; describers
               "dk" 'describe-key
               "df" 'describe-function)))
+
 
 
 
