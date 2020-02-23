@@ -20,5 +20,4 @@
            :on-initialize extensions/go-initialize
            :docs "lib/extensions/go/readme.org")
 (provide 'extensions/go)
-
 ;;; go.el ends here

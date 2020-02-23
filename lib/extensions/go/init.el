@@ -17,11 +17,11 @@
 
 (defun go-path () (concat (getenv "HOME") "/go"))
 (defun go-path-binary () (concat (go-path) "/bin"))
+
 (defun extensions/go-initialize ()
   """Initialize Golang extension ."""
    (add-to-list 'exec-path (go-path-binary))
    (add-hook 'go-mode-hook 'fg42-go-hook))
 
 (provide 'extensions/go/init)
-
 ;;; init ends here.
