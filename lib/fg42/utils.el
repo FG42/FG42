@@ -66,5 +66,11 @@ with is the buffer."
   (put-text-property 0 (length text) 'face face-symbol text))
 
 
+(setq fg42-font "Fira Mono")
+
+(defun fg42-font (font)
+  (setq fg42-font font))
+
+
 (provide 'fg42/utils)
 ;;; utils.el ends here
