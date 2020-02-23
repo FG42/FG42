@@ -97,7 +97,6 @@
   (ability highligh-current-line ()
            "Highlights the current line."
            (global-hl-line-mode t))
-
   ;; enhance evil mode with space leader keybindings
   (ability dark-lord
            "evil mode with space leader keybindings"
@@ -123,7 +122,8 @@
               "eb" 'eval-buffer
               ";" 'comment-dwim-line
               "dk" 'describe-key
-              "df" 'describe-function)))
+              "df" 'describe-function)
+             (general-define-key :states '(normal visual insert emacs) "M-." 'xref-find-definitions)))
 
 
 

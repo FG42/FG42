@@ -64,5 +64,10 @@ LOCAL should be 't' if theme is on FG42 it self"
       (load-file file)))
 
 
+(defun refresh-fg42 ()
+  (interactive)
+  (fg42-initialize))
+
+
 (provide 'fg42/base)
 ;;; base ends here
