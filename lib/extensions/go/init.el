@@ -3,6 +3,7 @@
 ;;; Code:
 
 (defun fg42-go-hook ()
+  ;; move to action
   "Set's up emacs hooks and turn necessary modes on."
   (lsp)
   (with-ability yas
