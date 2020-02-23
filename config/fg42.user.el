@@ -31,6 +31,7 @@
                      'clojure
                      'haskell
                      'php
+                     'go
                      'common-lisp
                      'python
                      'arduino
