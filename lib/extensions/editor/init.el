@@ -107,10 +107,11 @@
               :non-normal-prefix "C-SPC"
 
               "/" 'undo-tree-undo
-              "cc" 'counsel-M-x
+              "cc" 'helm-M-x
+              ;; "cc" 'counsel-M-x
               "bb" 'switch-to-buffer
               "ff" 'helm-find-files
-              ;; "ff" 'find-files
+              ;; "ff" 'find-file
               "lf" #'move-beginning-of-line
               "le" #'move-end-of-line
               "sb" 'save-buffer
