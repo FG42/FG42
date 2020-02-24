@@ -10,6 +10,8 @@
 ;; Vars -----------------------------------------------------------------------
 (defvar fg42-font "Fira Mono"
   "The default font to be used with FG42.")
+(defvar fg42-font-size 10
+  "The default font size to be used in FG42")
 
 ;;; Buffer helpers ------------------------------------------------------------
 (defun buffer-mode (buffer-or-string)

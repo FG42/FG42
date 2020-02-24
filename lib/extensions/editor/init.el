@@ -58,8 +58,8 @@
   ;; Font Configuration -----------------------------------
   (ability font ()
            "Sets the default font to fg42 font"
-           (add-to-list 'default-frame-alist (cons 'font fg42-font))
-           (set-face-attribute 'default t :font fg42-font))
+           (add-to-list 'default-frame-alist (cons 'font (concat fg42-font "-" (format "%d" fg42-font-size))))
+           (set-face-attribute 'default t :font fg42-font ))
   ;; ------------------------------------------------------
 
   (cheatsheet-add :group '--HELP--
@@ -101,17 +101,16 @@
   (ability dark-lord
            "evil mode with space leader keybindings"
            (when (is-evil?)
+             (with-ability which-key (which-key-mode))
              (general-define-key
               :states '(normal visual insert emacs)
               :prefix "SPC"
               :non-normal-prefix "C-SPC"
-
+              ".." 'xref-find-definitions
               "/" 'undo-tree-undo
-              "cc" 'helm-M-x
-              ;; "cc" 'counsel-M-x
+              "SPC" 'counsel-M-x
               "bb" 'switch-to-buffer
-              "ff" 'helm-find-files
-              ;; "ff" 'find-file
+              "ff" 'find-file
               "lf" #'move-beginning-of-line
               "le" #'move-end-of-line
               "sb" 'save-buffer
@@ -120,13 +119,12 @@
               "sv" 'split-window-vertically
               "sh" 'split-window-horizontally
               "kb" 'kill-buffer
-              "ss" 'isearch-forward
+              "ss" 'swiper
               "ee" 'eval-last-sexp
               "eb" 'eval-buffer
               ";" 'comment-dwim-line
               "dk" 'describe-key
-              "df" 'describe-function)
-             (general-define-key :states '(normal visual insert emacs) "M-." 'xref-find-definitions)))
+              "df" 'describe-function)))
 
 
 

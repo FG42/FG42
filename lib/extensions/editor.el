@@ -19,7 +19,7 @@
 
 ;; Don't worry unless you're evil this mode won't start
 (depends-on 'evil)
-
+(depends-on 'which-key)
 ;; Resize splitted windows
 (depends-on 'windresize)
 
