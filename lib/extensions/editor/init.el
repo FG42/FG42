@@ -105,10 +105,12 @@
               :states '(normal visual insert emacs)
               :prefix "SPC"
               :non-normal-prefix "C-SPC"
+
               "/" 'undo-tree-undo
               "cc" 'counsel-M-x
               "bb" 'switch-to-buffer
-              "ff" 'find-file
+              "ff" 'helm-find-files
+              ;; "ff" 'find-files
               "lf" #'move-beginning-of-line
               "le" #'move-end-of-line
               "sb" 'save-buffer
