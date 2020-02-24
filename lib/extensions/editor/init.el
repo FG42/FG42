@@ -109,20 +109,20 @@
               ".." 'xref-find-definitions
               "/" 'undo-tree-undo
               "SPC" 'counsel-M-x
-              "bb" 'switch-to-buffer
+              "bl" 'switch-to-buffer
               "ff" 'find-file
-              "lf" #'move-beginning-of-line
+              "ls" #'move-beginning-of-line
               "le" #'move-end-of-line
-              "sb" 'save-buffer
-              "ow" 'other-window
-              "cw" 'delete-window
+              "bs" 'save-buffer
+              "wo" 'other-window
+              "wc" 'delete-window
               "sv" 'split-window-vertically
               "sh" 'split-window-horizontally
-              "kb" 'kill-buffer
+              "bk" 'kill-buffer
               "ss" 'swiper
               "ee" 'eval-last-sexp
               "eb" 'eval-buffer
-              ";" 'comment-dwim-line
+              "cl" 'comment-dwim-line
               "dk" 'describe-key
               "df" 'describe-function)))
 
