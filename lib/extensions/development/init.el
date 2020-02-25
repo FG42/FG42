@@ -90,6 +90,7 @@
                            :key   "M-["
                            :description "Jump to previous bookmark")
 
+
            (global-set-key (kbd "M-p") 'bm-toggle)
            (global-set-key (kbd "M-]") 'bm-next)
            (global-set-key (kbd "M-[") 'bm-previous)

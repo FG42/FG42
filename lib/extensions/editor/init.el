@@ -61,32 +61,86 @@
            (add-to-list 'default-frame-alist (cons 'font (concat fg42-font "-" (format "%d" fg42-font-size))))
            (set-face-attribute 'default t :font fg42-font ))
   ;; ------------------------------------------------------
+  (unless (is-god?)
+    (progn
+      (cheatsheet-add :group '--HELP--
+                      :key   "C-?"
+                      :description "Show this cheatsheet")
+      (cheatsheet-add :group '--Navigation--
+                      :key   "M-f"
+                      :description "Move a word to right")
+      (cheatsheet-add :group '--Navigation--
+                      :key   "M-b"
+                      :description "Move a word to left")
+      (cheatsheet-add :group '--Navigation--
+                      :key   "M-{"
+                      :description "Move back a paragraph")
+      (cheatsheet-add :group '--Navigation--
+                      :key   "M-}"
+                      :description "Move forward by a paragraph")
 
-  (cheatsheet-add :group '--HELP--
-                  :key   "C-?"
-                  :description "Show this cheatsheet")
-  (cheatsheet-add :group '--Navigation--
-                  :key   "M-f"
-                  :description "Move a word to right")
-  (cheatsheet-add :group '--Navigation--
-                  :key   "M-b"
-                  :description "Move a word to left")
-  (cheatsheet-add :group '--Navigation--
-                  :key   "M-{"
-                  :description "Move back a paragraph")
-  (cheatsheet-add :group '--Navigation--
-                  :key   "M-}"
-                  :description "Move forward by a paragraph")
+      (global-set-key (kbd "C-?") 'cheatsheet-show)
 
-  (global-set-key (kbd "C-?") 'cheatsheet-show)
+      ;; Fast Move in the buffer
+      (global-set-key (kbd "M-1") 'avy-goto-word-or-subword-1)
 
-  ;; Fast Move in the buffer
-  (global-set-key (kbd "M-1") 'avy-goto-word-or-subword-1)
+      (cheatsheet-add :group '--Navigation--
+                      :key   "M-1"
+                      :description "Jump to the a word or subword in the buffer")
 
-  (cheatsheet-add :group '--Navigation--
-                  :key   "M-1"
-                  :description "Jump to the a word or subword in the buffer")
+      ;; ACE Window
 
+      (global-set-key (kbd "C-<tab>") 'ace-window)
+      (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+      (global-unset-key (kbd "C-o"))
+      (global-unset-key (kbd "C-v"))
+
+      (cheatsheet-add :group '--EDITOR--
+                      :key   "C-s-n"
+                      :description "Move a paragraph forward")
+
+      (cheatsheet-add :group '--EDITOR--
+                      :key   "C-s-p"
+                      :description "Move a paragraph backward")
+
+      (global-set-key (kbd "C-s-n") 'forward-paragraph)
+      (global-set-key (kbd "C-s-p") 'backward-paragraph)
+
+      ;; replace strings
+      (global-set-key (kbd "C-c M-s") 'replace-string)
+
+      ;; Basic Key bindings
+      (global-set-key (kbd "\C-c m") 'menu-bar-mode)
+
+      (global-set-key (kbd "<f2>") 'goto-line)
+
+      (global-set-key (kbd "M-TAB") 'switch-to-previous-buffer)
+      (global-set-key (kbd "M-`") 'switch-to-favorite-buffer)
+      ;; expand-region -------------------------------------------
+      (global-set-key (kbd "C-=") 'er/expand-region)
+
+      ;; Multiple cursor -----------------------------------------
+      ;; multiple cursor configurations
+      (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+      (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+      (global-set-key (kbd "C-c C-SPC ") 'mc/mark-all-like-this)
+
+      ;; Reload FG42
+      (define-key global-map (kbd "C-<f5>") 'fg42-reload)
+
+      ;; Key Chord ------------------------------------------------
+      ;; (require 'key-chord)
+      ;; (key-chord-mode 1)
+
+      ;; (key-chord-define-global "hj"     'undo)
+      ;; (key-chord-define-global "kl"     'right-word)
+      ;; (key-chord-define-global "sd"     'left-word)
+      ;; (key-chord-define-global "m,"     'forward-paragraph)
+      ;; (key-chord-define-global "p["     'backward-paragraph)
+
+      ;; HideShow -------------------------------------------------------
+      (global-set-key (kbd "C-\-") 'hs-toggle-hiding)
+      (hs-minor-mode)))
 
   ;; Remove splash screen
   (setq inhibit-splash-screen t)
@@ -108,8 +162,9 @@
               :non-normal-prefix "C-SPC"
               ".." 'xref-find-definitions
               "/" 'undo-tree-undo
-              "SPC" 'counsel-M-x
+              "xx" 'counsel-M-x
               "bl" 'switch-to-buffer
+              "SPC" 'find-file
               "ff" 'find-file
               "ls" #'move-beginning-of-line
               "le" #'move-end-of-line
@@ -122,10 +177,9 @@
               "ss" 'swiper
               "ee" 'eval-last-sexp
               "eb" 'eval-buffer
-              "cl" 'comment-dwim-line
+              "cl" 'comment-line
               "dk" 'describe-key
               "df" 'describe-function)))
-
 
 
 
@@ -167,11 +221,6 @@
 
   ;;(spaceline-emacs-theme))
 
-  ;; ACE Window
-
-  (global-set-key (kbd "C-<tab>") 'ace-window)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
   ;; Tramp configuration -------------------------------------
   (ability tramp ()
            (setq tramp-default-method "ssh")
@@ -179,31 +228,6 @@
                            :key   "f9"
                            :description "Open up your todo file. checkout `fg42-todo-file` var and `fg42-open-todo` function.")
            (global-set-key [f9] 'fg42-open-todo))
-
-  (global-unset-key (kbd "C-o"))
-  (global-unset-key (kbd "C-v"))
-
-  (cheatsheet-add :group '--EDITOR--
-                  :key   "C-s-n"
-                  :description "Move a paragraph forward")
-
-  (cheatsheet-add :group '--EDITOR--
-                  :key   "C-s-p"
-                  :description "Move a paragraph backward")
-
-  (global-set-key (kbd "C-s-n") 'forward-paragraph)
-  (global-set-key (kbd "C-s-p") 'backward-paragraph)
-
-  ;; replace strings
-  (global-set-key (kbd "C-c M-s") 'replace-string)
-
-  ;; Basic Key bindings
-  (global-set-key (kbd "\C-c m") 'menu-bar-mode)
-
-  (global-set-key (kbd "<f2>") 'goto-line)
-
-  (global-set-key (kbd "M-TAB") 'switch-to-previous-buffer)
-  (global-set-key (kbd "M-`") 'switch-to-favorite-buffer)
 
   ;; Don't allow tab as indent
   (setq-default indent-tabs-mode nil)
@@ -245,32 +269,6 @@
   (ability nonblinker-cursor ()
            (blink-cursor-mode -1))
 
-
-  ;; expand-region -------------------------------------------
-  (global-set-key (kbd "C-=") 'er/expand-region)
-
-  ;; Multiple cursor -----------------------------------------
-  ;; multiple cursor configurations
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-SPC ") 'mc/mark-all-like-this)
-
-  ;; Reload FG42
-  (define-key global-map (kbd "C-<f5>") 'fg42-reload)
-
-  ;; Key Chord ------------------------------------------------
-  ;; (require 'key-chord)
-  ;; (key-chord-mode 1)
-
-  ;; (key-chord-define-global "hj"     'undo)
-  ;; (key-chord-define-global "kl"     'right-word)
-  ;; (key-chord-define-global "sd"     'left-word)
-  ;; (key-chord-define-global "m,"     'forward-paragraph)
-  ;; (key-chord-define-global "p["     'backward-paragraph)
-
-  ;; HideShow -------------------------------------------------------
-  (global-set-key (kbd "C-\-") 'hs-toggle-hiding)
-  (hs-minor-mode)
 
   ;; Guru Configuration
   (ability guru ()

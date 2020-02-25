@@ -49,7 +49,8 @@
   (setq package-user-dir (concat fg42-home "/packages"))
   (fpkg-initialize)
   (initialize-extensions)
-  (run-hooks 'fg42-after-initialize-hook))
+  (run-hooks 'fg42-after-initialize-hook)
+  (message "Startup time %f" (- (float-time) start)))
 
 (provide 'fg42)
 ;; fg42.el ends here
