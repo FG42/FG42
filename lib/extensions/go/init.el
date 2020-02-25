@@ -3,8 +3,8 @@
 ;;; Code:
 
 (defun fg42-go-hook ()
-  ;; move to action
-  "Set's up emacs hooks and turn necessary modes on."
+  ;; TODO: move to action
+  "Set's up Emacs hooks and turn necessary modes on."
   (lsp)
   (with-ability yas
     (yas-minor-mode-on))
