@@ -1,4 +1,28 @@
 ;;; extension --- Extension library of FG42
+;;
+;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
+;;
+;; Author: Sameer Rahmani <lxsameer@gnu.org>
+;; URL: https://gitlab.com/FG42/FG42
+;; Version: 0.1.0
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;;; Acknoledgement:
+;; This library is heavily inspired by Kite mini library. Kudos Tung Dao
+;; for his great work.
+;;
 ;;; Commentary:
 ;;; Code:
 
@@ -12,23 +36,31 @@
 (defvar disabled-abilities (make-hash-table)
   "A hash of all the disabled abilities.")
 
-;; TODO: add a function to extension structure to support for
-;; external dependenies list
 ;; Structures -----------------------------
 (cl-defstruct fg42-extension
   "Each FG42 extension should implement a copy of this structure."
   name
+
+  ;; Let's keep this field for backward compatiblity for a while
   docs
+
+  ;; Each extension should expose a info page.
+  doc-index
+  ;; Projectile provides a project type that we can use to
+  ;; activate/load the extensions based on their registered
+  ;; type.
+  project-types
+
   (version nil)
-  ;; Describes
-  (major-modes nil)
+
+  ;; An instance of fg42-actions structure that describe the
+  ;; different actions of the given extension
+  (actions nil)
+
   ;; Callbacks
   (on-initialize nil)
   (on-load)
-  ;; An associated array of major modes to their
-  ;; debugger function
-  (print-debugger nil))
-
+  (on-unload))
 
 ;; Functions ------------------------------
 (defun active-ability? (name)
