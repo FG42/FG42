@@ -58,12 +58,14 @@
             (lambda ()
               (setq gc-cons-threshold fg42-gc-cons-threshold ; 16mb
                     gc-cons-percentage 0.1))) ;; after initilization phase restore cons threshold to normal
-
-  (setq package-enable-at-startup nil) ;; disable auto initilization of package.el
-
-  (add-hook 'minibuffer-setup-hook #'defer-garbage-collection) ;; disable gc when we are in minibuffer using the same method we use for initilization time
-  (add-hook 'minibuffer-exit-hook #'restore-garbage-collection) ;; just enable gc when exiting minibuffer
-  (defvar --file-name-handler-alist file-name-handler-alist) ;; we dont need Emacs to check every file type and look for file handlers when we are initializing so we backup the original value and set it to nil
+  ;; disable auto initilization of package.el
+  (setq package-enable-at-startup nil)
+  ;; disable gc when we are in minibuffer using the same method we use for initilization time
+  (add-hook 'minibuffer-setup-hook #'defer-garbage-collection)
+  ;; just enable gc when exiting minibuffer
+  (add-hook 'minibuffer-exit-hook #'restore-garbage-collection)
+  ;; we dont need Emacs to check every file type and look for file handlers when we are initializing so we backup the original value and set it to nil
+  (setq --file-name-handler-alist file-name-handler-alist)
 
   (setq file-name-handler-alist nil)
 
@@ -82,6 +84,7 @@
 
 (defun fg42-initialize ()
   "Initialize FG42 editor."
+  (setq start (float-time))
   (fg42--startup-optimization)
   (run-hooks 'fg42-before-initialize-hook)
   (mkdir fg42-tmp t)
