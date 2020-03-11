@@ -51,13 +51,15 @@
 
 (defun fg42--startup-optimization ()
   "Optimize FG42 startup."
-  (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
-        gc-cons-percentage 0.6) ;; by setting gc threshold to the largest number Emacs can understand we are basically disabling it :).
-
+  ;; by setting gc threshold to the largest number Emacs can understand we are basically disabling it :).
+  (setq gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.6)
+  ;; after initilization phase restore cons threshold to normal
   (add-hook 'emacs-startup-hook
             (lambda ()
               (setq gc-cons-threshold fg42-gc-cons-threshold ; 16mb
-                    gc-cons-percentage 0.1))) ;; after initilization phase restore cons threshold to normal
+                    gc-cons-percentage 0.1)))
+
   ;; disable auto initilization of package.el
   (setq package-enable-at-startup nil)
   ;; disable gc when we are in minibuffer using the same method we use for initilization time
@@ -68,12 +70,12 @@
   (setq --file-name-handler-alist file-name-handler-alist)
 
   (setq file-name-handler-alist nil)
-
+  ;; after initialization we can restore that file-name-handler-alist to original value.
   (add-hook 'emacs-startup-hook
             (lambda ()
-              (setq file-name-handler-alist --file-name-handler-alist))) ;; after initialization we can restore that file-name-handler-alist to original value.
-
-  (setq initial-major-mode 'fundamental-mode) ;; initial mode for emacs can be fundamental mode we have nothing to lose
+              (setq file-name-handler-alist --file-name-handler-alist)))
+  ;; initial mode for emacs can be fundamental mode we have nothing to lose
+  (setq initial-major-mode 'fundamental-mode)
   )
 
 (require 'fpkg)
