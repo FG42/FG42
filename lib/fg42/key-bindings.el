@@ -35,9 +35,10 @@
   (define-key map (kbd key) fn))
 
 
-(defun -defkey-evil (map key fn)
-  "Set the given KEY on key map MAP to FN."
-  (define-key map (kbd key) fn))
+(defun -defkey-evil (map state-keys fn)
+  "Set the given STATE-KEYS on key map MAP to FN."
+  (mapcar (lambda (state)
+            (evil-define-key state map (kbd key) fn)) states))
 
 
 (defmacro defkey (map keys fn)
@@ -49,12 +50,16 @@ KEYS should be a plist in the following format:
 \(:god <keyma> :human <keymap> :evil <keymap)"
   (let ((god-key (plist-get keys :god))
         (human-key (plist-get keys :human))
-        (evil-key  (plist-get keys :evil)))
+        (evil-state-key  (plist-get keys :evil)))
+
+
     (cond
      ((is-god?) `(-defkey-god ,map ,god-key ,fn))
      ((is-human?) `(-defkey-human ,map ,human-key ,fn))
-     ((is-evil? `(-defkey-evil ,map ,evil-key ,fn))))
-    (error "Wrong 'race' has been selected, Checkout `fg42-user-race'")))
+     ((is-evil?) `(-defkey-evil ,map ,evil-state-key ,fn)))))
+
+
+(macroexpand '(defkey python-map (:evil (:normal "g s" :visual "v")) foo))
 
 (provide 'fg42/key-bindings)
 ;;; key-bindings.el ends here
