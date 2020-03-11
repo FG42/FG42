@@ -37,8 +37,11 @@
 
 (defun -defkey-evil (map state-keys fn)
   "Set the given STATE-KEYS on key map MAP to FN."
-  (mapcar (lambda (state)
-            (evil-define-key state map (kbd key) fn)) states))
+  (message "%s" state-keys)
+  (mapcar (lambda (k) (message "k=>%s" k)) state-keys)
+  )
+  ;;(mapcar (lambda (state)
+    ;;        (evil-define-key state map (kbd key) fn)) states))
 
 
 (defmacro defkey (map keys fn)
@@ -59,7 +62,7 @@ KEYS should be a plist in the following format:
      ((is-evil?) `(-defkey-evil ,map ,evil-state-key ,fn)))))
 
 
-(macroexpand '(defkey python-map (:evil (:normal "g s" :visual "v")) foo))
+(macroexpand (defkey 'python-map (:evil '(:normal "g s" :visual "v") :god "who cares") 'foo))
 
 (provide 'fg42/key-bindings)
 ;;; key-bindings.el ends here
