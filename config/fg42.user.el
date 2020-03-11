@@ -9,7 +9,7 @@
 ;; (theme themes/color-theme-doom-dracula)
 (theme themes/color-theme-doom-one)
 ;; (theme themes/color-theme-doom-molokai)
-
+(setq start (float-time))
 ;; ABILITIES
 ;; =========
 ;; Disable abilities which you don't want.

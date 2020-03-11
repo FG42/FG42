@@ -35,6 +35,44 @@
 (defvar fg42-after-initialize-hook nil
   "This hook will be called after FG42 initilization process.")
 
+(defvar fg42-gc-cons-threshold  16777216 "Value of GC threshold of FG42.")
+
+
+
+
+(defun defer-garbage-collection ()
+  "Disable garbage collection."
+  (setq gc-cons-threshold fg42-gc-cons-threshold))
+
+(defun restore-garbage-collection ()
+  "Restore garbage collection to it's default value."
+  (run-at-time
+   1 nil (lambda () (setq gc-cons-threshold most-positive-fixnum))))
+
+(defun fg42--startup-optimization ()
+  "Optimize FG42 startup."
+  (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
+        gc-cons-percentage 0.6) ;; by setting gc threshold to the largest number Emacs can understand we are basically disabling it :).
+
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold fg42-gc-cons-threshold ; 16mb
+                    gc-cons-percentage 0.1))) ;; after initilization phase restore cons threshold to normal
+
+  (setq package-enable-at-startup nil) ;; disable auto initilization of package.el
+
+  (add-hook 'minibuffer-setup-hook #'defer-garbage-collection) ;; disable gc when we are in minibuffer using the same method we use for initilization time
+  (add-hook 'minibuffer-exit-hook #'restore-garbage-collection) ;; just enable gc when exiting minibuffer
+  (defvar --file-name-handler-alist file-name-handler-alist) ;; we dont need Emacs to check every file type and look for file handlers when we are initializing so we backup the original value and set it to nil
+
+  (setq file-name-handler-alist nil)
+
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq file-name-handler-alist --file-name-handler-alist))) ;; after initialization we can restore that file-name-handler-alist to original value.
+
+  (setq initial-major-mode 'fundamental-mode) ;; initial mode for emacs can be fundamental mode we have nothing to lose
+  )
 
 (require 'fpkg)
 (require 'fg42/base)
@@ -44,13 +82,14 @@
 
 (defun fg42-initialize ()
   "Initialize FG42 editor."
+  (fg42--startup-optimization)
   (run-hooks 'fg42-before-initialize-hook)
   (mkdir fg42-tmp t)
   (setq package-user-dir (concat fg42-home "/packages"))
   (fpkg-initialize)
   (initialize-extensions)
   (run-hooks 'fg42-after-initialize-hook)
-  (message "Startup time %f" (- (float-time) start)))
+  (message "startup time: %s" (- (float-time) start)))
 
 (provide 'fg42)
 ;; fg42.el ends here
