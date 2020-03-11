@@ -59,7 +59,7 @@
   (ability font ()
            "Sets the default font to fg42 font"
            (add-to-list 'default-frame-alist (cons 'font (concat fg42-font "-" (format "%d" fg42-font-size))))
-           (set-face-attribute 'default t :font fg42-font ))
+           )
   ;; ------------------------------------------------------
   (unless (is-god?)
     (progn
@@ -160,26 +160,27 @@
               :states '(normal visual insert emacs)
               :prefix "SPC"
               :non-normal-prefix "C-SPC"
-              ".." 'xref-find-definitions
-              "/" 'undo-tree-undo
-              "xx" 'counsel-M-x
-              "bl" 'switch-to-buffer
-              "SPC" 'find-file
-              "ff" 'find-file
-              "ls" #'move-beginning-of-line
-              "le" #'move-end-of-line
-              "bs" 'save-buffer
-              "wo" 'other-window
-              "wc" 'delete-window
-              "sv" 'split-window-vertically
-              "sh" 'split-window-horizontally
-              "bk" 'kill-buffer
-              "ss" 'swiper
-              "ee" 'eval-last-sexp
-              "eb" 'eval-buffer
-              "cl" 'comment-line
-              "dk" 'describe-key
-              "df" 'describe-function)))
+              :non-normal-prefix "C-SPC"
+              "f f" 'ido-find-file
+              "b k" 'kill-buffer
+              "b s" 'save-buffer
+              "b n" 'next-buffer
+              "b p" 'previous-buffer
+              "b l" 'counsel-switch-buffer
+              "w o" 'other-window
+              "w c" 'delete-window
+              "w m" 'delete-other-windows
+              "s v" 'split-window-vertically
+              "s h" 'split-window-horizontally
+              "b k" 'kill-buffer
+              "e e" 'eval-last-sexp
+              "e b" 'eval-buffer
+              "l c" 'comment-line
+              "d k" 'describe-key
+              "d f" 'describe-function
+              "d v" 'describe-variable
+              "g s" 'magit-status
+              )))
 
 
 
