@@ -37,8 +37,12 @@
 
 (defun -defkey-evil (map state-keys fn)
   "Set the given STATE-KEYS on key map MAP to FN."
-  (message "%s" state-keys)
-  (mapcar (lambda (k) (message "k=>%s" k)) state-keys)
+  (let (
+        (normal-key (plist-get state-keys :normal))
+        (visual-key (plist-get state-keys :visual))
+        (insert-key (plist-get state-keys :insert))
+        )
+    (message "%s" normal-key))
   )
   ;;(mapcar (lambda (state)
     ;;        (evil-define-key state map (kbd key) fn)) states))
