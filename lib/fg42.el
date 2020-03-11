@@ -84,7 +84,7 @@
 
 (defun fg42-initialize ()
   "Initialize FG42 editor."
-  (setq start (float-time))
+  (setq fg42-start-timestamp (float-time))
   (fg42--startup-optimization)
   (run-hooks 'fg42-before-initialize-hook)
   (mkdir fg42-tmp t)
@@ -92,7 +92,7 @@
   (fpkg-initialize)
   (initialize-extensions)
   (run-hooks 'fg42-after-initialize-hook)
-  (message "startup time: %s" (- (float-time) start)))
+  (message "startup time: %s" (- (float-time) fg42-start-timestamp)))
 
 (provide 'fg42)
 ;; fg42.el ends here
