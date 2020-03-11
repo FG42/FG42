@@ -29,16 +29,20 @@
 
 (defvar fg42-tmp (concat fg42-home "/tmp"))
 
+(require 'fpkg)
+(require 'fg42/base)
+(require 'fg42/splash)
+(require 'fg42/race)
+(require 'fg42/utils)
+
 (defvar fg42-before-initialize-hook nil
   "This hook will be called before FG42 initilization process.")
 
 (defvar fg42-after-initialize-hook nil
   "This hook will be called after FG42 initilization process.")
 
-(defvar fg42-gc-cons-threshold  16777216 "Value of GC threshold of FG42.")
-
-
-
+(defvar fg42-gc-cons-threshold  16777216
+  "Value of GC threshold of FG42.")
 
 (defun defer-garbage-collection ()
   "Disable garbage collection."
@@ -51,7 +55,8 @@
 
 (defun fg42--startup-optimization ()
   "Optimize FG42 startup."
-  ;; by setting gc threshold to the largest number Emacs can understand we are basically disabling it :).
+  ;; by setting gc threshold to the largest number
+  ;; Emacs can understand we are basically disabling it :).
   (setq gc-cons-threshold most-positive-fixnum
         gc-cons-percentage 0.6)
   ;; after initilization phase restore cons threshold to normal
@@ -62,27 +67,26 @@
 
   ;; disable auto initilization of package.el
   (setq package-enable-at-startup nil)
-  ;; disable gc when we are in minibuffer using the same method we use for initilization time
+  ;; disable gc when we are in minibuffer using the same method we
+  ;; use for initilization time
   (add-hook 'minibuffer-setup-hook #'defer-garbage-collection)
   ;; just enable gc when exiting minibuffer
   (add-hook 'minibuffer-exit-hook #'restore-garbage-collection)
-  ;; we dont need Emacs to check every file type and look for file handlers when we are initializing so we backup the original value and set it to nil
+  ;; we dont need Emacs to check every file type and look for file
+  ;; handlers when we are initializing so we backup the original
+  ;; value and set it to nil
   (setq --file-name-handler-alist file-name-handler-alist)
 
   (setq file-name-handler-alist nil)
-  ;; after initialization we can restore that file-name-handler-alist to original value.
+  ;; after initialization we can restore that file-name-handler-alist
+  ;; to original value.
   (add-hook 'emacs-startup-hook
             (lambda ()
-              (setq file-name-handler-alist --file-name-handler-alist)))
+              (setq file-name-handler-alist
+                    --file-name-handler-alist)))
   ;; initial mode for emacs can be fundamental mode we have nothing to lose
-  (setq initial-major-mode 'fundamental-mode)
-  )
+  (setq initial-major-mode 'fundamental-mode))
 
-(require 'fpkg)
-(require 'fg42/base)
-(require 'fg42/splash)
-(require 'fg42/race)
-(require 'fg42/utils)
 
 (defun fg42-initialize ()
   "Initialize FG42 editor."
@@ -95,6 +99,7 @@
   (initialize-extensions)
   (run-hooks 'fg42-after-initialize-hook)
   (message "startup time: %s" (- (float-time) fg42-start-timestamp)))
+
 
 (provide 'fg42)
 ;; fg42.el ends here
