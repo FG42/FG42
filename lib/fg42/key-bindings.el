@@ -43,9 +43,9 @@
         (insert-key (plist-get state-keys :insert))
         (emacs-key (plist-get state-keys :emacs)))
     (when (not (null normal-key)) (evil-define-key 'normal map normal-key fn))
-    (when (not (null visual-key)) (evil-define-key 'normal map normal-key fn))
-    (when (not (null insert-key)) (evil-define-key 'normal map normal-key fn))
-    (when (not (null emacs-key)) (evil-define-key 'normal map normal-key fn))
+    (when (not (null visual-key)) (evil-define-key 'visual map normal-key fn))
+    (when (not (null insert-key)) (evil-define-key 'insert map normal-key fn))
+    (when (not (null emacs-key)) (evil-define-key 'emacs map normal-key fn))
     )
   )
 
@@ -66,8 +66,6 @@ KEYS should be a plist in the following format:
      ((is-god?) `(-defkey-god ,map ,god-key ,fn))
      ((is-human?) `(-defkey-human ,map ,human-key ,fn))
      ((is-evil?) `(-defkey-evil ,map ,evil-state-key ,fn)))))
-
-
 
 (provide 'fg42/key-bindings)
 ;;; key-bindings.el ends here
