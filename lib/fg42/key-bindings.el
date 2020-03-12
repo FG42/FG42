@@ -41,11 +41,13 @@
         (normal-key (plist-get state-keys :normal))
         (visual-key (plist-get state-keys :visual))
         (insert-key (plist-get state-keys :insert))
-        )
-    (message "%s" normal-key))
+        (emacs-key (plist-get state-keys :emacs)))
+    (when (not (null normal-key)) (evil-define-key 'normal map normal-key fn))
+    (when (not (null visual-key)) (evil-define-key 'normal map normal-key fn))
+    (when (not (null insert-key)) (evil-define-key 'normal map normal-key fn))
+    (when (not (null emacs-key)) (evil-define-key 'normal map normal-key fn))
+    )
   )
-  ;;(mapcar (lambda (state)
-    ;;        (evil-define-key state map (kbd key) fn)) states))
 
 
 (defmacro defkey (map keys fn)
