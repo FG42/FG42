@@ -42,10 +42,10 @@
         (visual-key (plist-get state-keys :visual))
         (insert-key (plist-get state-keys :insert))
         (emacs-key (plist-get state-keys :emacs)))
-    (when (not (null normal-key)) (evil-define-key 'normal map normal-key fn))
-    (when (not (null visual-key)) (evil-define-key 'visual map normal-key fn))
-    (when (not (null insert-key)) (evil-define-key 'insert map normal-key fn))
-    (when (not (null emacs-key)) (evil-define-key 'emacs map normal-key fn))
+    (when (not (null normal-key)) (evil-define-key 'normal map (kbd normal-key) fn))
+    (when (not (null visual-key)) (evil-define-key 'visual map (kbd visual-key) fn))
+    (when (not (null insert-key)) (evil-define-key 'insert map (kbd insert-key) fn))
+    (when (not (null emacs-key)) (evil-define-key 'emacs map (kbd emacs-key) fn))
     )
   )
 
@@ -60,12 +60,10 @@ KEYS should be a plist in the following format:
   (let ((god-key (plist-get keys :god))
         (human-key (plist-get keys :human))
         (evil-state-key  (plist-get keys :evil)))
-
-
     (cond
-     ((is-god?) `(-defkey-god ,map ,god-key ,fn))
-     ((is-human?) `(-defkey-human ,map ,human-key ,fn))
-     ((is-evil?) `(-defkey-evil ,map ,evil-state-key ,fn)))))
+     ((is-god?) `(-defkey-god ,map ,god-key (quote ,fn)))
+     ((is-human?) `(-defkey-human ,map ,human-key (quote ,fn)))
+     ((is-evil?) `(-defkey-evil ,map (quote ,evil-state-key) (quote ,fn))))))
 
 (provide 'fg42/key-bindings)
 ;;; key-bindings.el ends here
