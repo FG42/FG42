@@ -45,18 +45,17 @@
     (when (not (null normal-key)) (evil-define-key 'normal map (kbd normal-key) fn))
     (when (not (null visual-key)) (evil-define-key 'visual map (kbd visual-key) fn))
     (when (not (null insert-key)) (evil-define-key 'insert map (kbd insert-key) fn))
-    (when (not (null emacs-key)) (evil-define-key 'emacs map (kbd emacs-key) fn))
-    )
-  )
+    (when (not (null emacs-key)) (evil-define-key 'emacs map (kbd emacs-key) fn))))
+
+
 
 
 (defmacro defkey (map keys fn)
   "Defines a key binding for FG42 for different types.
 Defines a keybinding in the given MAP for the given KEYS that maps
 to the given FN with the given DOCSTRING.
+Example usage : (defkey `global-map` (:evil (:normal \"SPC s u\") :god \"C-x C-y\") counsel-M-x)"
 
-KEYS should be a plist in the following format:
-\(:god <keyma> :human <keymap> :evil <keymap)"
   (let ((god-key (plist-get keys :god))
         (human-key (plist-get keys :human))
         (evil-state-key  (plist-get keys :evil)))
