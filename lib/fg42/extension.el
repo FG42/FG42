@@ -80,7 +80,7 @@
   (or (fg42-extension-path extension)
       ;; TODO: should we extract variables such as `fg42-home' to their
       ;;       dedicated ns in order to avoid the warning ?
-      (concat fg42-home "lib/extensions/" (fg42-extension-name extension))))
+      (concat fg42-home "/lib/extensions/" (fg42-extension-name extension) ".el")))
 
 
 (defun load-extension (ext)
@@ -115,9 +115,9 @@ to them.
   (declare (doc-string 2) (indent 1))
   ;; TODO: Inject the docstring to the current `system' in order
   ;;       to collect it later for `describe-extension' function.
-  `(defvar name (apply 'make-fg42-extension
-                       :name ,(symbol-name name)
-                       (quote ,args))))
+  `(setq ,name (apply 'make-fg42-extension
+                      :name ,(symbol-name name)
+                      (quote ,args))))
 
 
 (defmacro with-ability (name &rest body)
