@@ -68,7 +68,6 @@ KEYS should be a plist in the following format:
      ((is-evil?) `(-defkey-evil ,map ,evil-state-key ,fn)))))
 
 
-(macroexpand (defkey 'python-map (:evil '(:normal "g s" :visual "v") :god "who cares") 'foo))
 
 (provide 'fg42/key-bindings)
 ;;; key-bindings.el ends here
