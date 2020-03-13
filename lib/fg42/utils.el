@@ -69,5 +69,12 @@ with is the buffer."
   "Apply the given FACE-SYMBOL to the given TEXT."
   (put-text-property 0 (length text) 'face face-symbol text))
 
+
+(defmacro comment (&rest body)
+  "A macro similar to Clojure's comment macro that ignore the BODY."
+  (declare (indent 1))
+  `nil)
+
+
 (provide 'fg42/utils)
 ;;; utils.el ends here

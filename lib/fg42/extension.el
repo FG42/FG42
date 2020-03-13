@@ -28,6 +28,7 @@
 
 ;; This library provides some basic means to create a new FG42 extensions
 (require 'cl-lib)
+(require 'fg42/utils)
 
 ;; Variables -----------------------------
 (defvar activated-extensions ()
@@ -56,7 +57,7 @@
   ;; An instance of fg42-actions structure that describe the
   ;; different actions of the given extension
   (actions nil)
-
+  (path nil)
   ;; Callbacks
   (on-initialize nil)
   (on-load)
@@ -72,6 +73,21 @@
   "Add the given ABILITIES to disabled-abilities hash."
   (dolist (abl abilities)
     (puthash abl t disabled-abilities)))
+
+
+(defun extension-path (extension)
+  "Return the path to the given EXTENSION."
+  (or (fg42-extension-path extension)
+      ;; TODO: should we extract variables such as `fg42-home' to their
+      ;;       dedicated ns in order to avoid the warning ?
+      (concat fg42-home "/lib/extensions/" (fg42-extension-name extension) ".el")))
+
+
+(defun load-extension (ext)
+  "Load the given EXT which is a `fg42-extension' instance."
+  (load-file (extension-path ext))
+  (when-let ((init-fn (eval (fg42-extension-on-initialize ext))))
+    (apply (symbol-function init-fn) '(ext))))
 
 
 ;; Macros ---------------------------------
@@ -94,6 +110,16 @@ to them.
   `(setq ,name (apply 'make-fg42-extension :name ,(symbol-name name) (quote ,args))))
 
 
+(defmacro defextension (name &optional docstring &rest args)
+  "A simple DSL to define new fg42 extension by given NAME, DOCSTRING and ARGS."
+  (declare (doc-string 2) (indent 1))
+  ;; TODO: Inject the docstring to the current `system' in order
+  ;;       to collect it later for `describe-extension' function.
+  `(setq ,name (apply 'make-fg42-extension
+                      :name ,(symbol-name name)
+                      (quote ,args))))
+
+
 (defmacro with-ability (name &rest body)
   "If the ability with the given NAME is not disabled, Run the BODY."
   `(when (active-ability? (intern ,(symbol-name name)))
@@ -110,6 +136,15 @@ to them.
     (read-only-mode t)
     (switch-to-buffer b)
     (org-mode)))
+
+
+(comment
+    (defextension example-extension
+      "Very simple extention as a test"
+      :path "~/example-extension.el"
+      :on-initialize 'example-extention-init)
+
+    (load-extension example-extension))
 
 
 (provide 'fg42/extension)
