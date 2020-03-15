@@ -37,6 +37,7 @@
                      'arduino
                      'java
                      'racket
+                     'devops
                      'irc
                      'latex)
 
