@@ -58,7 +58,7 @@
   ;; Font Configuration -----------------------------------
   (ability font ()
            "Sets the default font to fg42 font"
-           (add-to-list 'default-frame-alist (cons 'font fg42-font))
+           (add-to-list 'default-frame-alist (cons 'font (format "%s-%d" fg42-font fg42-font-size)))
            (set-face-attribute 'default t :font fg42-font))
   ;; ------------------------------------------------------
 
