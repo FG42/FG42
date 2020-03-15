@@ -25,7 +25,7 @@
 
 (depends-on 'eyebrowse)
 
-;; general for simpler keybindin
+;; general for simpler keybinding
 (depends-on 'general)
 
 ;; Themes
