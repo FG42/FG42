@@ -52,54 +52,6 @@
   "A hash of `fg42-package structure representing required packages.")
 
 ;; Functions ----------------------------------
-(defun all-dependencies-installed? ()
-  "Return t if all the dependencies installed."
-  (let ((result t))
-    (dolist (pkg (hash-table-keys required-packages))
-      (when (not (package-installed-p pkg))
-        (message "'%s' package is not installed" pkg)
-        (setq result nil)))
-    result))
-
-
-(defun install--package (pkg)
-  "Install a package via its propreate source."
-  (let* ((source (fpkg-dependency-source pkg))
-	 (func-name (concat "install-package-via-" (symbol-name source)))
-	 (install-func
-	  (symbol-function
-	   (intern func-name))))
-    (funcall install-func pkg)))
-
-
-(defun fpkg-initialize-old ()
-  "Initilize the package.el and related stuff to be used in FG42"
-  (let ((packages (hash-table-values required-packages)))
-
-    (require 'package)
-
-    (add-to-list 'package-archives
-		 '("melpa" . "http://melpa.org/packages/") t)
-    (when (< emacs-major-version 24)
-      ;; For important compatibility libraries like cl-lib
-      (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-
-    ;; Initialize package.el
-    (package-initialize)
-
-    (setq url-http-attempt-keepalives nil)
-
-    (unless (all-dependencies-installed?)
-      ;; check for new packages (package versions)
-      (message "%s" "Refreshing package database...")
-      (package-refresh-contents)
-
-      ;; install the missing packages
-      (dolist (pkg packages)
-	(when (not (package-installed-p (fpkg-dependency-name pkg)))
-	  (install--package pkg))))))
-
-
 (defun fpkg-initialize ()
   "Initilize the straight.e package manager and setup necessary hooks."
   (let ((bootstrap-file (concat fpkg-packages-path
@@ -123,11 +75,6 @@
   (when (not fpkg-initilized-p)
     (fpkg-initialize)))
 
-
-(defun depends-on-old (pkgname &rest args)
-  "Install the given PKGNAME if it isn't installed.  Ignore ARGS for now."
-  (let ((pkg (apply 'make-fpkg-dependency :name pkgname args)))
-    (puthash pkgname pkg  required-packages)))
 
 (defun depends-on (pkgname)
   "Install the given PKGNAME if it isn't installed."
