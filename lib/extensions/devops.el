@@ -13,7 +13,7 @@
 
 (extension devops
            :version 0.0.1
-           :on-initialize extensions/devops
+           :on-initialize extensions/devops-initialize
            :docs "lib/extensions/devops/readme.org")
 (provide 'extensions/devops)
 ;; devops ends here
