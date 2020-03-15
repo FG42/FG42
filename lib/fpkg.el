@@ -1,7 +1,7 @@
 ;;; fpkg --- a simple package manager for FG42                     -*- lexical-binding: t; -*-
-
-;; Copyright (C) 2010-2019  Sameer Rahmani <lxsameer@gnu.org>
-
+;;
+;; Copyright (C) 2010-2012  Sameer Rahmani <lxsameer@gnu.org>
+;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; Keywords: lisp fg42 IDE package manager
 ;; Version: 1.0.0
@@ -36,6 +36,18 @@
   (path nil)
   (source 'elpa))
 
+
+(defvar bootstrap-version nil
+  "Bootstrap version of straight.  This var is used in straight's installer.")
+
+
+(defvar fpkg-packages-path
+  (expand-file-name ".fpkg/" fg42-home)
+  "The path to the directory which FPKG will use to store that packages.")
+
+(defvar fpkg-initilized-p nil
+  "A boolean flag that indicates whether FPKG is initialized or not.")
+
 (defvar required-packages (make-hash-table)
   "A hash of `fg42-package structure representing required packages.")
 
@@ -49,8 +61,9 @@
         (setq result nil)))
     result))
 
+
 (defun install--package (pkg)
-  "Intall a package via its propreate source."
+  "Install a package via its propreate source."
   (let* ((source (fpkg-dependency-source pkg))
 	 (func-name (concat "install-package-via-" (symbol-name source)))
 	 (install-func
@@ -58,7 +71,8 @@
 	   (intern func-name))))
     (funcall install-func pkg)))
 
-(defun fpkg-initialize ()
+
+(defun fpkg-initialize-old ()
   "Initilize the package.el and related stuff to be used in FG42"
   (let ((packages (hash-table-values required-packages)))
 
@@ -86,11 +100,39 @@
 	  (install--package pkg))))))
 
 
+(defun fpkg-initialize ()
+  "Initilize the straight.e package manager and setup necessary hooks."
+  (let ((bootstrap-file (concat fpkg-packages-path
+                                "straight/repos/straight.el/bootstrap.el"))
+        (bootstrap-version 5))
 
-(defun depends-on (pkgname &rest args)
-  "Global function to specify a single dependency"
+    (make-directory fpkg-packages-path t)
+    (setq straight-base-dir fpkg-packages-path)
+    (if (not (file-exists-p bootstrap-file))
+        (with-current-buffer
+            (url-retrieve-synchronously
+             "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+             'silent 'inhibit-cookies)
+          (goto-char (point-max))
+          (eval-print-last-sexp))
+      (load bootstrap-file nil 'nomessage))))
+
+
+(defun fpkg-initialize-once ()
+  "Initilize FPKG only once."
+  (when (not fpkg-initilized-p)
+    (fpkg-initialize)))
+
+
+(defun depends-on-old (pkgname &rest args)
+  "Install the given PKGNAME if it isn't installed.  Ignore ARGS for now."
   (let ((pkg (apply 'make-fpkg-dependency :name pkgname args)))
     (puthash pkgname pkg  required-packages)))
 
-(message "FPKG has been initialized.")
+(defun depends-on (pkgname)
+  "Install the given PKGNAME if it isn't installed."
+  (straight-use-package pkgname))
+
+
 (provide 'fpkg)
+;;; fpkg.el ends here

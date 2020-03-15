@@ -23,3 +23,4 @@ lib/**/*.elc
 *.elc
 tmp/
 test-runner/
+.fpkg/
