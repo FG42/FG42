@@ -10,6 +10,14 @@
 (defvar fg42-before-open-todo-hook nil)
 (defvar fg42-after-open-todo-hook nil)
 
+;; Vars -----------------------------------------------------------------------
+(defvar fg42-font "Fira Mono"
+  "The default font to be used with FG42.")
+
+(defvar fg42-font-size 12
+  "The default font to be used with FG42.")
+
+
 ;; Functions -------------------------------------------------
 (defun fg42-reload ()
   "Reload the entire FG42."

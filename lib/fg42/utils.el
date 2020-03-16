@@ -7,10 +7,6 @@
 (require 'fg42/vars)
 (require 'fg42/utils/json)
 
-;; Vars -----------------------------------------------------------------------
-(defvar fg42-font "Fira Mono"
-  "The default font to be used with FG42.")
-
 ;;; Buffer helpers ------------------------------------------------------------
 (defun buffer-mode (buffer-or-string)
   "Return the major mode associated with a the given BUFFER-OR-STRING."
