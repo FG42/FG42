@@ -1,4 +1,4 @@
-;;; fpkg --- a simple package manager for FG42                     -*- lexical-binding: t; -*-
+;;; build --- build script for FG42
 ;;
 ;; Copyright (C) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
 ;;
@@ -20,46 +20,18 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
-;;
-;; Simple package manager for FG42
-;;
 ;;; Code:
-(require 'cl-lib)
-(require 'subr-x)
-(require 'fpkg/installers)
-
-;; Variables ---------------------------------
-(cl-defstruct fpkg-dependency
-  "Package structure for FG42."
-  name
-  (version "0")
-  (path nil)
-  (source 'elpa))
-
+(add-to-list 'load-path (concat (getenv "HOME") ".fg42/lib"))
 
 (defvar bootstrap-version nil
   "Bootstrap version of straight.  This var is used in straight's installer.")
 
-
-(defvar fpkg-packages-path
-  (expand-file-name ".fpkg/" fg42-home)
-  "The path to the directory which FPKG will use to store that packages.")
-
-(defvar fpkg-initilized-p nil
-  "A boolean flag that indicates whether FPKG is initialized or not.")
-
-(defvar required-packages (make-hash-table)
-  "A hash of `fg42-package structure representing required packages.")
-
-;; Functions ----------------------------------
 (defun fpkg-initialize ()
   "Initilize the straight.e package manager and setup necessary hooks."
-  (let ((bootstrap-file (concat fpkg-packages-path
-                                "straight/repos/straight.el/bootstrap.el"))
+  (let ((bootstrap-file "~/.fg42/.fpkg/straight/repos/straight.el/bootstrap.el")
         (bootstrap-version 5))
 
-    (make-directory fpkg-packages-path t)
-    (setq straight-base-dir fpkg-packages-path)
+    (setq straight-base-dir "~/.fg42/.fpkg/")
     (if (not (file-exists-p bootstrap-file))
         (with-current-buffer
             (url-retrieve-synchronously
@@ -69,17 +41,7 @@
           (eval-print-last-sexp))
       (load bootstrap-file nil 'nomessage))))
 
+(fpkg-initialize)
 
-(defun fpkg-initialize-once ()
-  "Initilize FPKG only once."
-  (when (not fpkg-initilized-p)
-    (fpkg-initialize)))
-
-
-(defun depends-on (pkgname)
-  "Install the given PKGNAME if it isn't installed."
-  (straight-use-package pkgname))
-
-
-(provide 'fpkg)
-;;; fpkg.el ends here
+(provide 'build)
+;;; build.el ends here

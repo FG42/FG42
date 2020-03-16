@@ -30,6 +30,8 @@
 (defvar fg42-tmp (concat fg42-home "/tmp"))
 
 (require 'fpkg)
+(fpkg-initialize-once)
+
 (require 'fg42/base)
 (require 'fg42/splash)
 (require 'fg42/race)
