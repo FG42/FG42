@@ -6,15 +6,15 @@ build:
   stage: build
   before_script:
     - apt update && apt install -y make wget git emacs sudo
-    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install && cd
+    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install &&
   script:
-    - fg42 -nw --script build.el
+    - cd ~/.fg42/ && fg42 -nw --script build.el
 
 build-package:
   extends: build
   script:
-    - fg42 -nw --script build.el
-    - tar zcf fg42.$CI_COMMIT_TAG.tar.gz ~/.fg42/
+    - cd ~/.fg42/ && fg42 -nw --script build.el
+    - cd && tar zcf fg42.$CI_COMMIT_TAG.tar.gz ~/.fg42/
   artifacts:
     when: on_success
     paths:
