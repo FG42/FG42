@@ -1,6 +1,6 @@
 ;;; fpkg --- a simple package manager for FG42                     -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2010-2012  Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (C) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; Keywords: lisp fg42 IDE package manager
