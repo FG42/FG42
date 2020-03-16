@@ -6,6 +6,6 @@ build:
   stage: build
   before_script:
     - apt update && apt install -y make wget git emacs sudo
-    - git clone https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install && touch empty.el
+    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install && touch empty.el
   script:
-    - fg42 -nw --script empty.el && echo "Done"
+    - fg42 -nw -l ~/.fg42/fg42-config.el --script empty.el
