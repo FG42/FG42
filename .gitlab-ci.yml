@@ -5,7 +5,7 @@ build:
   image: ubuntu
   stage: build
   before_script:
-    - apt update && apt install -y make wget emacs
+    - apt update && apt install -y make wget sudo emacs
     - make install
     - touch empty.el
   script:
