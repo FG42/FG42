@@ -8,4 +8,4 @@ build:
     - apt update && apt install -y make wget sudo git emacs
     - git clone https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install && touch empty.el
   script:
-    - fg42 --script empty.el
+    - fg42 -nw --script empty.el
