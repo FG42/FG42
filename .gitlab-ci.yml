@@ -2,10 +2,10 @@ stages:
   - build
 
 build:
-  image: ubuntu
+  image: debian:stable-slim
   stage: build
   before_script:
-    - apt update && apt install -y make wget sudo git emacs
-    - git clone https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install && touch empty.el
+    - apt update && apt install -y make wget git emacs
+    - git clone https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install-ci && touch empty.el
   script:
     - fg42 -nw --script empty.el
