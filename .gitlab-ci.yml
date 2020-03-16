@@ -5,8 +5,8 @@ build:
   image: ubuntu
   stage: build
   before_script:
-    apt install emacs
-    make install
-    touch empty.el
+    - apt install emacs
+    - make install
+    - touch empty.el
   script:
-    fg42 --script empty.el
+    - fg42 --script empty.el
