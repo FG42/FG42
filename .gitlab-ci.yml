@@ -21,4 +21,3 @@ build-package:
     - ~/fg42.$CI_COMMIT_TAG.tar.gz
   only:
     - tags
-    - master
