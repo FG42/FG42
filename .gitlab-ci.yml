@@ -20,11 +20,11 @@ build-branches:
 build-package:
   extends: .build
   script:
-    - cd ~/.fg42/ && fg42 -nw --script build.el
+    - cd /root/.fg42/ && fg42 -nw --script build.el && cd /
   artifacts:
     when: on_success
     name: fg42.$CI_COMMIT_TAG
     paths:
-    - ~/.fg42
+    - /root/.fg42/
   only:
     - tags
