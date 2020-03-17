@@ -21,11 +21,11 @@ build-package:
   extends: .build
   script:
     - cd /root/.fg42/ && fg42 -nw --script build.el
-    - mv -v /root/.fg42/ /builds/$CI_PROJECT_PATH/
+    - tar zcf ~/fg42.$CI_COMMIT_TAG.tar.gz ~/.fg42/
+    - mv ~/fg42.$CI_COMMIT_TAG.tar.gz /builds/$CI_PROJECT_PATH/
   artifacts:
     when: on_success
-    name: fg42.$CI_COMMIT_TAG
     paths:
-    - .fg42/
+    - fg42.$CI_COMMIT_TAG.tar.gz
   only:
     - tags
