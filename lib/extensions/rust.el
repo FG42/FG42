@@ -7,7 +7,8 @@
 
 ;; dependencies
 (depends-on 'rust-mode)
-
+(depends-on 'cargo)
+(depends-on 'flycheck-rust)
 (extension rust
            :version 0.0.1
            :on-initialize extensions/rust-initialize
