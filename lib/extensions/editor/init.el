@@ -107,17 +107,10 @@
            (global-hl-line-mode t))
 
   ;; enhance evil mode with space leader keybindings
-  (ability space-keys
+  (ability space-keys ()
            "evil mode with space leader keybindings"
            (when (is-evil?)
-             (general-define-key
-              :states '(normal visual insert emacs)
-              :prefix "SPC"
-              :non-normal-prefix "C-SPC"
-              "bl" 'switch-to-buffer
-              "ff" 'find-file
-              "sv" 'split-window-vertically
-              "sh" 'split-window-horizontally)))
+             (defkey global-map 'split-window-below :evil (:normal "SPC w s v"))))
 
 
   (ability flycheck ()
