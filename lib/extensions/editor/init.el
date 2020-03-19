@@ -93,7 +93,7 @@
              (defkey global-map 'comment-line :evil (:normal "SPC l c"))
              (defkey global-map 'describe-key :evil (:normal "SPC d k"))
              (defkey global-map 'describe-function :evil (:normal "SPC d f"))
-             (defkey global-map 'describe-variable :evil (:normal "SPC d v"))
+             (defkey global-map 'describe-variable :evil (:normal "SPC d v"))))
 
   (cheatsheet-add :group '--HELP--
                   :key   "C-?"
