@@ -23,7 +23,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'fg42/race)
 
 (defun -defkey-god (map key fn)
   "Set the given KEY on key map MAP to FN."
@@ -56,10 +55,12 @@ Example usage :
 \\(defkey `'global-map`' 'goto-line
            :evil \\(:normal \"SPC s u\"\\)
            :god \"<f2>\"\\)"
-
   (let ((god-key (plist-get keys :god))
         (human-key (plist-get keys :human))
         (evil-state-key  (plist-get keys :evil)))
+    (when (and (is-evil?) (null evil-state-key)) (error "You should pass :evil keys when you are evil user"))
+    (when (and (is-god?) (null god-key)) (error "You should pass :god keys when you are a god user"))
+    (when (and (is-human?) (null human-key)) (error "You should pass :evil keys when you are a human user"))
     (cond
      ((is-god?) `(-defkey-god ,map ,god-key ,fn))
      ((is-human?) `(-defkey-human ,map ,human-key ,fn))
