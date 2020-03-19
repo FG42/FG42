@@ -25,9 +25,6 @@
 
 (depends-on 'eyebrowse)
 
-;; general for simpler keybinding
-(depends-on 'general)
-
 ;; Themes
 (depends-on 'spacemacs-theme)
 (depends-on 'doom-themes)
