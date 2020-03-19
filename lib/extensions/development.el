@@ -34,7 +34,8 @@
 (with-ability git
               (depends-on 'diff-hl)
               (depends-on 'magit)
-              (depends-on 'gh))
+              (depends-on 'gh)
+              (depends-on 'evil-magit))
 
 (with-ability github
               (depends-on 'magithub))
