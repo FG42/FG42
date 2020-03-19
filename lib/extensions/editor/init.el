@@ -106,12 +106,19 @@
            "Highlights the current line."
            (global-hl-line-mode t))
 
+  (ability which-key ()
+           (when (is-evil?)
+              (which-key-mode t)))
+
   ;; enhance evil mode with space leader keybindings
-  (ability space-keys ()
+  (ability space-keys (which-key)
            "evil mode with space leader keybindings"
            (when (is-evil?)
-             (defkey global-map 'split-window-below :evil (:normal "SPC w s v"))))
-
+             (defkey global-map 'split-window-below :evil (:normal "SPC w s v"))
+             (defkey global-map 'split-window-right :evil (:normal "SPC w s h"))
+             (defkey global-map 'other-window :evil (:normal "SPC w o"))
+             (defkey global-map 'delete-window :evil (:normal "SPC w d"))
+             (defkey global-map 'delete-other-windwo :evil (:normal "SPC w m"))))
 
   (ability flycheck ()
            "Check syntax on the fly using flycheck."

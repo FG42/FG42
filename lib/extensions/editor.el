@@ -80,6 +80,8 @@
 (with-ability tabbar
               (depends-on 'tabbar))
 
+(with-ability which-key
+              (depends-on 'which-key))
 (if (eq system-type 'darwin)
     (depends-on 'exec-path-from-shell))
 
