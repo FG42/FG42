@@ -1,0 +1,31 @@
+stages:
+  - build
+
+.build:
+  image: debian:stable-slim
+  stage: build
+  before_script:
+    - apt update && apt install -y make wget git emacs sudo
+    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install &&
+  script:
+    - cd ~/.fg42/ && fg42 -nw --script build.el
+
+build-branches:
+  extends: .build
+  only:
+    - branches
+  except:
+    - tags
+
+build-package:
+  extends: .build
+  script:
+    - cd /root/.fg42/ && fg42 -nw --script build.el
+    - tar zcf ~/fg42.$CI_COMMIT_TAG.tar.gz ~/.fg42/
+    - mv ~/fg42.$CI_COMMIT_TAG.tar.gz /builds/$CI_PROJECT_PATH/
+  artifacts:
+    when: on_success
+    paths:
+    - fg42.$CI_COMMIT_TAG.tar.gz
+  only:
+    - tags

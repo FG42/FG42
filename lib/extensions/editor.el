@@ -25,9 +25,6 @@
 
 (depends-on 'eyebrowse)
 
-;; general for simpler keybindin
-(depends-on 'general)
-
 ;; Themes
 (depends-on 'spacemacs-theme)
 (depends-on 'doom-themes)
@@ -83,6 +80,8 @@
 (with-ability tabbar
               (depends-on 'tabbar))
 
+(with-ability which-key
+              (depends-on 'which-key))
 (if (eq system-type 'darwin)
     (depends-on 'exec-path-from-shell))
 

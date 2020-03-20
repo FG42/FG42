@@ -9,7 +9,7 @@
 (depends-on 'yasnippet)
 (depends-on 'yasnippet-snippets)
 (depends-on 'smart-mode-line)
-(depends-on 'dockerfile-mode)
+
 (depends-on 'quickrun)
 (depends-on 'dash)
 (depends-on 'websocket)
@@ -34,7 +34,9 @@
 (with-ability git
               (depends-on 'diff-hl)
               (depends-on 'magit)
-              (depends-on 'gh))
+              (depends-on 'gh)
+	      (when (is-evil?)
+		(depends-on 'evil-magit)))
 
 (with-ability github
               (depends-on 'magithub))

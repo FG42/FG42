@@ -23,7 +23,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'fg42/race)
 
 (defun -defkey-god (map key fn)
   "Set the given KEY on key map MAP to FN."
@@ -35,26 +34,37 @@
   (define-key map (kbd key) fn))
 
 
-(defun -defkey-evil (map key fn)
-  "Set the given KEY on key map MAP to FN."
-  (define-key map (kbd key) fn))
+(defun -defkey-evil (map state-keys fn)
+  "Set the given STATE-KEYS on key map MAP to FN."
+  (let ((normal-key (plist-get state-keys :normal))
+        (visual-key (plist-get state-keys :visual))
+        (insert-key (plist-get state-keys :insert))
+        (emacs-key (plist-get state-keys :emacs)))
+    (cond
+     ((not (null normal-key)) (evil-define-key 'normal map (kbd normal-key) fn))
+     ((not (null visual-key)) (evil-define-key 'visual map (kbd visual-key) fn))
+     ((not (null insert-key)) (evil-define-key 'insert map (kbd insert-key) fn))
+     ((not (null emacs-key)) (evil-define-key 'emacs map (kbd emacs-key) fn)))))
 
 
-(defmacro defkey (map keys fn)
+(defmacro defkey (map fn &rest keys)
   "Defines a key binding for FG42 for different types.
 Defines a keybinding in the given MAP for the given KEYS that maps
 to the given FN with the given DOCSTRING.
-
-KEYS should be a plist in the following format:
-\(:god <keyma> :human <keymap> :evil <keymap)"
+Example usage :
+\\(defkey `'global-map`' 'goto-line
+           :evil \\(:normal \"SPC s u\"\\)
+           :god \"<f2>\"\\)"
   (let ((god-key (plist-get keys :god))
         (human-key (plist-get keys :human))
-        (evil-key  (plist-get keys :evil)))
+        (evil-state-key  (plist-get keys :evil)))
+    (when (and (is-evil?) (null evil-state-key)) (error "You should pass :evil keys when you are evil user"))
+    (when (and (is-god?) (null god-key)) (error "You should pass :god keys when you are a god user"))
+    (when (and (is-human?) (null human-key)) (error "You should pass :evil keys when you are a human user"))
     (cond
      ((is-god?) `(-defkey-god ,map ,god-key ,fn))
      ((is-human?) `(-defkey-human ,map ,human-key ,fn))
-     ((is-evil? `(-defkey-evil ,map ,evil-key ,fn))))
-    (error "Wrong 'race' has been selected, Checkout `fg42-user-race'")))
+     ((is-evil?) `(-defkey-evil ,map (quote ,evil-state-key) ,fn)))))
 
 (provide 'fg42/key-bindings)
 ;;; key-bindings.el ends here
