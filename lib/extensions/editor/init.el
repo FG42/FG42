@@ -70,6 +70,31 @@
            (set-face-attribute 'default t :font fg42-font))
   ;; ------------------------------------------------------
 
+  (ability which-key ()
+           (when (is-evil?)
+              (which-key-mode t)))
+
+  ;; enhance evil mode with space leader keybindings
+  (ability space-keys (which-key)
+           "evil mode with space leader keybindings"
+           (when (is-evil?)
+             (defkey global-map 'find-file :evil (:normal "SPC f f"))
+             (defkey global-map 'kill-buffer :evil (:normal "SPC b k"))
+             (defkey global-map 'save-buferr :evil (:normal "SPC b s"))
+             (defkey global-map 'next-buffer :evil (:normal "SPC b n"))
+             (defkey global-map 'previous-buffer :evil (:normal "SPC b p"))
+             (defkey global-map 'switch-to-buffer :evil (:normal "SPC b l"))
+             (defkey global-map 'other-window :evil (:normal "SPC w o"))
+             (defkey global-map 'delete-window :evil (:normal "SPC w d"))
+             (defkey global-map 'delete-other-windows :evil (:normal "SPC w m"))
+             (defkey global-map 'split-window-vertically :evil (:normal "SPC w s v"))
+             (defkey global-map 'eval-last-sexp :evil (:normal "SPC e e"))
+             (defkey global-map 'eval-buffer :evil (:normal "SPC e b"))
+             (defkey global-map 'comment-line :evil (:normal "SPC l c"))
+             (defkey global-map 'describe-key :evil (:normal "SPC d k"))
+             (defkey global-map 'describe-function :evil (:normal "SPC d f"))
+             (defkey global-map 'describe-variable :evil (:normal "SPC d v"))))
+
   (cheatsheet-add :group '--HELP--
                   :key   "C-?"
                   :description "Show this cheatsheet")
@@ -105,22 +130,7 @@
   (ability highligh-current-line ()
            "Highlights the current line."
            (global-hl-line-mode t))
-
-  ;; enhance evil mode with space leader keybindings
-  (ability space-keys
-           "evil mode with space leader keybindings"
-           (when (is-evil?)
-             (general-define-key
-              :states '(normal visual insert emacs)
-              :prefix "SPC"
-              :non-normal-prefix "C-SPC"
-              "bl" 'switch-to-buffer
-              "ff" 'find-file
-              "sv" 'split-window-vertically
-              "sh" 'split-window-horizontally)))
-
-
-  (ability flycheck ()
+ (ability flycheck ()
            "Check syntax on the fly using flycheck."
            (require 'flycheck)
 

@@ -36,6 +36,8 @@
 (require 'fg42/splash)
 (require 'fg42/race)
 (require 'fg42/utils)
+(require 'fg42/key-bindings)
+
 
 (defvar fg42-before-initialize-hook nil
   "This hook will be called before FG42 initilization process.")
