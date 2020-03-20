@@ -76,10 +76,16 @@
     (fpkg-initialize)))
 
 
-(defun depends-on (pkgname)
+(defun depends-on1 (pkgname)
   "Install the given PKGNAME if it isn't installed."
   (straight-use-package pkgname))
 
 
+(defmacro depends-on (pkgdesc)
+  `(progn
+     (straight-use-package ,@pkgdesc)))
+
+
+(macroexpand '(depends-on 'sam))
 (provide 'fpkg)
 ;;; fpkg.el ends here
