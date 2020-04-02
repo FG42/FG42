@@ -25,14 +25,21 @@ install:
 	@cp ./config/fg42.user.el ${HOME}/.fg42.el
 	@echo "Creating the link..."
 	@echo "#! /bin/sh" > ./fg42
+	@cp ./scripts/fg42-wm ./fg42-wm
 	@echo "export FG42_HOME=$(shell pwd)" >> ./fg42
-	@echo 'emacs --name FG42 --no-site-file --no-site-lisp --no-splash --title FG42 -l $$FG42_HOME/fg42-config.el "$$@"' >> ./fg42
+	@echo "export FG42_HOME=$(shell pwd)" >> ./fg42-wm
+	@echo 'FG42_WM=false emacs --name FG42 --no-site-file --no-site-lisp --no-splash --title FG42 -l $$FG42_HOME/fg42-config.el "$$@"' >> ./fg42
+	@echo 'FG42_WM=true emacs --name FG42 --no-site-file --no-site-lisp --no-splash --title FG42 -l $$FG42_HOME/fg42-config.el "$$@"' >> ./fg42-wm
 	@chmod +x ./fg42
+	@chmod +x ./fg42-wm
 	@sudo rm -f /usr/local/bin/fg42
+	@sudo rm -f /usr/local/bin/fg42-wm
 	@sudo ln -s `pwd`/fg42 /usr/local/bin/fg42
+	@sudo ln -s `pwd`/fg42-wm /usr/local/bin/fg42-wm
 	@echo "Copying share files..."
 	@sudo mkdir -p /usr/share/fg42/
 	@sudo cp -r ./share/* /usr/share/fg42/
+	@sudo cp -r ./share/xsessions/fg42.desktop /usr/share/xsessions/
 	@echo " "
 	@echo "------------------------------------------------------------------------------------"
 	@echo "Make sure to install external dependencies of FG42. For more info checkout README.md"

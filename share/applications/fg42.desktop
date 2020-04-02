@@ -2,12 +2,12 @@
 Encoding=UTF-8
 Name=FG42
 GenericName=FG42
-Comment=An Emacs base IDE for emacs lovers.
+Comment=An Emacs base editor for true believers
 MimeType=text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-java;application/x-shellscript;text/x-c;text/x-c++;text/x-ruby;text/x-python;text/x-clojure;text/css;text/html;text/x-javascript;
 Type=Application
 Terminal=false
 Categories=Development;TextEditor;
 StartupWMClass=FG42
 Exec=/usr/local/bin/fg42 %F
-Icon=kuso
+Icon=fg42
 Version=2.67

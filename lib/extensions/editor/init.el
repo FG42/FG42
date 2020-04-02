@@ -72,7 +72,7 @@
 
   (ability which-key ()
            (when (is-evil?)
-              (which-key-mode t)))
+             (which-key-mode t)))
 
   ;; enhance evil mode with space leader keybindings
   (ability space-keys (which-key)
@@ -130,7 +130,7 @@
   (ability highligh-current-line ()
            "Highlights the current line."
            (global-hl-line-mode t))
- (ability flycheck ()
+  (ability flycheck ()
            "Check syntax on the fly using flycheck."
            (require 'flycheck)
 
