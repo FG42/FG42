@@ -91,9 +91,9 @@
       (fg42-install-extension args)
     (straight-use-package args)))
 
-(depends-on 'cyberpunk-theme) ;; elpa
-(depends-on 'devops-extension) ;; official extension
-(depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
+;; (depends-on 'cyberpunk-theme) ;; elpa
+;; (depends-on 'devops-extension) ;; official extension
+;; (depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
