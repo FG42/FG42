@@ -24,3 +24,4 @@ lib/**/*.elc
 tmp/
 test-runner/
 .fpkg/
+/fg42-wm
