@@ -83,6 +83,7 @@
        `(
          ;; Bind "s-r" to exit char-mode and fullscreen mode.
          ([?\s-r] . exwm-reset)
+         ([?\s-g] . keyboard-quit)
          ;; Bind "s-w" to switch workspace interactively.
          ([?\s-w] . exwm-workspace-switch)
          ;; Bind "s-0" to "s-9" to switch to a workspace by its index.
@@ -125,6 +126,12 @@
          ([?\C-v] . [next])
          ([?\C-d] . [delete])
          ([?\C-k] . [S-end delete])
+         ;; navigation
+         ([?\C-c b] . [\M-left])
+         ([?\C-c f] . [\M-right])
+
+         ;; Actions
+         ([?\C-c w] . [\C-w])
          ;; cut/paste.
          ([?\C-w] . [?\C-x])
          ([?\M-w] . [?\C-c])
