@@ -104,9 +104,12 @@
 (defun depends-on (args)
   (if (extensionp args)
       (fg42-install-extension args)
-    (straight-use-package args)
-    ))
+    (straight-use-package args)))
 
+
+;; (depends-on 'badwolf-theme) ;; elpa
+;; (depends-on 'devops-extension) ;; official extension
+;; (depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
