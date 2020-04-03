@@ -75,21 +75,40 @@
   (when (not fpkg-initilized-p)
     (fpkg-initialize)))
 
+
+(defun get-extension-name (args)
+  (cond
+   ((symbolp args) args)
+   ((listp args) (car args))))
+
+(defvar official-extensions '(devops-extension))
+
+(defun is-official-extension (args)
+  (member args official-extensions))
+
+(defun get-official-extension-receipe (name)
+  (list name :host 'gitlab :repo (format "amirrezaask/%s" name)))
+
+
 (defun fg42-install-extension (args)
-  
-  )
+  (let ((extension-name (get-extension-name args)))
+    (if (is-official-extension extension-name)
+        (straight-use-package (get-official-extension-receipe extension-name))
+      (straight-use-package extension-name))))
+
 (defun extensionp (args)
   "Tell if given ARGS is a FG42 extension or a normal straight package."
   (cond
    ((symbolp args) (string= (car (last (split-string (symbol-name args) "-"))) "extension"))
    ((listp args) (string= (car (last (split-string (symbol-name (car args)) "-"))) "extension"))))
 
-(defmacro depends-on (args)
+(defun depends-on (args)
   (if (extensionp args)
-      `(fg42-install-extension ,args)
-    `(straight-use-package ,args)
-      ))
+      (fg42-install-extension args)
+    (straight-use-package args)
+    ))
 
+(fg42-install-extension 'devops-extension)
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
