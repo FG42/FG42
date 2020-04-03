@@ -87,7 +87,7 @@
   (member args official-extensions))
 
 (defun get-official-extension-receipe (name)
-  (list name :host 'gitlab :repo (format "amirrezaask/%s" name)))
+  (list name :host 'gitlab :repo (format "FG42/%s" name)))
 
 (defun fg42-install-extension (args)
   (let ((extension-name (get-extension-name args)))
