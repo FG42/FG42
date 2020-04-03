@@ -75,33 +75,25 @@
   (when (not fpkg-initilized-p)
     (fpkg-initialize)))
 
-
-(defun get-extension-name (args)
-  (cond
-   ((symbolp args) args)
-   ((listp args) (car args))))
-
 (defvar official-extensions '(devops-extension))
 
 (defun is-official-extension (args)
   (member args official-extensions))
 
-(defun get-official-extension-receipe (name)
+(defun get-receipe (name)
   (list name :host 'gitlab :repo (format "FG42/%s" name)))
 
 (defun fg42-install-extension (args)
-  (let ((extension-name (get-extension-name args)))
-    (straight-use-package (get-official-extension-receipe extension-name))))
+  (straight-use-package (get-receipe args)))
 
 (defun depends-on (args)
   (if (is-official-extension args)
       (fg42-install-extension args)
     (straight-use-package args)))
 
-
-;; (depends-on 'badwolf-theme) ;; elpa
-;; (depends-on 'devops-extension) ;; official extension
-;; (depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
+(depends-on 'cyberpunk-theme) ;; elpa
+(depends-on 'devops-extension) ;; official extension
+(depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
