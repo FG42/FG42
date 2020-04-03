@@ -76,16 +76,24 @@
     (fpkg-initialize)))
 
 
-(defun depends-on1 (pkgname)
+(defun depends-on (pkgname)
   "Install the given PKGNAME if it isn't installed."
   (straight-use-package pkgname))
 
-
-(defmacro depends-on (pkgdesc)
-  `(progn
-     (straight-use-package ,@pkgdesc)))
+(defun fg42-install-extension (name options)
+  "Install given extension NAME with given OPTIONS.")
 
 
-(macroexpand '(depends-on 'sam))
+(defmacro depends-on2 (name &rest options)
+  "Install given NAME with provided OPTIONS."
+
+  (add-to-list 'options name)
+  (if (string= (car (last (split-string (symbol-name name) "-"))) "extension")
+      `(fg42-install-extension ,options)
+    `(straight-use-package ,options)))
+
+;; (macroexpand '(depends-on2 go-extension :type git :host github :repo "your-name/el-patch"))
+;; (macroexpand '(depends-on2 go :type git :host github :repo "your-name/el-patch"))
+
 (provide 'fpkg)
 ;;; fpkg.el ends here
