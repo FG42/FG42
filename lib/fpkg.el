@@ -89,7 +89,6 @@
 (defun get-official-extension-receipe (name)
   (list name :host 'gitlab :repo (format "amirrezaask/%s" name)))
 
-
 (defun fg42-install-extension (args)
   (let ((extension-name (get-extension-name args)))
     (if (is-official-extension extension-name)
@@ -108,7 +107,6 @@
     (straight-use-package args)
     ))
 
-(fg42-install-extension 'devops-extension)
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
