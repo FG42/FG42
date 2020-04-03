@@ -75,25 +75,21 @@
   (when (not fpkg-initilized-p)
     (fpkg-initialize)))
 
+(defun fg42-install-extension (args)
+  
+  )
+(defun extensionp (args)
+  "Tell if given ARGS is a FG42 extension or a normal straight package."
+  (cond
+   ((symbolp args) (string= (car (last (split-string (symbol-name args) "-"))) "extension"))
+   ((listp args) (string= (car (last (split-string (symbol-name (car args)) "-"))) "extension"))))
 
-(defun depends-on (pkgname)
-  "Install the given PKGNAME if it isn't installed."
-  (straight-use-package pkgname))
+(defmacro depends-on (args)
+  (if (extensionp args)
+      `(fg42-install-extension ,args)
+    `(straight-use-package ,args)
+      ))
 
-(defun fg42-install-extension (name options)
-  "Install given extension NAME with given OPTIONS.")
-
-
-(defmacro depends-on2 (name &rest options)
-  "Install given NAME with provided OPTIONS."
-
-  (add-to-list 'options name)
-  (if (string= (car (last (split-string (symbol-name name) "-"))) "extension")
-      `(fg42-install-extension ,options)
-    `(straight-use-package ,options)))
-
-;; (macroexpand '(depends-on2 go-extension :type git :host github :repo "your-name/el-patch"))
-;; (macroexpand '(depends-on2 go :type git :host github :repo "your-name/el-patch"))
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
