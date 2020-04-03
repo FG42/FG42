@@ -4,7 +4,7 @@
 
 ;;;###autoload
 (defun extensions/serene-initialize ()
-  "Initialize the common Lisp extension."
+  "Initialize the Serene extension."
 
   (require 'extensions/serene/serene-simple-mode)
   (add-hook 'serene-simple-mode-hook #'paredit-mode)
