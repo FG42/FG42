@@ -79,7 +79,8 @@
     (fpkg-initialize)))
 
 (defun official-extension-p (args)
-  (member args official-extensions))
+  "Predicate to say if ARGS is an official FG42 extension."
+  (member args fg42/extensions))
 
 (defun get-receipe (name)
   (list name :host 'gitlab :repo (format "FG42/%s" name)))
@@ -88,7 +89,7 @@
   (straight-use-package (get-receipe args)))
 
 (defun depends-on (args)
-  (if (is-official-extension args)
+  (if (official-extension-p args)
       (fg42-install-extension args)
     (straight-use-package args)))
 
