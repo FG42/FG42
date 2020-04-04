@@ -72,7 +72,7 @@
           (eval-print-last-sexp))
       (load bootstrap-file nil 'nomessage))))
 
-
+(setq straight-use-package-by-default t)
 (defun fpkg-initialize-once ()
   "Initilize FPKG only once."
   (when (not fpkg-initilized-p)
@@ -84,18 +84,28 @@
   (member args fg42/extensions))
 
 (defun get-receipe (name)
+  "Get the receipe for given NAME if that is an official extension."
   (list name :host 'gitlab :repo (format "FG42/%s" name)))
 
-(defun fg42-install-extension (args)
-  (straight-use-package (get-receipe args)))
+(defmacro fg42-install-extension (args)
+  "Install if given ARGS is an official extension."
+  (let ((reciepe (get-receipe args)))
+    `(use-package ,args :straight ,reciepe)))
 
-(defun depends-on (args)
-  (if (official-extension-p args)
-      (fg42-install-extension args)
-    (straight-use-package args)))
 
-;; (depends-on 'cyberpunk-theme) ;; elpa
-;; (depends-on 'devops-extension) ;; official extension
+(defmacro depends-on (&rest args)
+  "Install given ARGS."
+  (message "%s" args)
+  (if (official-extension-p (car args))
+      `(fg42-install-extension ,@args)
+    `(use-package ,@args)))
+
+;; depends on now is a wrapper around use-package
+;; (macroexpand-1 '(depends-on go-mode :mode "\\.go\\'"))
+;; (macroexpand-1 '(depends-on devops-extension))
+;; (macroexpand-1 '(fg42-install-extension devops-extension))
+;; (depends-on cyberpunk-theme) ;; elpa
+;; (depends-on devops-extension) ;; official extension
 ;; (depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
 (provide 'fpkg)
