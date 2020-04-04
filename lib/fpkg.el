@@ -76,7 +76,8 @@
 (defun fpkg-initialize-once ()
   "Initilize FPKG only once."
   (when (not fpkg-initilized-p)
-    (fpkg-initialize)))
+    (fpkg-initialize)
+    (straight-use-package 'use-package)))
 
 (defun official-extension-p (args)
   "Predicate to say if ARGS is an official FG42 extension."
