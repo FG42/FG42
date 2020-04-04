@@ -51,6 +51,9 @@
 (defvar required-packages (make-hash-table)
   "A hash of `fg42-package structure representing required packages.")
 
+(defvar fg42/extensions '(devops-extension)
+  "A list of official FG42 extensions.")
+
 ;; Functions ----------------------------------
 (defun fpkg-initialize ()
   "Initilize the straight.e package manager and setup necessary hooks."
@@ -75,9 +78,7 @@
   (when (not fpkg-initilized-p)
     (fpkg-initialize)))
 
-(defvar official-extensions '(devops-extension))
-
-(defun is-official-extension (args)
+(defun official-extension-p (args)
   (member args official-extensions))
 
 (defun get-receipe (name)
