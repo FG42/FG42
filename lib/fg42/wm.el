@@ -19,8 +19,8 @@
 
 
 (defun disable-nlinum ()
-  "Disables nlinum and fringe-mode."
-  (fringe-mode 1)
+  "Disable nlinum and fringe-mode."
+  (fringe-mode -1)
   (nlinum-mode -1))
 
 
@@ -106,38 +106,37 @@
       ;; `exwm-mode-map'.  The following example shortens 'C-c q' to 'C-q'.
       (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
 
+      (push ?\C-c exwm-input-prefix-keys)
+
       ;; The following example demonstrates how to use simulation keys to mimic
       ;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
       ;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
       ;; and DEST is what EXWM actually sends to application.  Note that both SRC
       ;; and DEST should be key sequences (vector or string).
       (setq exwm-input-simulation-keys
-       '(
+       `(
          ;; movement
-         ([?\C-b] . [left])
-         ([?\M-b] . [C-left])
-         ([?\C-f] . [right])
-         ([?\M-f] . [C-right])
-         ([?\C-p] . [up])
-         ([?\C-n] . [down])
-         ([?\C-a] . [home])
-         ([?\C-e] . [end])
-         ([?\M-v] . [prior])
-         ([?\C-v] . [next])
-         ([?\C-d] . [delete])
-         ([?\C-k] . [S-end delete])
+         (,(kbd "C-b") . left)
+         (,(kbd "M-b") . ,(kbd "C-<left>"))
+         (,(kbd "C-f") . right)
+         (,(kbd "M-f") . ,(kbd "C-<right>"))
+         (,(kbd "C-p") . up)
+         (,(kbd "C-n") . down)
+         (,(kbd "C-a") . home)
+         (,(kbd "C-e") . end)
+         (,(kbd "M-v") . prior)
+         (,(kbd "C-v") . next)
+         (,(kbd "C-d") . delete)
+         ;;(,(kbs "C-k") . [S-end delete])
          ;; navigation
-         ([?\C-c b] . [\M-left])
-         ([?\C-c f] . [\M-right])
-
-         ;; Actions
-         ([?\C-c w] . [\C-w])
-         ;; cut/paste.
-         ([?\C-w] . [?\C-x])
-         ([?\M-w] . [?\C-c])
-         ([?\C-y] . [?\C-v])
+         (,(kbd "C-c b") . ,(kbd "M-<left>"))
+         (,(kbd "C-c f") . ,(kbd "M-<right>"))
+         (,(kbd "C-c w") . ,(kbd "C-w"))
+         (,(kbd "C-w") . ,(kbd "C-x"))
+         (,(kbd "M-w") . ,(kbd "C-c"))
+         (,(kbd "C-y") . ,(kbd "C-v"))
          ;; search
-         ([?\C-s] . [?\C-f])))
+         (,(kbd "C-s") . ,(kbd "C-f"))))
 
       ;; You can hide the minibuffer and echo area when they're not used, by
       ;; uncommenting the following line.
