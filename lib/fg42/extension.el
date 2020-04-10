@@ -31,6 +31,9 @@
 (require 'fg42/utils)
 
 ;; Variables -----------------------------
+(defvar fg42/extensions '()
+  "A list of official FG42 extensions.")
+
 (defvar activated-extensions ()
   "A list of all activated extensions.")
 

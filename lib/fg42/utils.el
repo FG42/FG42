@@ -68,7 +68,7 @@ with is the buffer."
 
 (defmacro comment (&rest body)
   "A macro similar to Clojure's comment macro that ignore the BODY."
-  (declare (indent 1))
+  (declare (indent 0))
   `nil)
 
 
