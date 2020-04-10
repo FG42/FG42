@@ -102,16 +102,16 @@
   "Install given ARGS."
   (let ((adapted-args (old-depends-on-calls-adapter args)))
     (if (official-extension-p (car args))
-        `(fg42-install-extension ,@args)
-      `(use-package ,@args))))
+        `(fg42-install-extension ,@adapted-args)
+      `(use-package ,@adapted-args))))
 
 ;; depends on now is a wrapper around use-package
 ;; (macroexpand-1 '(depends-on go-mode :mode "\\.go\\'"))
 ;; (macroexpand-1 '(depends-on devops-extension))
 ;; (macroexpand-1 '(fg42-install-extension devops-extension))
-;; (depends-on cyberpunk-theme)
+;; (depends-on 'cyberpunk-theme) ;; compatible with old calls
 ;; (depends-on devops-extension) ;; official extension
-;; (depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
+;; (depends-on go-extension :straight (go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
