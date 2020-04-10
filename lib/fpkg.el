@@ -26,6 +26,8 @@
 ;;; Code:
 (require 'cl-lib)
 (require 'subr-x)
+(require 'fg42/extension)
+(require 'fg42/utils)
 (require 'fpkg/installers)
 
 ;; Variables ---------------------------------
@@ -51,8 +53,6 @@
 (defvar required-packages (make-hash-table)
   "A hash of `fg42-package structure representing required packages.")
 
-(defvar fg42/extensions '(devops-extension)
-  "A list of official FG42 extensions.")
 
 ;; Functions ----------------------------------
 (defun fpkg-initialize ()
@@ -63,6 +63,7 @@
 
     (make-directory fpkg-packages-path t)
     (setq straight-base-dir fpkg-packages-path)
+    (setq straight-use-package-by-default t)
     (if (not (file-exists-p bootstrap-file))
         (with-current-buffer
             (url-retrieve-synchronously
@@ -72,46 +73,51 @@
           (eval-print-last-sexp))
       (load bootstrap-file nil 'nomessage))))
 
-(setq straight-use-package-by-default t)
+
 (defun fpkg-initialize-once ()
   "Initilize FPKG only once."
   (when (not fpkg-initilized-p)
     (fpkg-initialize)
     (straight-use-package 'use-package)))
 
+
 (defun official-extension-p (args)
   "Predicate to say if ARGS is an official FG42 extension."
   (member args fg42/extensions))
+
 
 (defun get-receipe (name)
   "Get the receipe for given NAME if that is an official extension."
   (list name :host 'gitlab :repo (format "FG42/%s" name)))
 
+
 (defmacro fg42-install-extension (args)
   "Install if given ARGS is an official extension."
+  ;; TODO: Straight supports reciepe registery it might worth
+  ;;       using it.
   (let ((reciepe (get-receipe args)))
     `(use-package ,args :straight ,reciepe)))
 
 
-(defun old-depends-on-calls-adapter (args)
-  (if (listp (car args))
-      (progn (add-to-list 'args (car (cdr (pop args)))) args))
-  args)
+(defmacro depends-on (pkgname &rest details)
+  "Install the given PKGNAME with the optional DETAILS."
+  (if (official-extension-p pkgname)
+      `(fg42-install-extension ,(eval pkgname))
+    `(use-package ,(eval pkgname) ,@details)))
 
-(defmacro depends-on (&rest args)
-  "Install given ARGS."
-  (let ((adapted-args (old-depends-on-calls-adapter args)))
-    (if (official-extension-p (car args))
-        `(fg42-install-extension ,@adapted-args)
-      `(use-package ,@adapted-args))))
+(comment
+  ;; depends on now is a wrapper around use-package
+  (macroexpand-1 '(depends-on 'exwm))
+  (macroexpand-1 '(depends-on 'go-mode :mode "\\.go\\'"))
+  (macroexpand-1 '(depends-on 'devops-extension))
+  (macroexpand-1 '(fg42-install-extension devops-extension))
+  ;; compatible with old calls
+  (macroexpand-1 '(depends-on 'cyberpunk-theme))
+  ;; official extension
+  (depends-on 'devops-extension)
+  ;; 3rd party extension
+  (depends-on 'go-extension :straight (go-extension :host gitlab :repo "amirrezaask/go-extension")))
 
-;; depends on now is a wrapper around use-package
-;; (macroexpand-1 '(depends-on go-mode :mode "\\.go\\'"))
-;; (macroexpand-1 '(depends-on devops-extension))
-;; (macroexpand-1 '(fg42-install-extension devops-extension))
-;; (depends-on 'cyberpunk-theme) ;; compatible with old calls
-;; (depends-on devops-extension) ;; official extension
-;; (depends-on go-extension :straight (go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
 (provide 'fpkg)
 ;;; fpkg.el ends here
