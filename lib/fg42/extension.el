@@ -66,6 +66,29 @@
   (on-load)
   (on-unload))
 
+
+(cl-defstruct fg42-extension-preload
+  "This struct describes preload data for each extensions.
+
+FG42 uses this data to install and autoload the extension."
+  name
+
+  ;; The docstring for the preload only which describes the extension.
+  (docstring "")
+
+  (version nil)
+  ;; What project types (projectile types) requires this plugin
+  ;; to be active.
+  (project-types '())
+
+  ;; If the project type is nil (for example a simple text file) what
+  ;; suffixes are related to this extension
+  (file-suffixes '())
+
+  ;; The straight reciepe to use in order to install the extension
+  (reciepe nil))
+
+
 ;; Functions ------------------------------
 (defun active-ability? (name)
   "Return t if ability with the given NAME was not in disabled-abilities."
@@ -138,6 +161,18 @@ to them.
                       (quote ,args))))
 
 
+(defmacro defpreload (name &optional docstring &rest args)
+  "Define a fg42 extension preload by given NAME, DOCSTRING and ARGS."
+  (declare (doc-string 2) (indent 1))
+  `(let ((preload (make-fg42-extension-preload
+                   :name ,(symbol-name name)
+                   :docstring docstring
+                   ,@args)))
+     (register-preload (fg42-get-current-system)
+                       ,(intern (symbol-name ,name))
+                       preload)))
+
+
 (defmacro with-ability (name &rest body)
   "If the ability with the given NAME is not disabled, Run the BODY."
   `(when (active-ability? (intern ,(symbol-name name)))
@@ -154,6 +189,12 @@ to them.
     (read-only-mode t)
     (switch-to-buffer b)
     (org-mode)))
+
+
+(defun register-preload (system preload)
+  "Registers the given PRELOAD on the given SYSTEM."
+  (setf (fg42-system-preloads system)
+        (add-to-list (fg42-system-preloads system))))
 
 
 (comment

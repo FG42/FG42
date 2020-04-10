@@ -1,40 +1,7 @@
 (add-to-list 'load-path (concat (getenv "FG42_HOME") "/lib"))
-;; DEBUG
-;; =====
-;; Uncomment the below code to trigger stacktraces in case of any errors
-;; (toggle-debug-on-error)
-
 (require 'fg42)
-
-;; THEME
-;; =====
-;; Load the default theme
-;; Other options are:
-;; (theme themes/color-theme-spacemacs-monokai)
-;; (theme themes/color-theme-spacemacs-light)
-;; (theme themes/color-theme-doom-one)
-;; (theme themes/color-theme-doom-molokai)
-;;(theme themes/color-theme-spacemacs-dark)
-
-;; ABILITIES
-;; =========
-;; Disable abilities which you don't want.
-;; (disable 'rbenv 'helm 'spell 'linum 'smart-mode-line)
-
-;; EXTENSIONS
-;; ==========
-;; Uncomment extensions that you may need.
-;; (activate-extensions 'editor
-;;                      'development
-;;                      'web
-;;                      'editor-theme
-;;                      ;'arduino
-;;                      'javascript
-;;                      ;'php
-;;                      'clojure
-;;                      ;'python
-;;                      'ruby
-;; 		     )
+(require 'fg42/wm)
+(initialize-wm)
 
 ;; USER CONFIGS
 ;; ============

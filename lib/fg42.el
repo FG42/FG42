@@ -32,6 +32,7 @@
 (require 'fpkg)
 (fpkg-initialize-once)
 
+(require 'fg42/system)
 (require 'fg42/base)
 (require 'fg42/splash)
 (require 'fg42/race)
@@ -105,5 +106,11 @@
   (message "startup time: %s" (- (float-time) fg42-start-timestamp)))
 
 
+(defun start! (system)
+  "Start the given SYSTEM description."
+  (fg42-set-current-system! system)
+  (fg42-start-system))
+
+
 (provide 'fg42)
-;; fg42.el ends here
+;;; fg42.el ends here

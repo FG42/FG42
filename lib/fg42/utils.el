@@ -71,6 +71,12 @@ with is the buffer."
   (declare (indent 0))
   `nil)
 
+(defmacro debug-message (&rest params)
+  "Print out the given PARAMS only if debug mode is on."
+  (if debug-on-error
+      `(message ,@params)
+    nil))
+
 
 (provide 'fg42/utils)
 ;;; utils.el ends here
