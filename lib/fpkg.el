@@ -95,16 +95,15 @@
 
 (defun old-depends-on-calls-adapter (args)
   (if (listp (car args))
-      (progn (add-to-list 'args (car (cdr (pop args)))) args)
-  args))
+      (progn (add-to-list 'args (car (cdr (pop args)))) args))
+  args)
 
 (defmacro depends-on (&rest args)
   "Install given ARGS."
-  (setq args (old-depends-on-calls-adapter args))
-  (if (official-extension-p (car args))
-      `(fg42-install-extension ,@args)
-    `(use-package ,@args)))
-
+  (let ((adapted-args (old-depends-on-calls-adapter args)))
+    (if (official-extension-p (car args))
+        `(fg42-install-extension ,@args)
+      `(use-package ,@args))))
 
 ;; depends on now is a wrapper around use-package
 ;; (macroexpand-1 '(depends-on go-mode :mode "\\.go\\'"))
