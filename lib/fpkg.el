@@ -51,6 +51,9 @@
 (defvar required-packages (make-hash-table)
   "A hash of `fg42-package structure representing required packages.")
 
+(defvar fg42/extensions '(devops-extension)
+  "A list of official FG42 extensions.")
+
 ;; Functions ----------------------------------
 (defun fpkg-initialize ()
   "Initilize the straight.e package manager and setup necessary hooks."
@@ -69,23 +72,46 @@
           (eval-print-last-sexp))
       (load bootstrap-file nil 'nomessage))))
 
-
+(setq straight-use-package-by-default t)
 (defun fpkg-initialize-once ()
   "Initilize FPKG only once."
   (when (not fpkg-initilized-p)
-    (fpkg-initialize)))
+    (fpkg-initialize)
+    (straight-use-package 'use-package)))
+
+(defun official-extension-p (args)
+  "Predicate to say if ARGS is an official FG42 extension."
+  (member args fg42/extensions))
+
+(defun get-receipe (name)
+  "Get the receipe for given NAME if that is an official extension."
+  (list name :host 'gitlab :repo (format "FG42/%s" name)))
+
+(defmacro fg42-install-extension (args)
+  "Install if given ARGS is an official extension."
+  (let ((reciepe (get-receipe args)))
+    `(use-package ,args :straight ,reciepe)))
 
 
-(defun depends-on1 (pkgname)
-  "Install the given PKGNAME if it isn't installed."
-  (straight-use-package pkgname))
+(defun old-depends-on-calls-adapter (args)
+  (if (listp (car args))
+      (progn (add-to-list 'args (car (cdr (pop args)))) args))
+  args)
 
+(defmacro depends-on (&rest args)
+  "Install given ARGS."
+  (let ((adapted-args (old-depends-on-calls-adapter args)))
+    (if (official-extension-p (car args))
+        `(fg42-install-extension ,@args)
+      `(use-package ,@args))))
 
-(defmacro depends-on (pkgdesc)
-  `(progn
-     (straight-use-package ,@pkgdesc)))
+;; depends on now is a wrapper around use-package
+;; (macroexpand-1 '(depends-on go-mode :mode "\\.go\\'"))
+;; (macroexpand-1 '(depends-on devops-extension))
+;; (macroexpand-1 '(fg42-install-extension devops-extension))
+;; (depends-on cyberpunk-theme)
+;; (depends-on devops-extension) ;; official extension
+;; (depends-on '(go-extension :host gitlab :repo "amirrezaask/go-extension")) ;; 3rd party extension
 
-
-(macroexpand '(depends-on 'sam))
 (provide 'fpkg)
 ;;; fpkg.el ends here
