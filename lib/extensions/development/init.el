@@ -235,11 +235,6 @@
 
            (yas-global-mode 1))
 
-  (ability project-management ()
-           "Ability to manage projects and project navigation."
-           (projectile-global-mode)
-           (setq projectile-enable-caching t))
-
   (ability spell ()
            "Check spell of any word using ispell. This ability may slows you down"
            (global-set-key (kbd "<f2>") 'ispell-word)

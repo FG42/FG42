@@ -115,7 +115,8 @@
   (ability jsx-editor
            "Gives FG42 the ability to edit JSX."
            (add-to-list 'auto-mode-alist '("\\.jsx$" . js2-jsx-mode))))
-  (message "'web' extension has been initialized.")
+(debug)
+(message "'web' extension has been initialized.")
 
 
 

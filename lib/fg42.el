@@ -40,23 +40,20 @@
 (require 'fg42/key-bindings)
 
 
-(defvar fg42-before-initialize-hook nil
-  "This hook will be called before FG42 initilization process.")
-
-(defvar fg42-after-initialize-hook nil
-  "This hook will be called after FG42 initilization process.")
-
 (defvar fg42-gc-cons-threshold  16777216
   "Value of GC threshold of FG42.")
+
 
 (defun defer-garbage-collection ()
   "Disable garbage collection."
   (setq gc-cons-threshold fg42-gc-cons-threshold))
 
+
 (defun restore-garbage-collection ()
   "Restore garbage collection to it's default value."
   (run-at-time
    1 nil (lambda () (setq gc-cons-threshold most-positive-fixnum))))
+
 
 (defun fg42--startup-optimization ()
   "Optimize FG42 startup."
@@ -95,21 +92,21 @@
 
 (defun fg42-initialize ()
   "Initialize FG42 editor."
-  (setq fg42-start-timestamp (float-time))
-  (fg42--startup-optimization)
-  (run-hooks 'fg42-before-initialize-hook)
   (mkdir fg42-tmp t)
   (setq package-user-dir (concat fg42-home "/packages"))
   (fpkg-initialize)
-  (initialize-extensions)
-  (run-hooks 'fg42-after-initialize-hook)
-  (message "startup time: %s" (- (float-time) fg42-start-timestamp)))
+  (debug-message "startup time: %s" (- (float-time) fg42-start-timestamp)))
 
 
 (defun start! (system)
   "Start the given SYSTEM description."
+  (setq fg42-start-timestamp (float-time))
+  (fg42--startup-optimization)
   (fg42-set-current-system! system)
-  (fg42-start-system))
+  (add-hook 'window-setup-hook
+            (lambda () (fg42-start-system)))
+  (fg42-initialize))
+
 
 
 (provide 'fg42)

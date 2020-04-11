@@ -101,6 +101,7 @@
 
 (defmacro depends-on (pkgname &rest details)
   "Install the given PKGNAME with the optional DETAILS."
+  (declare (indent 1))
   (if (official-extension-p pkgname)
       `(fg42-install-extension ,(eval pkgname))
     `(use-package ,(eval pkgname) ,@details)))

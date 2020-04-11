@@ -78,5 +78,13 @@ with is the buffer."
     nil))
 
 
+(defmacro deprecated (msg &rest form)
+  "Mark the given FORM as deprecated with the given MSG."
+  (declare (indent 0))
+  `(progn
+     (warn (format "[DEPRECATED]: %s" ,msg))
+     ,@form))
+
+
 (provide 'fg42/utils)
 ;;; utils.el ends here

@@ -1,11 +1,6 @@
 ;;; project-manager --- Extends the support for project base functionalities
 ;;
 ;; Copyright (C) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
-;; Author: Sameer Rahmani <lxsameer@gnu.org>
-;; Created: 20 Jan 2020
-;; Keywords: project management
-;; Homepage: https://fg42.org
-;; Version: 0.1.0
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -33,11 +28,12 @@
   ".fg42.project.el"
   "The name of default project file in projects.")
 
+
 (defvar project-manager-project-name-suffix
   "-project"
   "The string suffix to be attached to the project names.")
 
-;; Structures -----------------------------
+
 (cl-defstruct fg42-project
   "Define a FG42 project properties.
 Each fg42 project file should define an instance of this data structure
@@ -56,7 +52,17 @@ and bind a name to it that follows the
   ;; debugger function
   (print-debugger nil))
 
-;; Functions -------------------
+
+(defability project-manager ()
+  "Project management ability for FG42."
+  ;; TODO: Lock projectile version
+  (depends-on 'projectile
+    :init
+    (setq projectile-enable-caching t)
+    :config
+    (projectile-global-mode)))
+
+
 (defun project-manager-load-file (file-name)
   "Find and load the given FILE-NAME relative to the project root dir."
   (let ((root (projectile-project-root)))
@@ -72,6 +78,8 @@ about the different properties of the project take a look at
   `(setq ,(concat (projectile-project-name)
                   (fg42-project-name-suffix))
          (apply 'make-fg42-project (quote ,args))))
+
+
 
 
 (provide 'project-manager)

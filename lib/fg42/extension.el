@@ -34,11 +34,16 @@
 (defvar fg42/extensions '()
   "A list of official FG42 extensions.")
 
-(defvar activated-extensions ()
-  "A list of all activated extensions.")
+
+(deprecated
+  "`activated-extensions' is deprecated use `fg42/extensions' instead."
+  (defvar activated-extensions ()
+    "A list of all activated extensions."))
+
 
 (defvar disabled-abilities (make-hash-table)
   "A hash of all the disabled abilities.")
+
 
 ;; Structures -----------------------------
 (cl-defstruct fg42-extension
@@ -161,17 +166,33 @@ to them.
                       (quote ,args))))
 
 
-(defmacro defpreload (name &optional docstring &rest args)
+(defmacro defpreload (name docstring &rest args)
   "Define a fg42 extension preload by given NAME, DOCSTRING and ARGS."
-  (declare (doc-string 2) (indent 1))
-  `(let ((preload (make-fg42-extension-preload
-                   :name ,(symbol-name name)
-                   :docstring docstring
-                   ,@args)))
-     (register-preload (fg42-get-current-system)
-                       ,(intern (symbol-name ,name))
-                       preload)))
+  (declare (doc-string 2) (indent defun))
+  (let ((fn-name (intern (format "fg42-preload-fn-%s" name))))
+    `(progn
+       (defvar ,(intern (format "%s-preload" name))
+         (make-fg42-extension-preload :name ,(symbol-name name)
+                                      :docstring ,docstring
+                                      ,@args))
+       ;; I usually don't like this approach but at the moment it's the best
+       ;; bet we have. we need a named function to be able to remove it
+       ;; later from `auto-mode-alist'
+       (defun ,fn-name ()
+         (message "IM HEREEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+         (use-package ,name
+           :straight '(,name
+                       :host 'gitlab
+                       :repo (format "FG42/%s" ,name)))))))
 
+
+(comment
+  auto-mode-alist
+  (macroexpand-1
+   '(defpreload fg42-elisp
+      "eLisp extension for FG42"
+      :version "3.0.0"
+      :file-suffixes '("\\.el\\'"))))
 
 (defmacro with-ability (name &rest body)
   "If the ability with the given NAME is not disabled, Run the BODY."
@@ -191,10 +212,32 @@ to them.
     (org-mode)))
 
 
-(defun register-preload (system preload)
+(defun fg42-register-preload (system preload)
   "Registers the given PRELOAD on the given SYSTEM."
   (setf (fg42-system-preloads system)
-        (add-to-list (fg42-system-preloads system))))
+        (add-to-list (fg42-system-preloads system) preload)))
+
+
+(defun fg42--setup-preload (system preload)
+  "Setup the given PRELOAD against the given SYSTEM.
+It will setup the necessary tools to load the extension related to the given
+PRELOAD by looking into project types and file suffixes."
+  (mapcar
+   (lambda (suffix)
+     (add-to-list 'auto-mode-alist
+                  (cons
+                   suffix
+                   (list (intern (format "fg42-preload-fn-%s"
+                                         (fg42-extension-preload-name preload)))))))
+   (fg42-extension-preload-file-suffixes preload)))
+
+
+(defun fg42-setup-extensions (system)
+  "Setup the preloads for the given SYSTEM."
+  (mapcar (lambda (preload)
+            (message "herere")
+            (fg42--setup-preload system preload))
+          (fg42-system-preloads system)))
 
 
 (comment
@@ -202,7 +245,13 @@ to them.
       "Very simple extention as a test"
       :path "~/example-extension.el"
       :on-initialize 'example-extention-init)
+    (defsystem testsystem
+      "FG42 implemented in term of systems and this is the default system."
+      :start (lambda (system)
+               (message "AAA")))
 
+    (mapcar (lambda (x) (message "XXXXX"))
+            (fg42-system-preloads testsystem))
     (load-extension example-extension))
 
 

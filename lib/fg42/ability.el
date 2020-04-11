@@ -21,7 +21,6 @@
    fg42--abilities
    '(ability-name . (make-fg42-ability :name ability-name))))
 
-(defun start-ability (ability-name))
 
 (provide 'fg42/ability)
 ;;; ability ends here
