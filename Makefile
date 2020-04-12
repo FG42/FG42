@@ -38,6 +38,8 @@ install:
 	@sudo ln -s `pwd`/fg42-wm /usr/local/bin/fg42-wm
 	@echo "Copying share files..."
 	@sudo mkdir -p /usr/share/fg42/
+	@sudo cp ./share/applications/fg42.desktop /usr/local/share/applications
+	@sudo cp -r ./share/icons/hicolor/ /usr/local/share/icons
 	@sudo cp -r ./share/* /usr/share/fg42/
 	@sudo cp -r ./share/xsessions/fg42.desktop /usr/share/xsessions/
 	@echo " "
