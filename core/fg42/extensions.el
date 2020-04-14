@@ -27,7 +27,7 @@
 (require 'fg42/extensions/core)
 
 
-(defun fg42-extensions/load-index (system ext-name ext-path)
+(defun fg42-extensions/load-index (_system ext-name ext-path)
   "Load the extension EXT-NAME which is in EXT-PATH using SYSTEM.
 It will load the main file of the extension and return the `fg42-extension'
 instance of the extension and nil otherwise."

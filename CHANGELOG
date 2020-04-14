@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- `System` implementation (`core/fg42/system.el`)
 	- New `extensions` implementation (`core/fg42/extensions.el`)
 	- New approach to launching fg42
+	- New `compiler` target to Makefile
 ### Changed
 	- Changed the main package path to `/core`
 	- Changed the extensions path to `/extensions`

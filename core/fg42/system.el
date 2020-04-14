@@ -1,6 +1,6 @@
 ;;; system --- System library of FG42 -*- lexical-binding: t; -*-
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42
@@ -25,13 +25,13 @@
 ;;
 ;;; Code:
 
-(require 'fg42/utils)
-(require 'fg42/system/core)
-(require 'fg42/system/utils)
-
-
+;;;###autoload
 (defun fg42-system/start ()
   "Start the system from `fg42-get-current-system'."
+  (require 'fg42/utils))
+  (require 'fg42/system/core)
+  (require 'fg42/system/utils)
+
   (debug-message "Starting the default system.")
   (let ((sys (fg42-system/get-active-system)))
     (funcall (fg42-system-start sys) sys)))

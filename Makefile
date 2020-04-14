@@ -51,3 +51,7 @@ install:
 install-fonts:
 	@mkdir -p ~/.fonts/
 	@cp -rv ./share/fonts/vazir/* ~/.fonts/
+
+.PHONY: compile
+compile:
+	@$(PWD)/fg42-new --script scripts/compiler.el
