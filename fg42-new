@@ -1,0 +1,9 @@
+#! /bin/sh
+
+export FG42_HOME=/home/lxsameer/.fg42
+FG42_WM=false /home/lxsameer/src/emacs/build/bin/emacs --name FG42 \
+              --no-site-file --no-site-lisp --no-splash --title FG42 \
+              -L $FG42_HOME/core \
+              -L $FG42_HOME/extensions \
+              -l $FG42_HOME/core/fg42.el \
+              -l ~/.v3.el "$@"
