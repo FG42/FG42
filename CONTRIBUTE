@@ -39,15 +39,16 @@ accept code without a proper header file.
 We follow these simple rules:
 
 * Make elisp linter happy
-* follow functional patterns and avoid huge functions
-* seperate each expression by two new lines
-* put (comment ...) to demonstrate the usage of the function
-* write good docstrings
-* choose meaningful names
-* follow the indentation guides made in FG42
-* prefix the functions with a prefix to differentiate them from other functions ( we need to discuss this)
-* use <prefix>--<fn-name> for private/internal function names
-* use / to categorize functions into namespaces ( air quote)
+* Follow functional patterns and avoid huge functions
+* Seperate each root level expression by two new lines (e.g function definitions)
+* Put `(comment ...)` expression after each macro/function to demonstrate the usage.
+* Write good docstrings
+* Choose meaningful names
+* Follow the indentation guides made in FG42
+* Prefix the functions with a prefix to differentiate them from other functions.
+  for example `fg42-namespace/functoin-name`.
+* use `<prefix>/-<fn-name>` for private/internal function names
+* use `/` to categorize functions into namespaces (air quote)
 
 #### Pull-Request
 Submit your contribution against the `master` branch. The `stable` branch
