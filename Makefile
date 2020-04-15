@@ -55,3 +55,8 @@ install-fonts:
 .PHONY: compile
 compile:
 	@$(PWD)/fg42-new --script scripts/compiler.el
+
+.PHONY: clean
+clean:
+	@rm -rf $(shell find `pwd` -iname "*~")
+	@rm -rf $(shell find `pwd`/core -iname "*.elc")

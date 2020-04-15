@@ -59,18 +59,18 @@
   ;; TODO: should we extract variables such as `fg42-home' to their
   ;;       dedicated ns in order to avoid the warning ?
   (let ((ext-name (symbol-name ext)))
-    (concat (fg42-system-root)
+    (concat (fg42-system-root system)
             "/extensions/" ext-name  "/" ext-name ".el")))
 
 
-(defun fg42-extension/path (system ext)
+(defun fg42-extensions/path (system ext)
   "Return the path to the given extension EXT in the given SYSTEM."
   (cond
-   ((symbolp ext) (fg42-extension/build-path system ext))
+   ((symbolp ext) (fg42-extensions/build-path system ext))
    ((fg42-extension-p ext)
     (or (fg42-extension-path ext)
-        (fg42-extension/build-path system
-                                   (intern (fg42-extension-name ext)))))))
+        (fg42-extensions/build-path system
+                                    (intern (fg42-extension-name ext)))))))
 
 
 (defmacro defextension (name docstring &rest args)

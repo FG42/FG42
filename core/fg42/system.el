@@ -28,33 +28,13 @@
 ;;;###autoload
 (defun fg42-system/start ()
   "Start the system from `fg42-get-current-system'."
-  (require 'fg42/utils))
+  (require 'fg42/utils)
   (require 'fg42/system/core)
   (require 'fg42/system/utils)
 
   (debug-message "Starting the default system.")
   (let ((sys (fg42-system/get-active-system)))
     (funcall (fg42-system-start sys) sys)))
-
-
-(comment
-  (macroexpand-1 '(defsystem testsystem
-                    "docstring"
-                    :preloads '(2 43 4)
-                    :packages '(('elisp-extension :version "1.3.3"))
-                    :abilities '()))
-  (defsystem testsystem
-    "docstring1"
-    :packages '(('elisp-extension :version "1.3.3"))
-    :abilities '())
-
-  (make-fg42-system :name "asd" :preloads '(213 452) :abilities '(x y))
-  (aset testsystem 2 "sam")
-  (setf (fg42-system-abilities testsystem) '(3 3 3 3 3))
-  (fg42-set-current-system! testsystem)
-  (fg42-system-preloads testsystem)
-  (start-system)
-  (fg42-system-start testsystem))
 
 
 (provide 'fg42/system)

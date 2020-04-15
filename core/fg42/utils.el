@@ -24,9 +24,13 @@
 ;; Each system has to have a `start' function to start the setup process.
 ;;
 ;;; Code:
+
 (require 'cl-lib)
 
-;;; Buffer helpers ------------------------------------------------------------
+(autoload 'seq-partition "seq")
+(autoload 'cl-reduce "cl-seq")
+
+
 (defun buffer-mode (buffer-or-string)
   "Return the major mode associated with a the given BUFFER-OR-STRING."
   (with-current-buffer buffer-or-string
@@ -44,6 +48,11 @@ with is the buffer."
       (insert data)
       (when fn
         (funcall fn buf)))))
+
+
+(defun ->str (&rest args)
+  "Convert the given ARGS into string."
+  (funcall #'pp-to-string args))
 
 
 (defmacro inspect-expression (&rest body)
@@ -68,7 +77,7 @@ with is the buffer."
   (put-text-property 0 (length text) 'face face-symbol text))
 
 
-(defmacro comment (&rest body)
+(defmacro comment (&rest _body)
   "A macro similar to Clojure's comment macro that ignore the BODY."
   (declare (indent 0))
   `nil)
@@ -106,9 +115,9 @@ For example:
 or
  (funcall (compose #'some-fn #'message) some-value)"
   (lambda (&rest values)
-    (reduce 'funcall (butlast fns)
-            :from-end t
-            :initial-value (apply (car (last fns)) values))))
+    (cl-reduce 'funcall (butlast fns)
+               :from-end t
+               :initial-value (apply (car (last fns)) values))))
 
 
 (provide 'fg42/utils)

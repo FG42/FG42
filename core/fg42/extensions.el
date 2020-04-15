@@ -43,14 +43,14 @@ and call the `on-initialize'function of extensions in order to setup
 the autoloads and hooks."
   (cond
    ((symbolp ext)
-    (fg42-extensions/load-index system ext (fg42-extension/path system ext)))
+    (fg42-extensions/load-index system ext (fg42-extensions/path system ext)))
 
    ((listp ext)
     (fg42-extensions/load-index system (car ext) (cadr ext)))
    (t
     ;; TODO: instead of throwing and error, inject the error into the system
     (throw 'load-extension-failed
-           (format "Can't load extension %s" (str ext))))))
+           (format "Can't load extension %s" (->str ext))))))
 
 
 (defun fg42-extensions/load-system-extensions (system)
@@ -75,7 +75,7 @@ containing the `fg42-extension' instances."
 
 (defun fg42-extensions/initialize-extensions (system)
   "Initialize the extensions within SYSTEM and return a new system."
-  (mapcar
+  (mapc
    (lambda (ext) (fg42-extensions/initialize system ext))
    (fg42-system-extensions system))
   system)
