@@ -15,7 +15,9 @@ stages:
   stage: build
   before_script:
     - apt update && apt install -y make wget git emacs sudo
-    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/ && ~/.fg42/fbt build
+    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/
+  script:
+    - ~/.fg42/fbt build
 
 build-branches-v3:
   extends: .build-v3
