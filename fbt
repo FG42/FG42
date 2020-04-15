@@ -1,4 +1,4 @@
-:;exec emacs --no-site-file --no-site-lisp -batch -l "$0" -f main "$@"
+:;exec emacs --no-site-file --no-site-lisp -batch -l "$0" -f main "$(cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P)" "$@"
 ;;; FGBuildTool --- The build tool for FG42
 ;;
 ;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
@@ -23,6 +23,8 @@
 ;;
 ;;; Commentary:
 ;;; Code:
+(defvar FG42_VERSION "3.0.0-snapshot"
+  "The version number of the current build of FG42.")
 
 (defun compile (dir)
   "Compile all the elisp files in the given DIR regardless of timestamp.
@@ -38,14 +40,33 @@ The DIR should be relative to FG42_HOME."
   (compile "core"))
 
 
+(defun print-help (command)
+  "Print out a usage instructions and print out the invalid msg for COMMAND."
+  (when command
+    (warn "I don't know about '%s' command.\n" command))
+
+  (message "Usage:\n")
+  (message "compile [DIR] - Compiles the given DIR to bytecodes (default: \"core\")")
+  (message "build - Builds FG42 by compiling the code and installing dependencies."))
+
+
 (defun main ()
   "Execute a subcommand by looking into input arguments of the script."
-  (print (version))
-  (let ((command (car command-line-args-left))
-        (args (cdr command-line-args-left)))
+  (message (version))
+  (message "\nFG42 Built tool v%s\n\n" FG42_VERSION)
+
+  (let ((fg42-home (car command-line-args-left))
+        (command (cadr command-line-args-left))
+        (args (cddr command-line-args-left)))
+
+    ;; FG42 Needs this env var to know where had it been installed
+    (setenv "FG42_HOME" fg42-home)
+    (setenv "FG42_VERSION" FG42_VERSION)
+
     (cond
      ((string= command "compile") (funcall #'compile (or (car args) "core")))
-     ((string= command "build") (funcall #'build args)))))
+     ((string= command "build") (funcall #'build args))
+     (t (print-help command)))))
 
 ;; Local Variables:
 ;; mode: emacs-lisp
