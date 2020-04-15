@@ -39,6 +39,7 @@ accept code without a proper header file.
 We follow these simple rules:
 
 * Make elisp linter happy
+* Make byte compiler happy `make compile`
 * Follow functional patterns and avoid huge functions
 * Seperate each root level expression by two new lines (e.g function definitions)
 * Put `(comment ...)` expression after each macro/function to demonstrate the usage.
@@ -55,7 +56,9 @@ Submit your contribution against the `master` branch. The `stable` branch
 is going to be our last stable version only.
 
 Please make one PR per feature. Keep your PRs as small as possible so we can review them
-easily.
+easily. Don't forget to make the byte compiler and the linter happy. There should not
+be any build error or warning on `make compile`. We like how [Linus Torvalds thinks
+about build warnings](https://linuxreviews.org/Linus_Torvalds#On_Build-Testing).
 
 Write commit messages according to adapted [this article](https://chris.beams.io/posts/git-commit/):
 

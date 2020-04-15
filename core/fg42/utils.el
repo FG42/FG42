@@ -104,8 +104,9 @@ with is the buffer."
 For example for a list like (list :x 4 :y 5) we can find the value of
 `:x' by doing `(get-value-for lst :x)'."
   (let ((pairs (seq-partition lst 2)))
-    (when-let (pair (assq key pairs))
-      (cadr pair))))
+    (let ((pair (assq key pairs)))
+      (when pair
+        (cadr pair)))))
 
 
 (defun comp (&rest fns)

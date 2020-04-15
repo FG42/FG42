@@ -1,0 +1,53 @@
+:;exec emacs --no-site-file --no-site-lisp -batch -l "$0" -f main "$@"
+;;; FGBuildTool --- The build tool for FG42
+;;
+;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
+;;
+;; Author: Sameer Rahmani <lxsameer@gnu.org>
+;; URL: https://gitlab.com/FG42/FG42
+;; Version: 3.0.0
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;;
+;;; Commentary:
+;;; Code:
+
+(defun compile (dir)
+  "Compile all the elisp files in the given DIR regardless of timestamp.
+The DIR should be relative to FG42_HOME."
+  (let ((target (concat (getenv "FG42_HOME") (format "/%s" dir))))
+    (message "Compiling '%s'..." target)
+    (add-to-list 'load-path target)
+    (byte-recompile-directory target 0 t)))
+
+
+(defun build (&rest params)
+  "Compile the core and install the dependencies with the given PARAMS."
+  (compile "core"))
+
+
+(defun main ()
+  "Execute a subcommand by looking into input arguments of the script."
+  (print (version))
+  (let ((command (car command-line-args-left))
+        (args (cdr command-line-args-left)))
+    (cond
+     ((string= command "compile") (funcall #'compile (or (car args) "core")))
+     ((string= command "build") (funcall #'build args)))))
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:
+;;; fbt ends here

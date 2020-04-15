@@ -1,7 +1,8 @@
 #! /bin/sh
 
-export FG42_HOME=/home/lxsameer/.fg42
-FG42_WM=false /home/lxsameer/src/emacs/build/bin/emacs --name FG42 \
+export FG42_HOME="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+FG42_WM=false emacs --name FG42 \
               --no-site-file --no-site-lisp --no-splash --title FG42 \
               -L $FG42_HOME/core \
               -L $FG42_HOME/extensions \
