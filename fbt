@@ -26,10 +26,33 @@
 (defvar FG42_VERSION "3.0.0-snapshot"
   "The version number of the current build of FG42.")
 
+(defun ->path (dir)
+  "Return the absolute path to the given DIR with respect to FG42_HOME."
+  (concat (getenv "FG42_HOME") (format "/%s" dir)))
+
+
+(defun el-files-in (dir)
+  "Return a list of elisp files in the given DIR."
+  (split-string (shell-command-to-string
+                 (format "find %s -iname \"*.el\"" (->path dir))) "\n" t))
+
+
+(defun lint (dir)
+  "Run linter on all the elisp files in the given DIR."
+  (let ((files (el-files-in dir)))
+    (if files
+        (dolist (file files)
+          ;; TODO: Setup flycheck here and use it to lint the elisp file.
+          ;; tried to use flymake but it doesn't let you do it manually
+          (with-temp-buffer
+            (insert-file-contents file)))
+      (error "Couldn't find any elisp files"))))
+
+
 (defun compile (dir)
   "Compile all the elisp files in the given DIR regardless of timestamp.
 The DIR should be relative to FG42_HOME."
-  (let ((target (concat (getenv "FG42_HOME") (format "/%s" dir))))
+  (let ((target (->path dir)))
     (message "Compiling '%s'..." target)
     (add-to-list 'load-path target)
     (byte-recompile-directory target 0 t)))
@@ -64,6 +87,7 @@ The DIR should be relative to FG42_HOME."
     (setenv "FG42_VERSION" FG42_VERSION)
 
     (cond
+     ((string= command "lint") (funcall #'lint (or (car args) "core")))
      ((string= command "compile") (funcall #'compile (or (car args) "core")))
      ((string= command "build") (funcall #'build args))
      (t (print-help command)))))
