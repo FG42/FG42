@@ -63,6 +63,11 @@ The DIR should be relative to FG42_HOME."
   (compile "core"))
 
 
+(defun todo (dir)
+  "Extract the TODO tags from the comments in the given DIR."
+  (message "TBD"))
+
+
 (defun print-help (command)
   "Print out a usage instructions and print out the invalid msg for COMMAND."
   (when command
