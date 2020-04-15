@@ -46,7 +46,6 @@ to load FG42."
   ;; backups, flycheck temps and stuff like that.
   (tmp-path "~/.tmp")
 
-  (packages '())
   ;; ;; A list of preloads to setup extensions which are not loaded yet.
   ;; ;; For more information on preloads checkout `fg42/extension'
   ;; (preloads '())

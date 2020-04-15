@@ -76,7 +76,7 @@ The DIR should be relative to FG42_HOME."
 (defun main ()
   "Execute a subcommand by looking into input arguments of the script."
   (message (version))
-  (message "\nFG42 Built tool v%s\n\n" FG42_VERSION)
+  (message "\nFG42 Build tool v%s\n\n" FG42_VERSION)
 
   (let ((fg42-home (car command-line-args-left))
         (command (cadr command-line-args-left))
