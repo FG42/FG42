@@ -42,13 +42,14 @@ to load FG42."
   ;;       as the default value
   (root (concat (getenv "HOME") "/.fg42"))
 
+  (fpkg-backend-version 5)
+  (fpkg-backend-path ".fpkg")
+  (fpkg-initilized nil)
+
+  (core-dependencies '())
   ;; The directory to store all sort of temporary files including
   ;; backups, flycheck temps and stuff like that.
   (tmp-path "~/.tmp")
-
-  ;; ;; A list of preloads to setup extensions which are not loaded yet.
-  ;; ;; For more information on preloads checkout `fg42/extension'
-  ;; (preloads '())
 
   (extensions '())
   (abilities '())

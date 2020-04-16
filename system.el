@@ -32,6 +32,7 @@
 (defsystem FG42
   "FG42 implemented in term of systems and this is the default system."
   :start (lambda (system) (message "hooray!"))
+  :fpkg-backend-path ".fpkg-v3"
   :extensions '(fg42-elisp))
 
 

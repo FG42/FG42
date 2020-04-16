@@ -23,6 +23,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
+
 (defvar FG42_VERSION "3.0.0-snapshot"
   "The version number of the current build of FG42.")
 
@@ -68,6 +69,25 @@ The DIR should be relative to FG42_HOME."
   (message "TBD"))
 
 
+(defun fpkg-init (params)
+  "Setup fpkg repository with the given PARAMS."
+  (require 'fg42/fpkg/core)
+  (fg42-fpkg/initialize FG42))
+
+(defun print-fpkg-help (command)
+  "Print the usage for fpkg and the possible wrong COMMAND."
+  (message "Usage:\n")
+  (message "init - Setup the fpkg repository"))
+
+
+(defun fpkg (params)
+  "The main interface to `fpkg' subcommand and PARAMS."
+  (let ((subcommand (car args))
+        (args (cdr params)))
+    (cond
+     ((string= subcommand "init") (funcall #'fpkg-init args))
+     (t (print-fpkg-help subcommand)))))
+
 (defun print-help (command)
   "Print out a usage instructions and print out the invalid msg for COMMAND."
   (when command
@@ -91,7 +111,11 @@ The DIR should be relative to FG42_HOME."
     (setenv "FG42_HOME" fg42-home)
     (setenv "FG42_VERSION" FG42_VERSION)
 
+    (add-to-list 'load-path (concat (file-name-as-directory fg42-home) "core"))
+    (load (concat (file-name-as-directory (getenv "FG42_HOME")) "system"))
+
     (cond
+     ((string= command "fpkg") (funcall #'fpkg args))
      ((string= command "lint") (funcall #'lint (or (car args) "core")))
      ((string= command "compile") (funcall #'compile (or (car args) "core")))
      ((string= command "build") (funcall #'build args))
