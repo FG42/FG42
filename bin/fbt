@@ -1,0 +1,137 @@
+:;exec emacs --no-site-file --no-site-lisp -batch -l "$0" -f main "$(cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P)" "$@"
+;;; FGBuildTool --- The build tool for FG42
+;;
+;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
+;;
+;; Author: Sameer Rahmani <lxsameer@gnu.org>
+;; URL: https://gitlab.com/FG42/FG42
+;; Version: 3.0.0
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;;
+;;; Commentary:
+;; FG42 Build Tool for FBT for short is a tool on top of Emacs to build
+;; FG42. To learn how to use it run it via a shell.
+;;
+;;; Code:
+(defvar FG42-VERSION "3.0.0-snapshot"
+  "The version number of the current build of FG42.")
+
+(defconst fbt-usage "
+Usage:
+
+fbt [PARAMS] COMMAND [...]
+
+COMMANDS:
+  compile [DIR] - Compiles the given DIR to bytecodes (default: \"core\").
+  build         - Builds FG42 by compiling the code and installing dependencies.
+  clean [DIRS]  - Clean up the given list of directories (default: \"code\" \"fbt\").
+  fpkg [...]    - The CLI insterface to FPKG (FG42 Package manager)
+  lint [DIR]    - Run the ELisp linter on the files on the given DIR.
+
+PARAMS:
+  :d      - Turns on the debug mode.
+  :e expr - Run the given `expr' before any operation.
+
+By default FBT loads the `system.el' file from the root path of `FG42' and looks
+for a system with the name `FG42' to use it as the source for the build operations.
+You can change this behaviour by running following command:
+
+$ fbt :e '(setq fg42-system 'SOMESYSTEM fg42-system-path \"path/to/a/elisp/file.el\"))' COMMAND...
+
+This way FBT will load an elisp file at \"path/to/a/elisp/file.el\" and looks for a system
+called `SOMESYSTEM' in it as the source system for the build operations.
+")
+
+
+(defun read-args (args)
+  "Parse the given ARGS and return a list of params and args.
+The only parameter at the moment is `-e' which basically gets a string
+of elisp and eval it before the commant.  The return value is a list
+which the first element is the string to evaluate and the second one
+is the rest of the arguments."
+  (if (member ":d" args)
+      (setq debug-on-error t)
+      (delete ":d" args))
+
+  (if (string= (car args) ":e")
+      (list (cadr args) (cddr args))
+    (list nil args)))
+
+
+(defun todo (dir)
+  "Extract the TODO tags from the comments in the given DIR."
+  (message "TBD"))
+
+
+(defun print-help (command)
+  "Print out a usage instructions and print out the invalid msg for COMMAND."
+  (when command
+    (warn "I don't know about '%s' command.\n" command))
+  (message fbt-usage))
+
+
+(defun main ()
+  "Execute a subcommand by looking into input arguments of the script."
+  (message (version))
+  (message "\nFG42 Build tool v%s\n\n" FG42-VERSION)
+
+  (let* ((fg42-home   (car command-line-args-left))
+         (parsed-args (read-args (cdr command-line-args-left)))
+         (eval-string (car parsed-args))
+         (command     (caadr parsed-args))
+         (args        (cdadr parsed-args)))
+
+
+    ;; FG42 Needs this env var to know where had it been installed
+    (setenv "FG42_HOME" fg42-home)
+    (setenv "FG42_VERSION" FG42-VERSION)
+
+    (defvar fg42-system-path (concat (file-name-as-directory fg42-home) "system"))
+    (defvar fg42-system 'FG42)
+
+    (add-to-list 'load-path (concat (file-name-as-directory fg42-home) "core"))
+    (add-to-list 'load-path (concat (file-name-as-directory fg42-home) "fbt"))
+    ;; Load the default system without user configurations
+    (when eval-string
+      (eval (car (read-from-string eval-string))))
+
+    (load fg42-system-path)
+
+    (require 'fbt/utils)
+    (require 'fbt/compile)
+    (require 'fbt/lint)
+    (require 'fbt/fpkg)
+    (require 'fbt/build)
+
+
+    (let ((system (symbol-value fg42-system)))
+
+      ;; Add the fpkg path to the load path. For the sake of `straight.el'.
+      ;; This way installed packages will be accessable for build tools as well.
+      (fpt-fpkg/initialize-load-path system)
+
+      (cond
+       ((string= command "fpkg") (funcall #'fbt-fpkg system args))
+       ((string= command "lint") (funcall #'lint (or (car args) "core")))
+       ((string= command "compile") (funcall #'fbt-compile/compile (or (car args) "core")))
+       ((string= command "clean")  (funcall #'fbt-build/clean (or args '("core" "fbt"))))
+       ((string= command "build") (funcall #'build args))
+       (t (print-help command))))))
+
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:
+;;; fbt ends here

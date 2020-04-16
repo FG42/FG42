@@ -25,3 +25,4 @@ tmp/
 test-runner/
 .fpkg/
 /fg42-wm
+.fpkg-v3
