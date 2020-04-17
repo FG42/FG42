@@ -128,7 +128,7 @@ is the rest of the arguments."
        ((string= command "lint") (funcall #'lint (or (car args) "core")))
        ((string= command "compile") (funcall #'fbt-compile/compile (or (car args) "core")))
        ((string= command "clean")  (funcall #'fbt-build/clean (or args '("core" "fbt"))))
-       ((string= command "build") (funcall #'build args))
+       ((string= command "build") (funcall #'fbt-build/build args))
        (t (print-help command))))))
 
 ;; Local Variables:
