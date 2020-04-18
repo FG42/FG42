@@ -1,6 +1,6 @@
-;;; FG42 --- The mighty editor for the emacsians -*- lexical-binding: t; -*-
+;;; FGBuildTool --- The build tool for FG42
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42
@@ -19,22 +19,34 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
-;;; Acknoledgement:
-;; Thanks to all the people who contributed to FG42.
 ;;
 ;;; Commentary:
 ;;; Code:
 
-(require 'fg42)
-(require 'fg42/system/core)
+(require 'fbt/utils)
+(require 'fbt/compile)
 
 
-(defsystem FG42
-  "FG42 implemented in term of systems and this is the default system."
-  :start (lambda (system) (message "hooray!"))
-  :fpkg-backend-path ".fpkg-v3"
-  :extensions '(fg42-elisp))
+(defun fbt-build/-clean (dir)
+  "Clean up all the elc files from the given DIR."
+  (let ((elcs (elc-files-in dir)))
+    (when elcs
+      (message
+       (shell-command-to-string
+        (format "rm -v %s" (apply #'concat
+                                  (mapcar (lambda (x) (format " %s" x)) elcs))))))))
 
 
-(provide 'system)
-;;; system.el ends here
+(defun fbt-build/clean (dirs)
+  "Clean the given DIRS from elc files."
+  (mapc #'fbt-build/-clean dirs))
+
+
+(defun fbt-build/build (&rest params)
+  "Compile the core and install the dependencies with the given PARAMS."
+  (fbt-compile/compile "core"))
+
+
+
+(provide 'fbt/build)
+;;; build.el ends here

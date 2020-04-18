@@ -17,7 +17,7 @@ stages:
     - apt update && apt install -y make wget git emacs sudo
     - git clone -b $CI_COMMIT_REF_NAME https://gitlab.com/FG42/FG42 ~/.fg42/
   script:
-    - cd ~/.fg42/ && ./fbt build
+    - ~/.fg42/bin/fbt build
 
 build-branches-v3:
   extends: .build-v3

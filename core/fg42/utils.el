@@ -121,5 +121,13 @@ or
                :initial-value (apply (car (last fns)) values))))
 
 
+(defun path-join (&rest paths)
+  "Join the given PATHS."
+  (apply #'concat
+         (append
+          (mapcar #'file-name-as-directory (butlast paths))
+          (last paths))))
+
+
 (provide 'fg42/utils)
 ;;; utils.el ends here

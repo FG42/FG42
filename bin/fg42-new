@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export FG42_HOME="$(cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P)"
+export FG42_HOME="$(cd "$(dirname "$0")/.." >/dev/null 2>&1 ; pwd -P)"
 
 FG42_WM=false emacs --name FG42 \
               --no-site-file --no-site-lisp --no-splash --title FG42 \

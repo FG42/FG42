@@ -1,6 +1,6 @@
-;;; FG42 --- The mighty editor for the emacsians -*- lexical-binding: t; -*-
+;;; FGBuildTool --- The build tool for FG42
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42
@@ -19,22 +19,24 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
-;;; Acknoledgement:
-;; Thanks to all the people who contributed to FG42.
 ;;
 ;;; Commentary:
 ;;; Code:
 
-(require 'fg42)
-(require 'fg42/system/core)
+(require 'fbt/utils)
 
 
-(defsystem FG42
-  "FG42 implemented in term of systems and this is the default system."
-  :start (lambda (system) (message "hooray!"))
-  :fpkg-backend-path ".fpkg-v3"
-  :extensions '(fg42-elisp))
+(defun lint (dir)
+  "Run linter on all the elisp files in the given DIR."
+  (let ((files (el-files-in dir)))
+    (if files
+        (dolist (file files)
+          ;; TODO: Setup flycheck here and use it to lint the elisp file.
+          ;; tried to use flymake but it doesn't let you do it manually
+          (with-temp-buffer
+            (insert-file-contents file)))
+      (error "Couldn't find any elisp files"))))
 
 
-(provide 'system)
-;;; system.el ends here
+(provide 'fbt/lint)
+;;; lint.el ends here

@@ -1,6 +1,6 @@
-;;; FG42 --- The mighty editor for the emacsians -*- lexical-binding: t; -*-
+;;; FGBuildTool --- The build tool for FG42
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42
@@ -19,22 +19,23 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
-;;; Acknoledgement:
-;; Thanks to all the people who contributed to FG42.
 ;;
 ;;; Commentary:
 ;;; Code:
 
-(require 'fg42)
-(require 'fg42/system/core)
+(require 'fbt/utils)
 
 
-(defsystem FG42
-  "FG42 implemented in term of systems and this is the default system."
-  :start (lambda (system) (message "hooray!"))
-  :fpkg-backend-path ".fpkg-v3"
-  :extensions '(fg42-elisp))
+(defun fbt-compile/compile (dir)
+  "Compile all the elisp files in the given DIR regardless of timestamp.
+The DIR should be relative to FG42_HOME."
+  (let ((target (->path dir)))
+    (message "Compiling '%s'..." target)
+    (add-to-list 'load-path target)
+
+    (message "Load path:\n%s\n" (apply #'concat (mapcar (lambda (x) (format "%s\n" x)) load-path)))
+    (byte-recompile-directory target 0 t)))
 
 
-(provide 'system)
-;;; system.el ends here
+(provide 'fbt/compile)
+;;; compile.el ends here

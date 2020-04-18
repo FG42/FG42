@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- New `extensions` implementation (`core/fg42/extensions.el`)
 	- New approach to launching fg42
 	- New `compiler` target to Makefile
+	- New fbt package and moved `fbt` and `fg42-new` scripts to the `/bin` directory.
+	- Created the `fpkg` module in `fbt` in order to separate the straight initialization from FG42 so we don't have to work with free dynamic var/functions.
+	- Added `debug` support to `fbt` via `:d`
+	- Added expr evaluation via `:e`
+	- Added `system` support to `fbt`. We can build different systems with `fbt`. It's more like a generic build tool right now.
+	- Added `fpkg` related fields to the system struct.
+	- fpkg `init` command bootstraps straight.
+	- Added `clean` command to fbt
+
 ### Changed
 	- Changed the main package path to `/core`
 	- Changed the extensions path to `/extensions`

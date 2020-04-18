@@ -1,6 +1,6 @@
-;;; FG42 --- The mighty editor for the emacsians -*- lexical-binding: t; -*-
+;;; fpkg --- Package manager for FG42 -*- lexical-binding: t; -*-
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42
@@ -19,22 +19,11 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
-;;; Acknoledgement:
-;; Thanks to all the people who contributed to FG42.
-;;
 ;;; Commentary:
 ;;; Code:
-
-(require 'fg42)
-(require 'fg42/system/core)
+(require 'fg42/system/api)
 
 
-(defsystem FG42
-  "FG42 implemented in term of systems and this is the default system."
-  :start (lambda (system) (message "hooray!"))
-  :fpkg-backend-path ".fpkg-v3"
-  :extensions '(fg42-elisp))
 
-
-(provide 'system)
-;;; system.el ends here
+(provide 'fg42/fpkg/core)
+;;; core.el ends here
