@@ -10,7 +10,7 @@
 
 ;; Dependencies ----------------------------------
 (depends-on 'typescript-mode)
-(depends-on 'tide)
+
 
 (defun typescript-doc ()
   "Something fun.")
