@@ -9,17 +9,17 @@
   (setq tmp-directory (concat (getenv "HOME") "/.tmp"))
   ;; aligns annotation to the right hand side
   (setq company-tooltip-align-annotations t)
-
-  ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-  (tide-setup)
   (flycheck-mode 1)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+
   (eldoc-mode 1)
-  (tide-hl-identifier-mode 1)
   (company-mode 1))
+
+
+(defun lsp-typescript-config ()
+  (interactive)
+  (require 'lsp)
+  (require 'lsp-clients))
 
 ;;;###autoload
 (defun extensions/typescript-initialize ()
@@ -30,8 +30,9 @@
            (add-hook 'web-mode-hook
                      (lambda ()
                        (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                         (setup-tide-mode)
-                         (tide-hl-identifier-mode))))
+                         (setup-tide-mode))))
+
+           (add-hook 'typescript-mode-hook #'lsp-typescript-config)
            ;; enable typescript-tslint checker
            (flycheck-add-mode 'typescript-tslint 'web-mode)))
 
