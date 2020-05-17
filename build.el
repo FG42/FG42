@@ -21,6 +21,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
+(setq debug-on-error t)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (setq user-emacs-directory (concat (getenv "HOME") "/.fg42/"))
 (add-to-list 'load-path (concat (getenv "HOME") "/.fg42/lib"))
