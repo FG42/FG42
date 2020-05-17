@@ -22,11 +22,12 @@
 ;;; Commentary:
 ;;; Code:
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(setq user-directory (concat (getenv "HOME") "/.fg42/lib"))
 (add-to-list 'load-path (concat (getenv "HOME") "/.fg42/lib"))
 
 (require 'fg42)
 (require 'fpkg)
-
+(i-am-god)
 (activate-extensions 'editor
                      'development
                      'web
