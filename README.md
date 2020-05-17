@@ -8,6 +8,10 @@ have a handy code editor then **FG42** is the right choice for you.
 
 If you need help, or even want to just say hello, try our **IRC** channel on freenode: **#5hit**.
 
+## Download
+* [Latest Stable - 2.31.2](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.1/raw/fg42.2.31.2.tar.gz?job=build-package)
+* [Latest Master](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.1/raw/fg42.master.tar.gz?job=build-branches)
+
 ## Dependencies
 
 In order to run **FG42** you need **GNU Emacs >= 25**. FG42 uses several extensions internally
@@ -15,7 +19,22 @@ which each of the has different external dependencies. To gain more information 
 dependencies ( If we failed to tell you inside the **FG42** ) just run the `describe-extension`
 command.
 
-## Installation
+## Install pre built package
+
+Download one of the prebuilt packages and follow these instructions:
+
+```bash
+# extract the content of the tarball in your home directory
+$ tar zxvf <downloaded package>.tar.gz -C ~/
+# You can clone it where ever your want
+$ cd ~/.fg42/
+$ make install
+# Run fg42, It will download and build some lisp dependencies on the first execution.
+$ fg42
+```
+
+
+## Install from source
 
 In order to install **FG42**, issue the following commands:
 

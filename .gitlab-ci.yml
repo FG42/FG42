@@ -29,18 +29,26 @@ build-branches-v3:
 
 build-branches:
   extends: .build
+  script:
+    - cd /root/.fg42/ && fg42 -nw --script build.el
+    - cd /root/ && tar zcf ~/fg42.$CI_COMMIT_REF_NAME.tar.gz .fg42/
+    - mv ~/fg42.$CI_COMMIT_REF_NAME.tar.gz /builds/$CI_PROJECT_PATH/
+  artifacts:
+    name: "fg42.$CI_COMMIT_REF_SLUG"
+    when: on_success
+    paths:
+    - fg42.$CI_COMMIT_REF_NAME.tar.gz
   only:
     - branches
-  except:
-    - tags
 
 build-package:
   extends: .build
   script:
     - cd /root/.fg42/ && fg42 -nw --script build.el
-    - tar zcf ~/fg42.$CI_COMMIT_TAG.tar.gz ~/.fg42/
+    - cd /root/ && tar zcf ~/fg42.$CI_COMMIT_TAG.tar.gz .fg42/
     - mv ~/fg42.$CI_COMMIT_TAG.tar.gz /builds/$CI_PROJECT_PATH/
   artifacts:
+    name: "fg42.$CI_COMMIT_TAG"
     when: on_success
     paths:
     - fg42.$CI_COMMIT_TAG.tar.gz
