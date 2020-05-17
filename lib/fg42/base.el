@@ -21,6 +21,7 @@ LOCAL should be 't' if theme is on FG42 it self"
 ;; Functions ------------------------------
 (defun load-default-theme ()
   "Load the given theme name."
+  (message "Load theme %s" default-theme)
   (require default-theme)
 
   ;; Setup the face look up function for spaceline
