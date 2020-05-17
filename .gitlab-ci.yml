@@ -6,7 +6,7 @@ stages:
   stage: build
   before_script:
     - apt update && apt install -y make wget git emacs sudo
-    - git clone -b fpkg-v2 https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install &&
+    - git clone -b $CI_COMMIT_REF_NAME https://gitlab.com/FG42/FG42 ~/.fg42/ && cd ~/.fg42/ && make install &&
   script:
     - cd ~/.fg42/ && fg42 -nw --script build.el
 
