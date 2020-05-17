@@ -9,8 +9,8 @@ have a handy code editor then **FG42** is the right choice for you.
 If you need help, or even want to just say hello, try our **IRC** channel on freenode: **#5hit**.
 
 ## Download
-* [Latest Stable - 2.31.2](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.1/raw/fg42.2.31.2.tar.gz?job=build-package)
-* [Latest Master](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.1/raw/fg42.master.tar.gz?job=build-branches)
+* [Latest Stable - 2.31.2](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.2/raw/fg42.2.31.2.tar.gz?job=build-package)
+* [Latest Master](https://gitlab.com/FG42/FG42/-/jobs/artifacts/master/raw/fg42.master.tar.gz?job=build-branches)
 
 ## Dependencies
 
@@ -19,7 +19,7 @@ which each of the has different external dependencies. To gain more information 
 dependencies ( If we failed to tell you inside the **FG42** ) just run the `describe-extension`
 command.
 
-## Install pre built package
+## Install a pre built package
 
 Download one of the prebuilt packages and follow these instructions:
 
