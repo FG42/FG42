@@ -21,6 +21,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (add-to-list 'load-path (concat (getenv "HOME") "/.fg42/lib"))
 
 (require 'fg42)
