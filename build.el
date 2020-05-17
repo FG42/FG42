@@ -31,6 +31,7 @@
 (setq fg42-home (concat (getenv "HOME") "/.fg42/"))
 (setq fg42-tmp (concat fg42-home "/tmp"))
 (theme themes/color-theme-doom-one)
+
 (i-am-god)
 
 (disable 'rbenv 'helm 'spell 'linum 'tabbar
