@@ -22,7 +22,7 @@
 ;;; Commentary:
 ;;; Code:
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(setq user-directory (concat (getenv "HOME") "/.fg42/lib"))
+(setq user-emacs-directory (concat (getenv "HOME") "/.fg42/"))
 (add-to-list 'load-path (concat (getenv "HOME") "/.fg42/lib"))
 
 (require 'fg42)
