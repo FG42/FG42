@@ -28,6 +28,12 @@
 (require 'fg42)
 (require 'fpkg)
 (i-am-god)
+
+(disable 'rbenv 'helm 'spell 'linum 'tabbar
+         'smart-mode-line 'desktop-mode 'jedi
+         'dired+ 'guru 'emoji 'elpy 'github
+         'versioned-backup)
+
 (activate-extensions 'editor
                      'development
                      'web
