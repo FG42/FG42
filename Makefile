@@ -32,6 +32,7 @@ install:
 	@echo 'FG42_WM=true emacs --name FG42 --no-site-file --no-site-lisp --no-splash --title FG42 -l $$FG42_HOME/fg42-config.el "$$@"' >> ./fg42-wm
 	@chmod +x ./fg42
 	@chmod +x ./fg42-wm
+	@sudo mkdir -p /usr/local/bin/
 	@sudo rm -f /usr/local/bin/fg42
 	@sudo rm -f /usr/local/bin/fg42-wm
 	@sudo ln -s `pwd`/fg42 /usr/local/bin/fg42
