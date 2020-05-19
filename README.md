@@ -9,7 +9,7 @@ have a handy code editor then **FG42** is the right choice for you.
 If you need help, or even want to just say hello, try our **IRC** channel on freenode: **#5hit**.
 
 ## Download
-* [Latest Stable - 2.31.2](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.2/raw/fg42.2.31.2.tar.gz?job=build-package)
+* [Latest Stable - 2.31.3](https://gitlab.com/FG42/FG42/-/jobs/artifacts/2.31.3/raw/fg42.2.31.3.tar.gz?job=build-package)
 * [Latest Master](https://gitlab.com/FG42/FG42/-/jobs/artifacts/master/raw/fg42.master.tar.gz?job=build-branches)
 
 ## Dependencies
