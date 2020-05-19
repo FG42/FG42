@@ -25,3 +25,8 @@ tmp/
 test-runner/
 .fpkg/
 /fg42-wm
+projectile-bookmarks.eld
+smex-items
+elpa/
+bm-repository
+.fpkg-v3/
