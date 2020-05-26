@@ -70,6 +70,7 @@ containing the `fg42-extension' instances."
 
 (defun fg42-extensions/initialize (system ext)
   "Initialize the given extension EXT aginst the given SYSTEM."
+  ;; TODO: Install the dependencies of the extension here
   (funcall (fg42-extension-on-initialize ext) system))
 
 
@@ -81,7 +82,7 @@ containing the `fg42-extension' instances."
   system)
 
 
-(defun fg42-setup-extensions (system)
+(defun fg42-extensions/setup-extensions (system)
   "Setup the preloads for the given SYSTEM."
   (funcall (comp #'fg42-extensions/initialize-extensions
                  #'fg42-extensions/load-system-extensions) system))

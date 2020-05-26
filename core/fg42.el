@@ -21,6 +21,7 @@
 ;;
 ;;; Commentary:
 ;;; Code:
+(require 'fg42/extensions)
 (require 'fg42/system/utils)
 
 (autoload 'fg42-system/start "fg42/system"
@@ -32,7 +33,9 @@
   (fg42-system/set-system! system)
 
   (add-hook 'window-setup-hook
-            (lambda () (fg42-system/start))))
+            (lambda ()
+              (fg42-system/start)
+              (fg42-extensions/setup-extensions system))))
 
 
 (provide 'fg42)
