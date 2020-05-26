@@ -97,8 +97,7 @@
 (defun fpkg-initialize-once ()
   "Initilize FPKG only once."
   (when (not fpkg-initilized-p)
-    (fpkg-initialize)
-    (straight-use-package 'use-package)))
+    (fpkg-initialize)))
 
 
 (defun official-extension-p (args)
@@ -124,6 +123,7 @@
   (if (official-extension-p pkgname)
       `(fg42-install-extension ,(eval pkgname))
     `(use-package ,(eval pkgname) ,@details)))
+
 
 (defun depends-on (pkgname &rest args)
   "Install the package PKGNAME with respect to the ARGS."
