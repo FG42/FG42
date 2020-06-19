@@ -6,9 +6,7 @@
 ;;;###autoload
 (defun extensions/rust-initialize ()
   "Initialize Rust extension."
-  (add-hook 'rust-mode-hook #'lsp)
-  (add-hook 'rust-mode-hook #'cargo-minor-mode)
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  (setq rustic-format-trigger 'on-save))
 
 
 (provide 'extensions/rust/init)

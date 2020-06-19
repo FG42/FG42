@@ -6,9 +6,8 @@
 (require 'extensions/rust/init)
 
 ;; dependencies
-(depends-on 'rust-mode)
-(depends-on 'cargo)
-(depends-on 'flycheck-rust)
+(depends-on 'rustic)
+
 
 (extension rust
            :version 0.0.1
