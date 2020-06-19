@@ -290,8 +290,9 @@
 
            (ido-mode t)
 
-           (smex-initialize)
-           (global-set-key (kbd "M-x") 'smex)
+           (ability smex ()
+             (smex-initialize)
+             (global-set-key (kbd "M-x") 'smex))
 
            (flx-ido-mode 1)
            (setq ido-use-faces nil)
