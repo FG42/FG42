@@ -72,5 +72,38 @@ with is the buffer."
   `nil)
 
 
+(defmacro -> (x &optional form &rest more)
+  "Thread the expr through the forms FORM and rest of form in MORE.
+Insert X as the second item in the first form, making a list of
+it if it is not a list already.  If there are more forms, insert
+the first form as the second item in second form, etc."
+  (declare (debug (form &rest [&or symbolp (sexp &rest form)])))
+  (cond
+   ((null form) x)
+   ((null more) (if (listp form)
+                    `(,(car form) ,x ,@(cdr form))
+                  (list form x)))
+   (:else `(-> (-> ,x ,form) ,@more))))
+
+
+(defun read-file (path)
+  "Return the content of the file at the given PATH as string."
+  (when (file-exists-p path)
+    (with-temp-buffer
+      (insert-file-contents path)
+      (buffer-string))))
+
+
+(defun file->lisp (path)
+  "Read the content of the file at PATH and return the Lisp in it."
+  (read (or (read-file path) "()")))
+
+
+(defun lisp->file (path expr)
+  "Write the given EXPR to the given file at PATH."
+  (with-temp-file path
+    (print expr (current-buffer))))
+
+
 (provide 'fg42/utils)
 ;;; utils.el ends here
