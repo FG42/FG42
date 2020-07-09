@@ -84,7 +84,7 @@ CURRENT-WORK is the key that is considered to be the current work."
 (defun fg42/add-brain-entry (state work entry)
   "Add the given ENTRY under the key WORK in the given STATE."
   (let ((entries (assoc work (fg42/-brain-entry-map state)))
-        (log (list (format-time-string fg42/brain-state-date-format) work)))
+        (log (list :add (format-time-string fg42/brain-state-date-format) work)))
     (fg42/brain-state-create
      (fg42/-brain-current state)
      (cons (list work (cons entry (cadr entries)))
@@ -104,12 +104,30 @@ CURRENT-WORK is the key that is considered to be the current work."
               '()))
 
 
+(defun fg42/brain-delete-work (state work)
+  "Remove the give WORK from the given STATE."
+  (interactive
+   (let ((state (fg42/load-brain-state)))
+     (list state
+           (completing-read "Work: " (fg42/brain-keys state)))))
+  (fg42/save-brain-state
+   (fg42/brain-state-create
+    nil
+    (seq-filter (lambda (x) (equal (car x) work))
+                (fg42/-brain-entry-map state))
+    (cons (list :delete
+                (format-time-string fg42/brain-state-date-format)
+                work)
+          (fg42/-brain-logs state)))))
+
+
+
 (defun fg42/brain-notes-for (state work)
   "Create a buffer with all the nosts of the given WORK in STATE."
   (interactive
    (let* ((state (fg42/load-brain-state)))
      (list state
-           (completing-read "Work: " (fg42/brain-keys state)))))
+           (completing-read "Work: " (fg42/brain-keys state) nil 'confirm))))
   (let ((buf (get-buffer-create (format "*%s-notes*" work)))
         (entries (cadr (assoc (intern work) (fg42/-brain-entry-map state)))))
     (set-buffer buf)
@@ -149,15 +167,16 @@ CURRENT-WORK is the key that is considered to be the current work."
 NOTE is the message that has to be saved for the SRC-WORK."
   (interactive
    (let* ((state (fg42/load-brain-state))
+          (keys  (fg42/brain-keys state))
           (current (fg42/-brain-current state)))
      (list
       state
-      (or current (read-string "What were you working on: "))
+      (completing-read "What were you working on: " keys nil 'confirm)
       (read-string
-       (format "Note for the current work%s: "
-               (if current (format "(%s)" current) "")))
+       "Note for the current work: ")
+
       (completing-read "Switch brain to: "
-                       (fg42/brain-keys state)))))
+                       keys))))
 
   (fg42/save-brain-state
    (plist-put
