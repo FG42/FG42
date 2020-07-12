@@ -127,9 +127,9 @@ CURRENT-WORK is the key that is considered to be the current work."
   (interactive
    (let* ((state (fg42/load-brain-state)))
      (list state
-           (completing-read "Work: " (fg42/brain-keys state) nil 'confirm))))
+           (completing-read "Work: " (fg42/brain-keys state)))))
   (let ((buf (get-buffer-create (format "*%s-notes*" work)))
-        (entries (cadr (assoc (intern work) (fg42/-brain-entry-map state)))))
+        (entries (cadr (assoc work (fg42/-brain-entry-map state)))))
     (set-buffer buf)
     (erase-buffer)
     (mapcar (lambda (entry)
