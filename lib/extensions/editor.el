@@ -11,44 +11,51 @@
 (depends-on 'all-the-icons)
 (depends-on 'markdown-mode)
 (depends-on 'json-mode)
-;; Fast move in the buffer
-(depends-on 'avy)
 
-;; Moving between windows
-(depends-on 'ace-window)
+
+;; Fast motions based on charachters
+(depends-on 'avy)
 
 ;; Don't worry unless you're evil this mode won't start
 (depends-on 'evil)
 
 ;; Resize splitted windows
-(depends-on 'windresize)
+;; (depends-on 'windresize)
 
+;; i3 like workspaces for FG42
 (depends-on 'eyebrowse)
 
 ;; Themes
 (depends-on 'spacemacs-theme)
 (depends-on 'doom-themes)
+
 ;; TODO: Move this to an ability
 (depends-on 'solaire-mode)
 
-(with-ability nlinum
-              (depends-on 'nlinum))
+;; Enable line numbers if ability line-numbers is active
+(with-ability line-numbers
+              global-display-line-numbers-mode)
 
-(with-ability spaceline
-              (depends-on 'spaceline))
 
+;; TODO: Removed Spaceline, Check with Sameer.
+
+;; Cool modeline from doom project.
 (with-ability doom-modeline
               (depends-on 'doom-modeline))
 
+
+;; Learn Emacs keys the hard way.
 (with-ability guru
               (depends-on 'guru-mode))
 
 (with-ability tramp
               (depends-on 'tramp))
 
+;; ivy selection candidate and narrowing framework.
 (with-ability ivy
               (depends-on 'ivy)
               (depends-on 'counsel))
+
 
 (with-ability ido
               (depends-on 'ido)
@@ -82,6 +89,7 @@
 
 (with-ability which-key
               (depends-on 'which-key))
+
 (if (eq system-type 'darwin)
     (depends-on 'exec-path-from-shell))
 
