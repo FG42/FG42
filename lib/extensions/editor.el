@@ -3,51 +3,70 @@
 (require 'extensions/editor/init)
 
 ;; Dependencies ----------------------------------
-(depends-on 'multiple-cursors)
-(depends-on 'expand-region)
 (depends-on 'seq)
 (depends-on 'ov)
-(depends-on 'cheatsheet)
-(depends-on 'all-the-icons)
-(depends-on 'markdown-mode)
-(depends-on 'json-mode)
 
+;; Expand region
+(with-ability expand-region
+              (depends-on 'expand-region))
+
+
+;; JSON support
+(with-ability json
+              (depends-on 'json-mode))
+
+;; Markdown support.
+(with-ability markdown
+              (depends-on 'markdown-mode))
+
+;; Cheatsheets
+(with-ability cheats
+              (depends-on 'cheatsheet))
+
+;; all-the-icons ability.
+(with-ability icons
+              (depends-on 'all-the-icons))
 
 ;; Fast motions based on charachters
-(depends-on 'avy)
+(with-ability char-jump
+              (depends-on 'avy))
 
 ;; Don't worry unless you're evil this mode won't start
-(depends-on 'evil)
+(with-ability evil
+              (depends-on 'evil))
 
 ;; Resize splitted windows
 ;; (depends-on 'windresize)
 
 ;; i3 like workspaces for FG42
-(depends-on 'eyebrowse)
+(with-ability workspaces
+              (depends-on 'eyebrowse))
 
-;; Themes
-(depends-on 'spacemacs-theme)
-(depends-on 'doom-themes)
-
-;; TODO: Move this to an ability
-(depends-on 'solaire-mode)
+;; Brighter background for active windows
+(with-ability highlight-active-window
+              (depends-on 'solaire-mode))
 
 ;; Enable line numbers if ability line-numbers is active
 (with-ability line-numbers
               global-display-line-numbers-mode)
 
+;; Multiple cursors
+(with-ability multiple-cursors
+              (depends-on 'multiple-cursors))
 
-;; TODO: Removed Spaceline, Check with Sameer.
+;; Spaceline, modeline from spacemacs project.
+(with-ability spaceline
+              (depends-on 'spaceline))
 
 ;; Cool modeline from doom project.
 (with-ability doom-modeline
               (depends-on 'doom-modeline))
 
-
 ;; Learn Emacs keys the hard way.
-(with-ability guru
+(with-ability god-trainer
               (depends-on 'guru-mode))
 
+;; Tramp, edit files on remote.
 (with-ability tramp
               (depends-on 'tramp))
 
@@ -56,7 +75,7 @@
               (depends-on 'ivy)
               (depends-on 'counsel))
 
-
+;; another selection framework
 (with-ability ido
               (depends-on 'ido)
               (depends-on 'ido-completing-read+)
@@ -76,7 +95,7 @@
               (depends-on 'helm-themes))
 
 (with-ability swiper
-              (depends-on 'swiper))
+	      (depends-on 'swiper))
 
 (with-ability flycheck
               (depends-on 'flycheck))
