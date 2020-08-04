@@ -27,6 +27,7 @@
                      'web
                      'editor-theme
                      'javascript
+                     'typescript
                      'ruby
                      'clojure
                      'haskell
