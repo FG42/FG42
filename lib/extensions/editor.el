@@ -63,7 +63,7 @@
               (depends-on 'doom-modeline))
 
 ;; Learn Emacs keys the hard way.
-(with-ability god-trainer
+(with-ability guru
               (depends-on 'guru-mode))
 
 ;; Tramp, edit files on remote.
