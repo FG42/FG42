@@ -68,16 +68,16 @@
             (cua-mode 'emacs)
             (cua-selection-mode t)
             (setq cua-auto-tabify-rectangles nil)
-            (transient-mark-mode 1)))
+            (transient-mark-mode 1))))
 
 
 
-;; Automatically removed excess backups of the file
-      (setq delete-old-versions t))
+  ;; Automatically removed excess backups of the file
+  (setq delete-old-versions t)
 
   ;; FG42 motions
   (ability fg42-motions
-                     ;; Fast Move in the buffer
+          ;; Fast Move in the buffer
           (global-set-key (kbd "M-1") 'avy-goto-word-or-subword-1)
 
           ;; paragraph motions
