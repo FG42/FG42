@@ -109,6 +109,9 @@
 (with-ability which-key
               (depends-on 'which-key))
 
+(with-ability ace-window
+              (depends-on 'ace-window))
+
 (if (eq system-type 'darwin)
     (depends-on 'exec-path-from-shell))
 

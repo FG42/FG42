@@ -48,6 +48,12 @@
   (add-to-list 'custom-theme-load-path
                (concat fg42-home "/lib/themes/custom_themes"))
 
+  ;; Remove splash screen
+  (setq inhibit-splash-screen t)
+
+  ;; scratch should be scratch
+  (setq initial-scratch-message nil)
+
 
   ;; Font Configuration -----------------------------------
   (ability font ()
@@ -122,17 +128,12 @@
              (defkey global-map 'describe-variable :evil (:normal "SPC d v"))))
 
 
-
-  ;; Remove splash screen
-  (setq inhibit-splash-screen t)
-
-  ;; scratch should be scratch
-  (setq initial-scratch-message nil)
-
   (ability highligh-current-line ()
            "Highlights the current line."
            (global-hl-line-mode t))
 
+
+  ;; Flycheck syntax checker
   (ability flycheck ()
            "Check syntax on the fly using flycheck."
            (require 'flycheck)
@@ -140,13 +141,10 @@
            (add-hook 'prog-mode-hook 'global-flycheck-mode)
            (add-hook 'after-init-hook 'global-flycheck-mode))
 
-
-  ;;(spaceline-emacs-theme))
-
   ;; ACE Window
-
-  (global-set-key (kbd "C-<tab>") 'ace-window)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (ability ace-window
+                (global-set-key (kbd "C-<tab>") 'ace-window)
+                (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
   ;; Tramp configuration -------------------------------------
   (ability tramp ()
@@ -199,18 +197,25 @@
 
   ;; Enhancements ---------------------------------------------
 
-  ;; Global configurations
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (setq x-select-enable-clipboard t)
-  (column-number-mode t)
+  (ability hide-toolbar
+           (tool-bar-mode -1))
+
+  (ability hide-scroll-bar
+           (scroll-bar-mode -1))
+
+  (ability column-number-in-modeline
+           (column-number-mode t))
 
   (ability hide-menu ()
            "Hides the emacs menu completely."
            (menu-bar-mode -1))
 
-  (show-paren-mode t)
-  (cua-selection-mode t)
+  (ability highligh-matching-parens
+           (show-paren-mode t))
+
+  (ability cua-selection-mode
+           (cua-selection-mode t))
+
 
   (ability thin-cursor ()
            (setq-default cursor-type 'bar))
@@ -220,10 +225,10 @@
 
 
   ;; expand-region -------------------------------------------
-  (global-set-key (kbd "C-=") 'er/expand-region)
+  (ability expand-region
+           (global-set-key (kbd "C-=") 'er/expand-region))
 
   ;; Multiple cursor -----------------------------------------
-  ;; multiple cursor configurations
   (ability multiple-cursors ()
       (global-set-key (kbd "C->") 'mc/mark-next-like-this)
       (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -233,17 +238,16 @@
   (define-key global-map (kbd "C-<f5>") 'fg42-reload)
 
   ;; HideShow -------------------------------------------------------
-  (global-set-key (kbd "C-\-") 'hs-toggle-hiding)
-  (hs-minor-mode)
+  (ability hide-show
+           (global-set-key (kbd "C-\-") 'hs-toggle-hiding)
+           (hs-minor-mode))
 
   ;; Guru Configuration
   (ability guru ()
            (require 'guru-mode)
            (guru-global-mode +1))
 
-  ;; (with-ability ido
-  ;;               (global-set-key (kbd "C-x b") 'ido-switch-buffer)))
-
+  ;; Tabbar Configuration
   (ability tabbar ()
            (tabbar-mode 1))
 
@@ -257,25 +261,28 @@
            (require 'emojify)
            (add-hook 'after-init-hook #'global-emojify-mode))
 
-  (set-fontset-font "fontset-default"
-                    (cons (decode-char 'ucs #x0627)
-                          (decode-char 'ucs #x0649))
-                    "Vazir")
 
-  (set-fontset-font "fontset-default"
-                    (cons (decode-char 'ucs #xFE8D)
-                          (decode-char 'ucs #xFEF0))
-                    "Vazir")
+  (ability persian ()
+           (set-fontset-font "fontset-default"
+                             (cons (decode-char 'ucs #x0627)
+                                   (decode-char 'ucs #x0649))
+                             "Vazir")
 
-  (set-fontset-font "fontset-default"
-                    (cons (decode-char 'ucs #x064e)
-                          (decode-char 'ucs #x06a9))
-                    "Vazir")
+           (set-fontset-font "fontset-default"
+                             (cons (decode-char 'ucs #xFE8D)
+                                   (decode-char 'ucs #xFEF0))
+                             "Vazir")
 
-  (set-fontset-font "fontset-default"
-                    (cons (decode-char 'ucs #x06F0)
-                          (decode-char 'ucs #x00A0))
-                    "Vazir")
+           (set-fontset-font "fontset-default"
+                             (cons (decode-char 'ucs #x064e)
+                                   (decode-char 'ucs #x06a9))
+                             "Vazir")
+
+           (set-fontset-font "fontset-default"
+                             (cons (decode-char 'ucs #x06F0)
+                                   (decode-char 'ucs #x00A0))
+                             "Vazir"))
+
   ;; Backup files ---------------------------------------------
   (ability backup-files ()
            ;; Put them in one nice place if possible
