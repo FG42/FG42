@@ -80,4 +80,4 @@
   (helm-flx-mode +1)
   (helm-mode 1)))
 
-(provide 'extension/editor/selection-candidates)
+(provide 'extensions/editor/selection-candidates)

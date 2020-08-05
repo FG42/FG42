@@ -59,4 +59,4 @@
      (doom-modeline-mode t))
 
 
-(provide 'extension/editor/modeline)
+(provide 'extensions/editor/modeline)
