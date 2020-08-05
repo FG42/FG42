@@ -304,14 +304,14 @@
 
   (setq my-path (file-name-directory load-file-name))
 
+  (require 'extensions/editor/modeline)
   (require 'extensions/editor/version)
   (require 'extensions/editor/about)
   (require 'extensions/editor/custom)
   (require 'extensions/editor/session-management)
   (require 'extensions/editor/lxdrive-mode)
-  (require 'extensions/editor/lxmodeline)
-  (require 'extension/editor/selection-candidates)
-  (require 'extension/editor/modeline)
+  (require 'extensions/editor/selection-candidates)
+
   (message "'editor' extension has been initialized."))
 
 (provide 'extensions/editor/init)
