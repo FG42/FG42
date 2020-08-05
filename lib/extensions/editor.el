@@ -93,27 +93,34 @@
               (depends-on 'helm-projectile)
               (depends-on 'helm-swoop)
               (depends-on 'helm-themes))
-
+;; In buffer search
 (with-ability swiper
 	      (depends-on 'swiper))
 
+;; Syntax highlighter
 (with-ability flycheck
               (depends-on 'flycheck))
 
+;; Emoji support
 (with-ability emoji
               (depends-on 'emojify))
 
+;; Tabbar
 (with-ability tabbar
               (depends-on 'tabbar))
 
+;; Which-key keychord helper
 (with-ability which-key
               (depends-on 'which-key))
 
+;; Mange FG42 windows easily
 (with-ability ace-window
               (depends-on 'ace-window))
 
-(if (eq system-type 'darwin)
-    (depends-on 'exec-path-from-shell))
+;; macOS compatibility
+(with-ability macos
+              (if (eq system-type 'darwin)
+                  (depends-on 'exec-path-from-shell)))
 
 ;; Extension -------------------------------------
 (extension editor
