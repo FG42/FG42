@@ -43,41 +43,65 @@
 (ability swiper (ivy)
          "Replace default isearch with swiper"
          (global-set-key "\C-s" 'swiper)
-         (global-set-key "\C-r" 'swiper)
+         (global-set-key "\C-r" 'swiper))
 
- ;; Helm -----------------------------------------------------
+;; Helm -----------------------------------------------------
 (ability helm ()
-  "Helm is an emacs incremental completion and selection narrowing framework"
-  (require 'helm)
-  (require 'helm-flx)
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (global-unset-key (kbd "C-x c"))
+         "Helm is an emacs incremental completion and selection narrowing framework"
+         (require 'helm)
+         (require 'helm-flx)
+         (global-set-key (kbd "C-c h") 'helm-command-prefix)
+         (global-set-key (kbd "M-x") 'helm-M-x)
+         (global-set-key (kbd "C-x C-f") 'helm-find-files)
+         (global-unset-key (kbd "C-x c"))
 
-  (define-key helm-map (kbd "<tab>")
-   'helm-execute-persistent-action)
+         (define-key helm-map (kbd "<tab>")
+           'helm-execute-persistent-action)
 
-  (define-key helm-map (kbd "C-i")
-   'helm-execute-persistent-action)
+         (define-key helm-map (kbd "C-i")
+           'helm-execute-persistent-action)
 
-  (define-key helm-map (kbd "C-z")
-   'helm-select-action)
+         (define-key helm-map (kbd "C-z")
+           'helm-select-action)
 
 
-  (when (executable-find "curl")
-   (setq helm-google-suggest-use-curl-p t))
+         (when (executable-find "curl")
+           (setq helm-google-suggest-use-curl-p t))
 
-  (setq helm-split-window-in-side-p t
-       helm-move-to-line-cycle-in-source t
-       helm-ff-search-library-in-sexp t
-       helm-scroll-amount 8
-       helm-ff-file-name-history-use-recentf t)
+         (setq helm-split-window-in-side-p t
+               helm-move-to-line-cycle-in-source t
+               helm-ff-search-library-in-sexp t
+               helm-scroll-amount 8
+               helm-ff-file-name-history-use-recentf t)
 
-  (setq helm-flx-for-helm-find-files t
-       helm-flx-for-helm-locate     t)
+         (setq helm-flx-for-helm-find-files t
+               helm-flx-for-helm-locate     t)
 
-  (helm-flx-mode +1)
-  (helm-mode 1)))
+         (helm-flx-mode +1)
+         (helm-mode 1))
+
+
+(ability icomplete ()
+         (require 'icomplete)
+         (require 'icomplete-vertical)
+         (global-set-key (kbd "C-n") 'icomplete-forward-completions)
+         (global-set-key (kbd "C-p") 'icomplete-backward-completions)
+         (global-set-key (kbd "C-f") 'icomplete-forward-completions)
+         (global-set-key (kbd "C-b") 'icomplete-backward-completions)
+         (global-set-key (kbd "<right>") 'icomplete-forward-completions)
+         (global-set-key (kbd "<left>") 'icomplete-backward-completions)
+         (global-set-key (kbd "<down>") 'icomplete-forward-completions)
+         (global-set-key (kbd "<up>") 'icomplete-backward-completions)
+         (global-set-key (kbd "<RET>") 'icomplete-force-complete-and-exit)
+         (global-set-key (kbd "<tab>") 'icomplete-force-complete)
+         (setq icomplete-max-delay-chars 2
+               icomplete-separator " | "
+               icomplete-show-matches-on-no-input t
+               icomplete-hide-common-prefix nil
+               completion-ignore-case t)
+         (when (> emacs-major-version 26)
+           (fido-mode -1))
+         (icomplete-mode 1))
+
 
 (provide 'extensions/editor/selection-candidates)
