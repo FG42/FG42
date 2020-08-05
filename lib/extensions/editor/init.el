@@ -48,8 +48,10 @@
   (add-to-list 'custom-theme-load-path
                (concat fg42-home "/lib/themes/custom_themes"))
 
-  ;; Remove splash screen
-  (setq inhibit-splash-screen t)
+
+  (ability silent-start ()
+           ;; Remove splash screen
+           (setq inhibit-splash-screen t))
 
   ;; scratch should be scratch
   (setq initial-scratch-message nil)
@@ -62,7 +64,7 @@
            (set-face-attribute 'default t :font fg42-font))
   ;; ------------------------------------------------------
 
-  (ability race
+  (ability race ()
       ;; Setting user preference based on the race.
       (if (is-evil?)
           (progn
@@ -82,7 +84,7 @@
   (setq delete-old-versions t)
 
   ;; FG42 motions
-  (ability fg42-motions
+  (ability fg42-motions ()
           ;; Fast Move in the buffer
           (global-set-key (kbd "M-1") 'avy-goto-word-or-subword-1)
 
@@ -142,7 +144,7 @@
            (add-hook 'after-init-hook 'global-flycheck-mode))
 
   ;; ACE Window
-  (ability ace-window
+  (ability ace-window ()
                 (global-set-key (kbd "C-<tab>") 'ace-window)
                 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
@@ -153,12 +155,12 @@
                            :key   "f9"
                            :description "Open up your todo file. checkout `fg42-todo-file` var and `fg42-open-todo` function.")
            (global-set-key [f9] 'fg42-open-todo))
-
+  ;; TODO: why ?
   (global-unset-key (kbd "C-o"))
   (global-unset-key (kbd "C-v"))
 
   ;; Cheatsheets
-  (ability cheatsheet
+  (ability cheatsheet ()
                (global-set-key (kbd "C-?") 'cheatsheet-show)
                (cheatsheet-add :group '--Navigation--
                    :key   "M-1"
@@ -197,23 +199,23 @@
 
   ;; Enhancements ---------------------------------------------
 
-  (ability hide-toolbar
+  (ability hide-toolbar ()
            (tool-bar-mode -1))
 
-  (ability hide-scroll-bar
+  (ability hide-scroll-bar ()
            (scroll-bar-mode -1))
 
-  (ability column-number-in-modeline
+  (ability column-number-in-modeline ()
            (column-number-mode t))
 
   (ability hide-menu ()
            "Hides the emacs menu completely."
            (menu-bar-mode -1))
 
-  (ability highligh-matching-parens
+  (ability highligh-matching-parens ()
            (show-paren-mode t))
 
-  (ability cua-selection-mode
+  (ability cua-selection-mode ()
            (cua-selection-mode t))
 
 
@@ -225,7 +227,7 @@
 
 
   ;; expand-region -------------------------------------------
-  (ability expand-region
+  (ability expand-region ()
            (global-set-key (kbd "C-=") 'er/expand-region))
 
   ;; Multiple cursor -----------------------------------------
@@ -237,8 +239,8 @@
   ;; Reload FG42
   (define-key global-map (kbd "C-<f5>") 'fg42-reload)
 
-  ;; HideShow -------------------------------------------------------
-  (ability hide-show
+  ;; HideShow mode -------------------------------------------------------
+  (ability hide-show ()
            (global-set-key (kbd "C-\-") 'hs-toggle-hiding)
            (hs-minor-mode))
 
