@@ -85,14 +85,20 @@
 
 (with-ability helm
               (depends-on 'helm)
-	      (depends-on 'helm-ag)
+        (depends-on 'helm-ag
               (depends-on 'helm-themes)
               (depends-on 'helm-flx)
               (depends-on 'helm-make)
               (depends-on 'helm-mode-manager)
               (depends-on 'helm-projectile)
               (depends-on 'helm-swoop)
-              (depends-on 'helm-themes))
+              (depends-on 'helm-themes)))
+
+;; Icomplete packages
+(with-ability icomplete
+              (depends-on 'orderless)
+              (depends-on 'icomplete-vertical))
+
 ;; In buffer search
 (with-ability swiper
 	      (depends-on 'swiper))
