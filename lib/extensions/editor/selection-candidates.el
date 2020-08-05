@@ -94,6 +94,7 @@
          (global-set-key (kbd "<up>") 'icomplete-backward-completions)
          (global-set-key (kbd "<RET>") 'icomplete-force-complete-and-exit)
          (global-set-key (kbd "<tab>") 'icomplete-force-complete)
+         (define-key 'icomplete-minibuffer-map (kbd "C-t") 'icomplete-vertical-toggle)
          (setq icomplete-max-delay-chars 2
                icomplete-separator " | "
                icomplete-show-matches-on-no-input t
@@ -101,7 +102,8 @@
                completion-ignore-case t)
          (when (> emacs-major-version 26)
            (fido-mode -1))
-         (icomplete-mode 1))
+         (icomplete-mode 1)
+         (icomplete-vertical-mode 1))
 
 
 (provide 'extensions/editor/selection-candidates)
