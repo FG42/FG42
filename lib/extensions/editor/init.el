@@ -217,7 +217,7 @@
            (show-paren-mode t))
 
   (ability cua-selection-mode ()
-           (cua-selection-mode))
+           (cua-selection-mode 1))
 
   (ability thin-cursor ()
            (setq-default cursor-type 'bar))
