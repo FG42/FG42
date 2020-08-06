@@ -181,6 +181,7 @@
                            :key   "C-x g"
                            :description "Rise up MAGIT. Git interface for FG42")
            (global-set-key (kbd "C-x g") 'magit-status)
+           (global-set-key (kbd "C-c v b") 'git-messenger:popup-message)
            (when (is-evil?)
              (add-hook 'magit-mode-hook (lambda () (require 'evil-magit)))
              (defkey global-map 'magit-status :evil (:normal "SPC g s"))))

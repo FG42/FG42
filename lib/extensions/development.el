@@ -9,7 +9,6 @@
 (depends-on 'yasnippet)
 (depends-on 'yasnippet-snippets)
 (depends-on 'smart-mode-line)
-
 (depends-on 'quickrun)
 (depends-on 'dash)
 (depends-on 'websocket)
@@ -35,6 +34,8 @@
               (depends-on 'diff-hl)
               (depends-on 'magit)
               (depends-on 'gh)
+              ;; Git blame
+              (depends-on 'git-messenger)
 	      (when (is-evil?)
 		(depends-on 'evil-magit)))
 
