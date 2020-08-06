@@ -81,7 +81,8 @@
 
 
   ;; Automatically removed excess backups of the file
-  (setq delete-old-versions t)
+  (ability delete-old-backups ()
+           (setq delete-old-versions t))
 
   ;; FG42 motions
   (ability fg42-motions ()
@@ -216,8 +217,7 @@
            (show-paren-mode t))
 
   (ability cua-selection-mode ()
-           (cua-selection-mode t))
-
+           (cua-selection-mode))
 
   (ability thin-cursor ()
            (setq-default cursor-type 'bar))
