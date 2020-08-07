@@ -2,6 +2,10 @@
 (require 'fg42/extension)
 
 ;; Dependencies ----------------------------------
+
+(depends-on 'spacemacs-theme)
+(depends-on 'doom-themes)
+
 (defun extensions/editor-theme-initialize ()
   "Initialize 'editor-theme' extension."
   (load-default-theme)

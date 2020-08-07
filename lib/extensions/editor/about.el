@@ -37,8 +37,8 @@ Credits:
     (view-buffer buf)))
 
 (define-key-after global-map
-                  [menu-bar help-menu about-fg42]
-		  '("About FG42" . about-fg42-f)
-		  'about-emacs)
+  [menu-bar help-menu about-fg42]
+  '("About FG42" . about-fg42-f)
+  'about-emacs)
 
 (provide 'extensions/editor/about)

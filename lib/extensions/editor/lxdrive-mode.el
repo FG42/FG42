@@ -87,6 +87,7 @@
 ;;(global-set-key (kbd "ESC ESC") 'turn-on-lxdrive)
 (global-set-key (kbd "M-SPC") 'turn-on-lxdrive)
 (global-set-key (kbd "M-TAB")  'switch-other)
+
 (with-ability spaceline
   (spaceline-toggle-lxdrive-on))
 

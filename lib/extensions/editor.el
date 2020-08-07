@@ -3,53 +3,79 @@
 (require 'extensions/editor/init)
 
 ;; Dependencies ----------------------------------
-(depends-on 'multiple-cursors)
-(depends-on 'expand-region)
 (depends-on 'seq)
 (depends-on 'ov)
-(depends-on 'cheatsheet)
-(depends-on 'all-the-icons)
-(depends-on 'markdown-mode)
-(depends-on 'json-mode)
-;; Fast move in the buffer
-(depends-on 'avy)
 
-;; Moving between windows
-(depends-on 'ace-window)
+;; Expand region
+(with-ability expand-region
+              (depends-on 'expand-region))
+
+
+;; JSON support
+(with-ability json
+              (depends-on 'json-mode))
+
+;; Markdown support.
+(with-ability markdown
+              (depends-on 'markdown-mode))
+
+;; Cheatsheets
+(with-ability cheats
+              (depends-on 'cheatsheet))
+
+;; all-the-icons ability.
+(with-ability icons
+              (depends-on 'all-the-icons))
+
+;; Fast motions based on charachters
+(with-ability char-jump
+              (depends-on 'avy))
 
 ;; Don't worry unless you're evil this mode won't start
-(depends-on 'evil)
+(with-ability evil
+              (depends-on 'evil))
 
 ;; Resize splitted windows
-(depends-on 'windresize)
+;; (depends-on 'windresize)
 
-(depends-on 'eyebrowse)
+;; i3 like workspaces for FG42
+(with-ability workspaces
+              (depends-on 'eyebrowse))
 
-;; Themes
-(depends-on 'spacemacs-theme)
-(depends-on 'doom-themes)
-;; TODO: Move this to an ability
-(depends-on 'solaire-mode)
+;; Brighter background for active windows
+(with-ability highlight-active-window
+              (depends-on 'solaire-mode))
 
-(with-ability nlinum
-              (depends-on 'nlinum))
+;; Enable line numbers if ability line-numbers is active
+(with-ability line-numbers
+              global-display-line-numbers-mode)
 
+;; Multiple cursors
+(with-ability multiple-cursors
+              (depends-on 'multiple-cursors))
+
+;; Spaceline, modeline from spacemacs project.
 (with-ability spaceline
               (depends-on 'spaceline))
 
+;; Cool modeline from doom project.
 (with-ability doom-modeline
               (depends-on 'doom-modeline))
 
+;; Learn Emacs keys the hard way.
 (with-ability guru
               (depends-on 'guru-mode))
 
+;; Tramp, edit files on remote.
 (with-ability tramp
               (depends-on 'tramp))
 
+;; ivy selection candidate and narrowing framework.
 (with-ability ivy
               (depends-on 'ivy)
               (depends-on 'counsel))
 
+;; another selection framework
 (with-ability ido
               (depends-on 'ido)
               (depends-on 'ido-completing-read+)
@@ -59,32 +85,48 @@
 
 (with-ability helm
               (depends-on 'helm)
-	      (depends-on 'helm-ag)
+        (depends-on 'helm-ag
               (depends-on 'helm-themes)
               (depends-on 'helm-flx)
               (depends-on 'helm-make)
               (depends-on 'helm-mode-manager)
               (depends-on 'helm-projectile)
               (depends-on 'helm-swoop)
-              (depends-on 'helm-themes))
+              (depends-on 'helm-themes)))
 
+;; Icomplete packages
+(with-ability icomplete
+              (depends-on 'orderless)
+              (depends-on 'icomplete-vertical))
+
+;; In buffer search
 (with-ability swiper
-              (depends-on 'swiper))
+	      (depends-on 'swiper))
 
+;; Syntax highlighter
 (with-ability flycheck
               (depends-on 'flycheck))
 
+;; Emoji support
 (with-ability emoji
               (depends-on 'emojify))
 
+;; Tabbar
 (with-ability tabbar
               (depends-on 'tabbar))
 
+;; Which-key keychord helper
 (with-ability which-key
               (depends-on 'which-key))
 
-(if (eq system-type 'darwin)
-    (depends-on 'exec-path-from-shell))
+;; Mange FG42 windows easily
+(with-ability ace-window
+              (depends-on 'ace-window))
+
+;; macOS compatibility
+(with-ability macos
+              (if (eq system-type 'darwin)
+                  (depends-on 'exec-path-from-shell)))
 
 ;; Extension -------------------------------------
 (extension editor
