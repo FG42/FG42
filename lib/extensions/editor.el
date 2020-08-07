@@ -82,12 +82,13 @@
 
 (with-ability which-key
               (depends-on 'which-key))
+
 (if (eq system-type 'darwin)
     (depends-on 'exec-path-from-shell))
 
 ;; Extension -------------------------------------
 (extension editor
 	   :version "2.31"
-	   :on-initialize extensions/editor-initialize)
-
+           :abilities '(swiper flycheck)
+           :on-initialize extensions/editor-initialize)
 (provide 'extensions/editor)

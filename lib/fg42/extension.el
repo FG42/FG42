@@ -27,8 +27,9 @@
   (on-load)
   ;; An associated array of major modes to their
   ;; debugger function
-  (print-debugger nil))
-
+  (print-debugger nil)
+  ;; List of abilities defined in this extension
+  (abilities '()))
 
 ;; Functions ------------------------------
 (defun active-ability? (name)
@@ -51,21 +52,6 @@ to them.
 
 *body* is a block of code which will run as the ability initializer code."
   (declare (doc-string 2) (indent 0))
-  `(if (active-ability? (intern ,(symbol-name name)))
-       (when (null (delq t (mapcar 'active-ability? (quote ,deps))))
-         ,@body)))
-
-
-(defmacro defability (name deps &optional docs &rest body)
-  "Define an ability with the given NAME, DEPS, DOCS and BODY.
-
-*deps* should be a list of abilities with the defined ability dependens
-to them.
-
-*body* is a block of code which will run as the ability initializer code."
-  (declare (doc-string 3) (indent 2))
-  ;; TODO: there's no point of using `if' in the quoted code. evaluate
-  ;; the `if' in compile time and return nil or evalute the body.
   `(if (active-ability? (intern ,(symbol-name name)))
        (when (null (delq t (mapcar 'active-ability? (quote ,deps))))
          ,@body)))
