@@ -14,9 +14,12 @@
 (depends-on 'gotest)
 (depends-on 'exec-path-from-shell)
 
+(defability go-2 () "GO2"
+            (message "GO 2 ability enabled"))
 
 (extension go
            :version 0.0.1
+           :abilities (go-2)
            :on-initialize extensions/go-initialize
            :docs "lib/extensions/go/readme.org")
 (provide 'extensions/go)

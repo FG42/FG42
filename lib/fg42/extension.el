@@ -69,17 +69,21 @@ to them.
 
 *body* is a block of code which will run as the ability initializer code."
   (declare (doc-string 3) (indent 2))
+  (autoload name "" docs)
   ;; TODO: there's no point of using `if' in the quoted code. evaluate
   ;; the `if' in compile time and return nil or evalute the body.
   `(if (active-ability? (intern ,(symbol-name name)))
        (when (null (delq t (mapcar 'active-ability? (quote ,deps))))
          ,@body)))
 
-
 (defmacro extension (name &rest args)
   "A simple DSL to define new fg42 extension by given NAME and ARGS."
   ;(declare (doc-string 1) (indent 1))
-  `(setq ,name (apply 'make-fg42-extension :name ,(symbol-name name) (quote ,args))))
+  (let* ((abilities (plist-get args :abilities))
+         (abilities-with-doc (mapcar (lambda (ability)
+                                       (list :name ability :doc (ability-doc-string ability))) abilities))
+         (extension-fields (plist-put args :abilities abilities-with-doc)))
+    `(setq ,name (apply 'make-fg42-extension :name ,(symbol-name name) (quote ,extension-fields)))))
 
 
 (defmacro with-ability (name &rest body)
