@@ -258,6 +258,7 @@
   (ability yaml ()
            "YAML editor."
            (require 'yaml-mode)
+           (add-hook 'yaml-mode-hook (lambda () (interactive) (whitespace-mode 1)))
            (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
            (add-to-list 'auto-mode-alist '("\\.sls\\'" . yaml-mode)))
 
