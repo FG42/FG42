@@ -27,7 +27,8 @@
   (on-load)
   ;; An associated array of major modes to their
   ;; debugger function
-  (print-debugger nil))
+  (print-debugger nil)
+  (abilities '()))
 
 
 ;; Functions ------------------------------
