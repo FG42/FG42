@@ -135,6 +135,10 @@
            "Highlights the current line."
            (global-hl-line-mode t))
 
+  ;; YAML support
+  (ability yaml ()
+           (add-hook 'yaml-mode-hook (lambda () (interactive) (whitespace-mode 1))))
+
 
   ;; Flycheck syntax checker
   (ability flycheck ()

@@ -6,6 +6,7 @@
 (require 'extensions/devops/init)
 
 ;; dependencies
+(depends-on 'yaml-mode)
 (depends-on 'kubel)
 (depends-on 'ansible)
 (depends-on 'docker)

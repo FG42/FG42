@@ -11,6 +11,11 @@
               (depends-on 'expand-region))
 
 
+
+;; YAML support
+(with-ability yaml
+              (depends-on 'yaml-mode))
+
 ;; JSON support
 (with-ability json
               (depends-on 'json-mode))
