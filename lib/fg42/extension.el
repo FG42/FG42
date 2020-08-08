@@ -3,7 +3,7 @@
 ;;; Code:
 
 ;; This library provides some basic means to create a new FG42 extensions
-(require 'cl-lib)
+(require 'cl)
 
 ;; Variables -----------------------------
 (defvar activated-extensions ()
@@ -30,6 +30,10 @@
   (print-debugger nil)
   (abilities '()))
 
+
+(defun ability-doc-string (ability)
+  "Return doc string of autoloaded symbol."
+      (nth 2 (symbol-function ability)))
 
 ;; Functions ------------------------------
 (defun active-ability? (name)
