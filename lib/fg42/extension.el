@@ -3,7 +3,7 @@
 ;;; Code:
 
 ;; This library provides some basic means to create a new FG42 extensions
-(require 'cl)
+(require 'cl-lib)
 
 ;; Variables -----------------------------
 (defvar activated-extensions ()
