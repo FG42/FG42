@@ -23,11 +23,6 @@
   ;; init function initialize the ability.
   init)
 
-(setq fg42--activated-abilities '())
-
-(setq ability1 (defability 'ability1 "" '() '(ability2) (message "Ability 1 initalizing.")))
-(setq ability2 (defability 'ability2 "" '() '() (message "Ability 2 initalizing.")))
-
 (defun conflicting? (ability1 ability2)
   "Check to see whether ability1 has any conflicts with ability2."
   (let* ((ability1-conflicts (fg42-ability-conflicts ability1))
@@ -43,11 +38,19 @@
     (mapc (lambda (conflict2)
             (when (eq conflict2 (fg42-ability-name ability1))
               (add-to-list 'conflicts conflict2)
-              )
-            ) ability2-conflicts)
-    conflicts
-    )
-)
+              )) ability2-conflicts)
+    conflicts))
+
+(defun check-for-conflicts-with-activated (activated ability)
+  "Check if given ABILITY has any conflicts in ACTIVATED abilites."
+  (let* ((all-conflicts '()))
+    (mapcar (lambda (active)
+              (let*
+                  ((this-conflicts (conflicting? active ability)))
+                (when (> (length this-conflicts) 0)
+                  (append this-conflicts all-conflicts)))
+
+            ) activated)))
 
 (defmacro defability (name doc deps conflicts &rest init)
   "Define an ability with the given NAME, DEPS, DOC, CONFLICTS and INIT.
@@ -73,7 +76,8 @@ on them.
 (defun activate-ability (ab)
   "Activate given AB by checking."
   ;; check if ability has any conflicts.
-  (ability-has-any-conflicts-with-current-activated-abilities fg42--activated-abilities ab)
+  (check-for-conflicts-with-activated fg42--activated-abilities ab)
+
   ;; check if all deps are ready and if not initialze them.
 
   ;; run initialize function
@@ -85,8 +89,6 @@ on them.
   (add-to-list
    fg42--abilities
    '(ability-name . (make-fg42-ability :name ability-name))))
-
-(defun start-ability (ability-name))
 
 (provide 'fg42/ability)
 ;;; ability ends here
