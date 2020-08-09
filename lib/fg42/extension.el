@@ -107,21 +107,6 @@ to them.
          ,@body)))
 
 
-(defmacro defability (name deps &optional docs &rest body)
-  "Define an ability with the given NAME, DEPS, DOCS and BODY.
-
-*deps* should be a list of abilities with the defined ability dependens
-to them.
-
-*body* is a block of code which will run as the ability initializer code."
-  (declare (doc-string 3) (indent 2))
-  ;; TODO: there's no point of using `if' in the quoted code. evaluate
-  ;; the `if' in compile time and return nil or evalute the body.
-  `(if (active-ability? (intern ,(symbol-name name)))
-       (when (null (delq t (mapcar 'active-ability? (quote ,deps))))
-         ,@body)))
-
-
 (defmacro extension (name &rest args)
   "A simple DSL to define new fg42 extension by given NAME and ARGS."
   ;(declare (doc-string 1) (indent 1))
