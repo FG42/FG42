@@ -21,7 +21,10 @@
   ;; conflicts holds a list of ability names.
   conflicts
   ;; init function initialize the ability.
-  init)
+  init
+  ;;
+  has-initialized
+  )
 
 (defun conflicting? (ability1 ability2)
   "Check to see whether ability1 has any conflicts with ability2."
@@ -63,25 +66,39 @@ on them.
 *body* is a block of code which will run as the ability initializer code."
   (declare (doc-string 3) (indent 2))
   (if (active-ability? name)
-                         `(make-fg42-ability
+                         `(setq fg42--abilities/,name (make-fg42-ability
                            :name ,name
                            :doc ,doc
                            :deps ,deps
                            :conflicts ,conflicts
                            :init (lambda ()
-                                   ,@init))
+                                   ,@init)
+                           :has-initialized false))
                        `(message "Ability is not disabled by user.")))
 
+(defun resolve-pkgs (ab)
+  "Resolve all dependencies."
+  (mapc #'depends-on (plist-get (fg42-ability-deps ab) :pkgs)))
+
+(defun resolve-abilities (ab)
+  (mapc (lambda (to-resolve-ability)
+          (activate-ability to-resolve-ability)) (plist-get (fg42-ability-deps ab) :abilities)))
 
 (defun activate-ability (ab)
   "Activate given AB by checking."
-  ;; check if ability has any conflicts.
-  (check-for-conflicts-with-activated fg42--activated-abilities ab)
+  (unless (fg42-ability-has-initialized ab)
 
-  ;; check if all deps are ready and if not initialze them.
+    ;; check if ability has any conflicts.
+    (check-for-conflicts-with-activated fg42--activated-abilities ab)
 
-  ;; run initialize function
-  (funcall (fg42-ability-init ab)))
+    ;; check if all deps are ready and if not initialze them.
+    (resolve-pkgs ab)
+    (resolve-abilities ab)
+
+    ;; run initialize function
+    (funcall (fg42-ability-init ab)))
+
+    )
 
 
 (defun register-ability (ability-name)
