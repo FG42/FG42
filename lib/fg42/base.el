@@ -4,7 +4,7 @@
 
 (require 'cl-lib)
 (require 'fg42/extension)
-
+(require 'fg42/ability)
 (require 'fg42/vars)
 
 

@@ -55,7 +55,7 @@
 
             ) activated)))
 
-(defmacro defability (name doc deps conflicts &rest init)
+(defmacro defability (name deps doc conflicts &rest init)
   "Define an ability with the given NAME, DEPS, DOC, CONFLICTS and INIT.
 
 *deps* should be a list of abilities with the defined ability dependens
@@ -66,8 +66,8 @@ on them.
 *body* is a block of code which will run as the ability initializer code."
   (declare (doc-string 3) (indent 2))
   (if (active-ability? name)
-                         `(setq fg42--abilities/,name (make-fg42-ability
-                           :name ,name
+                         `(setq ,(intern (concat "fg42--abilities/" (symbol-name name)) (make-fg42-ability
+                           :name name
                            :doc ,doc
                            :deps ,deps
                            :conflicts ,conflicts
