@@ -54,8 +54,8 @@
                   (append this-conflicts all-conflicts)))
 
             ) activated)))
-
-(defmacro defability (name doc deps conflicts &rest init)
+;; should return a function that has a wrapped lambda that changes the state, outter function checks if ability should be activated, if so runs thet function.
+(defmacro defability (name deps doc conflicts &rest init)
   "Define an ability with the given NAME, DEPS, DOC, CONFLICTS and INIT.
 
 *deps* should be a list of abilities with the defined ability dependens
@@ -66,17 +66,16 @@ on them.
 *body* is a block of code which will run as the ability initializer code."
   (declare (doc-string 3) (indent 2))
   (if (active-ability? name)
-      `(setq fg42--abilities/,name (make-fg42-ability
-                                    :name ,name
-                                    :doc ,doc
-                                    :deps ,deps
-                                    :conflicts ,conflicts
-                                    :init (lambda ()
-                                            ,@init)
-                                    :has-initialized false))
-    `(message "Ability is not disabled by user.")))
 
-;; should return a function that has a wrapped lambda that changes the state, outter function checks if ability should be activated, if so runs thet function.
+      `(setq ,(intern (concat "fg42--abilities/" (symbol-name name)) (make-fg42-ability
+                                                                      :name name
+                                                                      :doc ,doc
+                                                                      :deps ,deps
+                                                                      :conflicts ,conflicts
+                                                                      :init (lambda ()
+                                                                              ,@init)
+                                                                      :has-initialized false))
+             `(message "Ability is not disabled by user."))))
 
 (defun resolve-pkgs (ab)
   "Resolve all dependencies."
