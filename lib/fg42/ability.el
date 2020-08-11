@@ -66,15 +66,17 @@ on them.
 *body* is a block of code which will run as the ability initializer code."
   (declare (doc-string 3) (indent 2))
   (if (active-ability? name)
-                         `(setq fg42--abilities/,name (make-fg42-ability
-                           :name ,name
-                           :doc ,doc
-                           :deps ,deps
-                           :conflicts ,conflicts
-                           :init (lambda ()
-                                   ,@init)
-                           :has-initialized false))
-                       `(message "Ability is not disabled by user.")))
+      `(setq fg42--abilities/,name (make-fg42-ability
+                                    :name ,name
+                                    :doc ,doc
+                                    :deps ,deps
+                                    :conflicts ,conflicts
+                                    :init (lambda ()
+                                            ,@init)
+                                    :has-initialized false))
+    `(message "Ability is not disabled by user.")))
+
+;; should return a function that has a wrapped lambda that changes the state, outter function checks if ability should be activated, if so runs thet function.
 
 (defun resolve-pkgs (ab)
   "Resolve all dependencies."
@@ -96,9 +98,7 @@ on them.
     (resolve-abilities ab)
 
     ;; run initialize function
-    (funcall (fg42-ability-init ab)))
-
-    )
+    (funcall (fg42-ability-init ab))))
 
 
 (defun register-ability (ability-name)
