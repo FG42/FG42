@@ -5,7 +5,7 @@
   "dependencies": {
     "elrpc": "^0.1.0",
     "github": "^14.0.0",
-    "googleapis": "27",
+    "googleapis": "39",
     "shadow-cljs": "^2.6.7",
     "xhr2": "^0.1.4"
   }
