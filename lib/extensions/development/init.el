@@ -63,13 +63,22 @@
            (require 'lsp-ui-imenu)
 
            ;; Disabling inline actions. Accessable via lsp-execute-code-action
-           (setq lsp-ui-sideline-show-code-actions nil)
            (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
            (setq lsp-ui-sideline-ignore-duplicate t)
            (setq lsp-prefer-flymake nil)
-           (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+           (setq lsp-ui-sideline-show-code-actions t)
+           (setq lsp-ui-peek-enable t)
+           (setq lsp-ui-peek-show-directory t)
+           (setq lsp-ui-doc-enable t)
+           (setq lsp-ui-doc-position 'top)
+
+           (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+           (with-eval-after-load 'lsp-mode
+             (setq lsp-modeline-diagnostics-scope :project)))
+
 
   (ability dap ('lsp)
+           (setq dap-auto-configure-features '(sessions locals controls tooltip))
            (dap-mode 1)
            (dap-ui-mode 1))
 

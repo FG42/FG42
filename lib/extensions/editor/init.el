@@ -309,8 +309,10 @@
 
            (setq ivy-use-virtual-buffers t)
            (setq enable-recursive-minibuffers t)
-           (global-set-key (kbd "M-x") 'counsel-M-x)
+           (setq ivy-re-builders-alist
+                 '((t . ivy--regex-fuzzy)))
 
+           (global-set-key (kbd "M-x") 'counsel-M-x)
            (global-set-key (kbd "<f1> f") 'counsel-describe-function)
            (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
            (global-set-key (kbd "<f1> l") 'counsel-find-library)

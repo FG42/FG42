@@ -68,7 +68,9 @@
 (with-ability lsp
               (depends-on 'lsp-mode)
               (depends-on 'lsp-ui)
-              (depends-on 'company-lsp))
+              (depends-on 'company-lsp)
+              (with-ability ivy
+                            (depends-on 'lsp-ivy)))
 
 (with-ability dap
               (depends-on 'dap-mode))
