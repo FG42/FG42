@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }} - Authors{% endblock %}
+
+{% block content %}
+<div class="hero is-primary">
+  <div class="hero-body">
+    <div class="column is-three-fifths">
+      <h1 class="title">Authors on <strong>{{ SITENAME }}</strong></h1>
+      <div class="field is-grouped is-grouped-multiline">
+      {% for author, articles in authors|sort %}
+        <div class="control">
+          <div class="tags has-addons">
+          <a href="{{ SITEURL }}/{{ author.url }}" class="tag is-primary">{{ author }}</a>
+          <span class="tag">({{ articles|count }})</span>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

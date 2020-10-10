@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block html_lang %}{{ page.lang }}{% endblock %}
+
+{% block title %}{{ SITENAME }} - {{ page.title }}{%endblock%}
+
+{% block head %}
+  {{ super() }}
+
+  {% import 'translations.html' as translations with context %}
+  {% if translations.entry_hreflang(page) %}
+    {{ translations.entry_hreflang(page) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if page.image is defined %}
+<div id="imagemodal" class="modal">
+  <div class="modal-background" onclick="imagehide()"></div>
+  <div class="modal-content">
+    <p class="image">
+    <img src="{{ SITEURL }}/theme/images/pages/{{ page.image }}" alt="{{ page.title }}" title="{{ page.title }}, {{ page.description }}" width="640" height="640">
+    </p>
+  </div>
+  <button onclick="imagehide()" class="modal-close is-large" aria-label="close"></button>
+</div>
+{% endif %}
+<section id="content" class="section">
+  <div class="container">
+    <div class="column is-three-fifths" style="{% if page.image is defined %}background-image:radial-gradient(#2228,#222),url('{{ SITEURL }}/theme/images/pages/{{ page.image }}');height: 50%;background-position:center;background-repeat:no-repeat;background-size:cover;position:relative;border:1px solid #333;border-radius:1rem;{% else %}border:1px solid #333;border-radius:1rem;border-radius:1rem;background:#333;box-shadow:inset 0 0 3rem 2rem #222;{% endif %}margin-bottom:2rem">
+      {% if page.image is defined %}<button onclick="imageshow()" class="button is-text icon is-medium article-image"><i class="fas fa-image"></i></button>{% endif %}
+      <header>
+          <h2 class="title"><a href="{{ SITEURL }}/{{ page.save_as }}" rel="bookmark" title="Permalink to {{ page.title|striptags|replace('"', "'") }}" class="page-title"><span class="icon"><i class="{% if page.icon is defined %}{{ page.icon }}{% else %}fas fa-paperclip{% endif %}"></i></span>&nbsp;{{ page.title }}</a><small class="subtitle"><br>— {{ page.description }}</small></h2>
+ {% import 'translations.html' as translations with context %}
+ {{ translations.translations_for(page) }}
+      </header>
+      {% if page.error is defined %}
+      <hr>
+      <div class="content blog-content">
+        {{ page.content }}
+      </div>
+      {% else %}
+    </div>
+    <div class="column is-three-fifths">
+      <div class="content blog-content">
+        {{ page.content }}
+      </div>
+    </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
