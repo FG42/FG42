@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }} - Archives{% endblock %}
+
+{% block content %}
+<div class="hero is-primary">
+  <div class="hero-body">
+    <div class="column is-three-fifths">
+      <h1 class="title">Archives for <strong>{{ SITENAME }}:</strong></h1>
+      <div class="field is-grouped is-grouped-multiline">
+      <table class="table is-fullwidth">
+      {% for article in dates %}
+        <tr>
+          <th>{{ article.locale_date }}</th>
+          <td><a href="{{ SITEURL }}/{{ article.url }}" title="{{ article.summary|striptags|replace('"', "'") }}"><i class="{{ article.icon }}"></i>&nbsp;{{ article.title }},&nbsp;{{ article.description }}</a></td></tr>
+      {% endfor %}
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

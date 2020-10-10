@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }} - Categories{% endblock %}
+
+{% block content %}
+<div class="hero is-primary">
+  <div class="hero-body">
+    <div class="column is-three-fifths">
+      <h1 class="title">Categories on <strong>{{ SITENAME }}:</strong></h1>
+      <div class="field is-grouped is-grouped-multiline">
+      {% for category, articles in categories|sort %}
+        <div class="control">
+          <div class="tags has-addons">
+          <a href="{{ SITEURL }}/{{ category.url }}" class="tag is-primary">{{ category }}</a>
+          <span class="tag">({{ articles|count }})</span>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

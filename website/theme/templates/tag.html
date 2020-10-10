@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+{% block title %}{{ SITENAME }} - {{ tag }} tag{% endblock %}
+
+{% block content_title %}
+<div class="hero is-primary">
+  <div class="hero-body">
+    <div class="column is-three-fifths">
+      <h1 class="title">Articles tagged with <strong>{{ tag }}</strong>:</h1>
+    </div>
+  </div>
+</div>
+<h2></h2>
+{% endblock %}
