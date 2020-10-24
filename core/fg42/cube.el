@@ -25,20 +25,53 @@
 ;; way.  Cubes are composable and a composition of cubes creates an editor.
 ;;
 ;;; Code:
+
+(require 'seq)
 (require 'fg42/utils)
 (require 'fg42/state)
 
 
 (defun fg42/cube-apply (state cube)
   "Apply the given CUBE to the given STATE.
-It returns a cons of (new-state . cube)."
-  (cons state cube))
+It returns a new state."
+  state)
 
 
-(defun fg42/cube-bind (m f)
-  "Bind the state monad M with the given function F."
-  (let ((binder (fg42/state-bind-maker #'fg42/cube-apply)))
-    (funcall binder m f)))
+(defun fg42/cube-bind (m1 m2)
+  "Bind the M1 to M2.
+M1 and M2 are state monads.  See `fg42/utils'"
+  (lambda (state)
+    (let* ((v (funcall cube1 state)))
+      (funcall cube2
+        (fg42/cube-apply
+                 ;; State
+                 (car v)
+                 ;; Value of in the monad from M
+                 (cdr v))))))
+
+
+(defun fg42/cube-compose (cube1 cube2)
+  "Compose CUBE1 and CUBE2 to create a new cube.
+For example `(fg42/cube-compose #\'some-cube #\'some-other-cube)'"
+  (lambda ()
+    (fg42/cube-bind
+     (funcall cube1)
+     (funcall cube2))))
+
+
+(defun fg42/cube-identity ()
+  "Cube identity function."
+  (lambda (state)
+    (cons state '())))
+
+
+(defun fg42/cubes (&rest cubes)
+  "Create a new cube out of the given list of CUBES."
+  (seq-reduce  (lambda (cube1 cube2)
+                 (fg42/cube-compose cube1 cube2))
+               cubes
+               #'fg42/cube-identity))
+
 
 
 (provide 'fg42/cube)
