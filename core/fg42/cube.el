@@ -68,10 +68,9 @@ For example `(fg42/cube-compose #\'some-cube #\'some-other-cube)'"
 (defun fg42/cubes (&rest cubes)
   "Create a new cube out of the given list of CUBES."
   (seq-reduce  (lambda (cube1 cube2)
-                 (fg42/cube-compose cube1 cube2))
+                 (fg42/cube-bind cube1 cube2))
                cubes
-               #'fg42/cube-identity))
-
+               (fg42/cube-identity)))
 
 
 (provide 'fg42/cube)
