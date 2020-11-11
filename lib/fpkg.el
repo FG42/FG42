@@ -100,6 +100,7 @@
     (fpkg-initialize)))
 
 
+
 (defun official-extension-p (args)
   "Predicate to say if ARGS is an official FG42 extension."
   (member args fg42/extensions))
@@ -124,11 +125,10 @@
       `(fg42-install-extension ,(eval pkgname))
     `(use-package ,(eval pkgname) ,@details)))
 
-
-(defun depends-on (pkgname &rest args)
-  "Install the package PKGNAME with respect to the ARGS."
-  (let ((pkg (apply 'make-fpkg-dependency :name pkgname args)))
-    (puthash pkgname pkg  required-packages)))
+;; (defun depends-on (pkgname &rest args)
+;;   "Install the package PKGNAME with respect to the ARGS."
+;;   (let ((pkg (apply 'make-fpkg-dependency :name pkgname args)))
+;;     (puthash pkgname pkg  required-packages)))
 
 
 (provide 'fpkg)

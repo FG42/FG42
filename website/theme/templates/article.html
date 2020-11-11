@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block html_lang %}{{ article.lang }}{% endblock %}
+
+{% block head %}
+  {{ super() }}
+
+  {% import 'translations.html' as translations with context %}
+  {% if translations.entry_hreflang(article) %}
+    {{ translations.entry_hreflang(article) }}
+  {% endif %}
+
+  {% for tag in article.tags %}
+    <meta name="tags" content="{{ tag }}" />
+  {% endfor %}
+
+{% endblock %}
+
+{% block content %}
+{% if article.image is defined %}
+<div id="imagemodal" class="modal">
+  <div class="modal-background" onclick="imagehide()"></div>
+  <div class="modal-content">
+    <p class="image">
+    <img src="{{ SITEURL }}/theme/images/articles/{{ article.image }}" alt="{{ article.title }}, {{ article.description }}" title="{{ article.summary|striptags|replace('"', "'") }} " width="640" height="640">
+    <a href="{{ SITEURL }}/theme/images/articles/{{ article.image }}" target="_blank"><i class="fas fa-download"></i>&nbsp;{{ article.image }}</a>
+    </p>
+  </div>
+  <button onclick="imagehide()" class="modal-close is-large" aria-label="close"></button>
+</div>
+{% endif %}
+<section id="content" class="section">
+  <div class="container">
+    <div class="column is-three-fifths" style="{% if article.image is defined %}background-image:radial-gradient(#0002,#222),url('{{ SITEURL }}/theme/images/articles/{{ article.image }}');height: 50%;background-position:center;background-repeat:no-repeat;background-size:cover;position:relative;border:1px solid #333;border-radius:1rem;{% else %}border:1px solid #333;border-radius:1rem;background:#333;box-shadow:inset 0 0 3rem 2rem #222;{% endif %}margin-bottom:2rem">
+      {% if article.image is defined %}<button onclick="imageshow()" class="button is-text icon is-medium article-image"><i class="fas fa-image"></i></button>{% endif %}
+      <header>
+        <h1 class="title"><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags|replace('"', "'") }}" class="article-title"><span class="icon"><i class="{% if article.icon is defined %}{{ article.icon }}{% else %}fas fa-paperclip{% endif %}"></i></span>&nbsp;{{ article.title }}</a><small class="subtitle">{% if article.description is defined %}<br>—&nbsp;{{ article.description }}{% endif %}</small></h1>
+ {% import 'translations.html' as translations with context %}
+ {{ translations.translations_for(article) }}
+      </header>
+
+      {% if article.readtime %}
+      <p class="readtime">Estimated read time: {{article.readtime.minutes}} min.</p>
+      {% endif %}
+      <br>
+      <footer class="post-info">
+        <p>Created: <time class="published" datetime="{{ article.date.isoformat() }}">
+          {{ article.locale_date }}
+        </time></p>
+        {% if article.modified %}
+        <p>Modified: <time class="modified" datetime="{{ article.modified.isoformat() }}">
+          {{ article.locale_modified }}
+        </time></p>
+        {% endif %}
+        {% if article.authors %}
+        <address class="vcard author">
+          <p>By: {% for author in article.authors %}
+              <a class="tag is-primary" href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
+              {% endfor %}</p>
+    </address>
+    {% endif %}
+    {% if article.category %}
+    <div class="category">
+      <p>Category: <a href="{{ SITEURL }}/{{ article.category.url }}" class="tag is-primary">{{ article.category }}</a></p>
+    </div>
+    {% endif %}
+    {% if article.tags %}
+    <div class="tags">
+      <p>Tags:
+        {% for tag in article.tags %}
+        <a href="{{ SITEURL }}/{{ tag.url }}" class="tag is-primary">{{ tag }}</a>
+        {% endfor %}
+      </p>
+    </div>
+    {% endif %}
+  </footer><!-- /.post-info -->
+    </div>
+  <div class="container">
+    <div class="column is-three-fifths">
+      <div class="content blog-content">
+        {{ article.content }}
+      </div>
+    {% if article.share_post is defined and article.status != 'draft' %}
+    <p id="feedback">
+      <i class="fas fa-at"></i>&nbsp; {{ EMAIL }}
+    </p>
+    <div class="share">
+      <p id="post-share-links">
+        <a href="{{article.share_post['diaspora']}}" class="button is-text" target="_blank" rel="nofollow" title="Share on Diaspora"><i class="fab fa-diaspora"></i></a>
+        <a href="{{article.share_post['twitter']}}" class="button is-text" target="_blank" rel="nofollow" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="{{article.share_post['facebook']}}" class="button is-text" target="_blank" rel="nofollow" title="Share on Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="{{article.share_post['linkedin']}}" class="button is-text" target="_blank" rel="nofollow" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="{{article.share_post['hacker-news']}}" class="button is-text" target="_blank" rel="nofollow" title="Share on HackerNews"><i class="fab fa-hacker-news"></i></a>
+        <a href="{{article.share_post['email']}}" class="button is-text" target="_blank" rel="nofollow" title="Share via Email"><i class="fas fa-at"></i></a>
+        <a href="{{article.share_post['reddit']}}" class="button is-text" target="_blank" rel="nofollow" title="Share via Reddit"><i class="fab fa-reddit"></i></a>
+      </p>
+    </div>
+    {% endif %}
+    {% if article.prev_article_in_category or article.next_article_in_category or article.prev_article or article.next_article %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% if article.prev_article_in_category %}
+      <a href="{{ SITEURL }}/{{ article.prev_article_in_category.url }}" class="pagination-previous" title="{{ article.prev_article_in_category.title }}, {{ article.prev_article_in_category.description }}"><i class="{% if article.prev_article_in_category.icon %}{{ article.prev_article_in_category.icon }}{% else %}fas fa-paperclip{% endif %}"></i>&nbsp;{{ article.prev_article_in_category.title }}</a>
+      {% elif article.prev_article %}
+      <a href="{{ SITEURL }}/{{ article.prev_article.url }}" class="pagination-previous" title="{{ article.prev_article.title }}, {{ article.prev_article.description }}"><i class="{% if article.prev_article.icon %}{{ article.prev_article.icon }}{% else %}fas fa-paperclip{% endif %}"></i>&nbsp;{{ article.prev_article.title }}</a>
+      {% else %}
+      <a href="{{ SITEURL }}" class="pagination-previous" title="Latest articles"><i class="fas fa-home"></i>&nbsp;Home page</a>
+      {% endif %}
+      {% if article.next_article_in_category %}
+      <a href="{{ SITEURL }}/{{ article.next_article_in_category.url }}" class="pagination-next" title="{{ article.next_article_in_category.title }}, {{ article.next_article_in_category.description }}"><i class="{% if article.next_article_in_category.icon %}{{ article.next_article_in_category.icon }}{% else %}fas fa-paperclip{% endif %}"></i>&nbsp;{{ article.next_article_in_category.title }}</a>
+      {% elif article.next_article %}
+      <a href="{{ SITEURL }}/{{ article.next_article.url }}" class="pagination-next" title="{{ article.next_article.title }}, {{ article.next_article.description }}"><i class="{% if article.next_article.icon %}{{ article.next_article.icon }}{% else %}fas fa-paperclip{% endif %}"></i>&nbsp;{{ article.next_article.title }}</a>
+      {% else %}
+      <a href="{{ SITEURL }}" class="pagination-next" title="Latest articles"><i class="fas fa-home"></i>&nbsp;Home page</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+    </div>
+  </div><!-- /.entry-content -->
+  </div>
+</section>
+{% endblock %}

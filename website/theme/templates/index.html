@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="content">
+{% block content_title %}
+  <div class="hero is-primary">
+    <div class="hero-body">
+      <div class="container has-text-centered column is-three-fifths">
+        <figure class="avatar image is-128x128">
+          <img src="{{ SITEURL }}/theme/images/logo.png" alt="{{ AUTHOR }}'s avatar" title="{{ AUTHOR }} - {{ DESCRIPTION }}" width="128" height="128">
+        </figure>
+        <h1 class="title">{{ SITENAME }}</h1>
+        <p class="subtitle">{{ DESCRIPTION }}</p>
+        <p>If you love GNU/Emacs, If you love to program in an editor instead of big slow IDE but still enjoy to have a handy code editor then FG42 is the right choice for you.
+        <br>
+If you need help, or even want to just say hello, try our IRC channel on freenode: #5hit.
+        </p>
+        <br> 
+	<div class="buttons has-addons is-centered">
+          <a class="button is-primary is-rounded is-index" href="https://dl.fg42.org">Download</a>
+          <a class="button is-primary is-rounded is-index" href="/release-notes.html">Release Note</a>
+	</div>
+    </div>
+  </div>
+{% endblock %}
+
+<section id="post-list" class="section">
+{% for article in articles_page.object_list %}
+  <div class="container">
+    <div class="column is-three-fifths">
+      <article class="content">
+        <header>
+          <h2 class="title"><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags|replace('"', "'") }}" class="article-title"><span class="icon"><i class="{% if article.icon is defined %}{{ article.icon }}{% else %}fas fa-paperclip{% endif %}"></i></span>&nbsp;{{ article.title }}</a><small class="subtitle">{% if article.description is defined %}<br>—&nbsp;{{article.description}}{% endif %}</small></h2>
+        </header>
+        <div class="entry-content"> {{ article.summary }} </div><!-- /.entry-content -->
+      </article>
+    </div>
+  </div>
+{% endfor %}
+</section><!-- /#posts-list -->
+{% if articles_page.has_other_pages() %}
+    {% include 'pagination.html' %}
+{% endif %}
+</div><!-- /#content -->
+{% endblock content %}
