@@ -10,7 +10,6 @@
 (depends-on 'go-mode)
 (depends-on 'go-add-tags)
 (depends-on 'go-stacktracer)
-(depends-on 'go-eldoc)
 (depends-on 'gotest)
 (depends-on 'exec-path-from-shell)
 

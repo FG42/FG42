@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="{% block html_lang %}{{ DEFAULT_LANG }}{% endblock html_lang %}">
+<head>
+  {% block head %}
+  <meta charset="utf-8" />
+  <title>{% if article is defined and article.title is defined %}{{ article.title|title }}{% if article.description is defined %}, {{ article.description }}{% endif %}{% elif page is defined and page.title is defined %}{{ page.title|title }}{% if page.description is defined %}, {{ page.description }}{% endif %}{% else %}{{ SITENAME }}{% endif %}</title>
+  <link rel="stylesheet" href="{{ SITEURL }}/theme/css/bulma.css?v=0">
+  <link rel="stylesheet" href="{{ SITEURL }}/theme/css/pygment.min.css?v=0">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ SITEURL }}/theme/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ SITEURL }}/theme/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ SITEURL }}/theme/images/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" href="{{ SITEURL }}/theme/images/favicon/favicon.svg">
+  <link rel="manifest" href="{{ SITEURL }}/theme/images/favicon/site.webmanifest?0">
+  <link rel="canonical" href="{{ SITEURL }}/{{ output_file }}">
+  <meta name="description" content="{% if article is defined and article.summary is defined %}{{ article.summary|striptags|replace('"', "'") }}{% elif page is defined and page.summary is defined %}{{ page.summary|striptags|replace('"', "'") }}{% else %}{{ DESCRIPTION }}{% endif %}">
+  <meta name="author" content="{{ AUTHOR }}">
+  <meta name="generator" content="Pelican {{ PELICAN_VERSION }}">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="{% if article is defined or page is defined %}article{% else %}profile{% endif %}">
+  <meta property="og:title" content="{% if article is defined and article.title is defined %}{{ article.title|title }}{% if article.description is defined %}, {{article.description }}{% endif %}{% elif page is defined and page.title is defined %}{{ page.title|title }}{% if page.description is defined %}, {{ page.description }}{% endif %}{% else %}{{ SITENAME }}{% endif %}">
+  <meta property="og:description" content="{% if article is defined and article.summary is defined %}{{ article.summary|striptags|replace('"', "'") }}{% elif page is defined and page.summary is defined %}{{ page.summary|striptags|replace('"', "'") }}{% else %}{{ DESCRIPTION }}{% endif %}">
+  <meta property="og:url" content="{{ SITEURL }}{% if article is defined and article.url is defined %}/{{ article.url }}{% elif page is defined and page.url is defined %}/{{ page.save_as }}{% endif %}">
+  <meta property="og:image" content="{{ SITEURL }}{% if article is defined and article.image is defined %}/theme/images/articles/{{ article.image }}{% elif page is defined and page.image is defined %}/theme/images/pages/{{ page.image }}{% else %}/theme/images/logo.png{% endif %}">
+  <meta property="og:site_name" content="{{ SITENAME }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@pouyaabbassi">
+  <meta name="twitter:title" content="{% if article is defined and article.title is defined %}{{ article.title|title }}{% if article.description is defined %}, {{ article.description }}{% endif %}{% elif page is defined and page.title is defined %}{{ page.title }}{% if page.description is defined %}, {{ page.description }}{% endif %}{% else %}{{ SITENAME }}{% endif %}">
+  <meta name="twitter:description" content="{% if article is defined and article.summary is defined %}{{ article.summary|striptags|replace('"', "'") }}{% elif page is defined and page.summary is defined %}{{ page.summary|striptags|replace('"', "'") }}{% else %}{{ DESCRIPTION }}{% endif %}">
+  <meta name="twitter:image" content="{{ SITEURL }}{% if article is defined and article.image is defined %}/theme/images/articles/{{ article.image }}{% elif page is defined and page.image is defined %}/theme/images/pages/{{ page.image }}{% else %}/theme/images/logo.png{% endif %}">
+  <meta name="twitter:image:alt" content="{% if article is defined and article.title is defined %}{{ article.title }}{% elif page is defined and page.title is defined %}{{ page.title }}{% else %}{{ DESCRIPTION }}{% endif %}">
+  {% if FEED_ALL_ATOM %}
+  <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
+  {% endif %}
+  {% if FEED_ALL_RSS %}
+  <link href="{{ FEED_DOMAIN }}/{% if FEED_ALL_RSS_URL %}{{ FEED_ALL_RSS_URL }}{% else %}{{ FEED_ALL_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed" />
+  {% endif %}
+  {% if FEED_ATOM %}
+  <link href="{{ FEED_DOMAIN }}/{%if FEED_ATOM_URL %}{{ FEED_ATOM_URL }}{% else %}{{ FEED_ATOM }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed" />
+  {% endif %}
+  {% if FEED_RSS %}
+  <link href="{{ FEED_DOMAIN }}/{% if FEED_RSS_URL %}{{ FEED_RSS_URL }}{% else %}{{ FEED_RSS }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed" />
+  {% endif %}
+  {% if CATEGORY_FEED_ATOM and category %}
+  <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_ATOM_URL %}{{ CATEGORY_FEED_ATOM_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_ATOM.format(slug=category.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Categories Atom Feed" />
+  {% endif %}
+  {% if CATEGORY_FEED_RSS and category %}
+  <link href="{{ FEED_DOMAIN }}/{% if CATEGORY_FEED_RSS_URL %}{{ CATEGORY_FEED_RSS_URL.format(slug=category.slug) }}{% else %}{{ CATEGORY_FEED_RSS.format(slug=category.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Categories RSS Feed" />
+  {% endif %}
+  {% if TAG_FEED_ATOM and tag %}
+  <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_ATOM_URL %}{{ TAG_FEED_ATOM_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_ATOM.format(slug=tag.slug) }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Tags Atom Feed" />
+  {% endif %}
+  {% if TAG_FEED_RSS and tag %}
+  <link href="{{ FEED_DOMAIN }}/{% if TAG_FEED_RSS_URL %}{{ TAG_FEED_RSS_URL.format(slug=tag.slug) }}{% else %}{{ TAG_FEED_RSS.format(slug=tag.slug) }}{% endif %}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Tags RSS Feed" />
+  {% endif %}
+  {% endblock head %}
+</head>
+
+<body id="index" class="home">
+  <div class="bar-top"></div>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="{{ SITEURL }}">
+	  <!--<img src="{{ SITEURL }}/theme/images/logo.svg" alt="PouyaCode logo" title="{{ SITENAME }}, {{ DESCRIPTION }}" width="112" height="24">-->
+          <img src="{{ SITEURL }}/theme/images/logo.png" alt="{{ AUTHOR }}'s avatar" title="{{ AUTHOR }} - {{ DESCRIPTION }}" width="128" height="128">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+        {% for title, link in MENUITEMS %}
+          <a class="navbar-item" href="{{ link }}">{{ title }}</a>
+        {% endfor %}
+        {% if DISPLAY_PAGES_ON_MENU and pages%}
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Pages
+            </a>
+            <div class="navbar-dropdown">
+          {% for p in pages %}
+              <a class="navbar-item{% if p == pages %} is-active{% endif %}" href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
+          {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+        {% if DISPLAY_CATEGORIES_ON_MENU and categories %}
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Categories
+            </a>
+            <div class="navbar-dropdown">
+          {% for cat, null in categories %}
+             <a class="navbar-item{% if cat == category %} is-active{% endif %}" href="{{ SITEURL }}/{{ cat.url }}">{{ cat }}</a>
+          {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+        </div>
+
+        <div class="navbar-end">
+            {% for name, url, icon in SOCIAL %}
+	    <a class="navbar-item is-large" href="{{ url }}" id="{{ name|lower|replace(" ", "-") }}" title="{{ name }}" rel="nofollow" target="_blank">
+              <span class="is-large icon">
+                <i class="{{ icon }} fa-lg" aria-hidden="true"></i>
+              </span>
+              <span class="is-large is-hidden-desktop">{{ name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="bar-bottom"></div>
+  <section class="container">
+  {% block content %}
+  {% endblock %}
+  </section>
+  <div class="bar-top"></div>
+  <footer class="footer">
+    <div class="has-text-centered">Copyright (C) 2010-2020 {{ AUTHOR }}</div>
+  </footer>
+  <div class="bar-bottom"></div>
+  <script defer
+	  src="{{ SITEURL }}/theme/js/main.min.js?v=1"
+	  integrity="sha512-3qH6slFBFab+YwfkDldOqTdd7PJnQbZIvx8bkpivsdHJpcFc07feIvsgYjmlyJdwe+4br33qhQ+4WKyp96z5Uw=="></script>
+{% include "gosquared.html" %}
+{% include "google.html" %}
+</body>
+</html>

@@ -30,3 +30,15 @@ smex-items
 elpa/
 bm-repository
 .fpkg-v3/
+website/__pycache__/
+website/*.pyc
+website/.sass-cache/
+website/theme/static/css/bulma.css
+website/output/
+website/public/
+website/*.old.jpg
+website/pelican-plugins/
+website/.*.swp
+website/*~
+#*#
+

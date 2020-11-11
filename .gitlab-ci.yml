@@ -11,6 +11,7 @@ stages:
   script:
     - cd ~/.fg42/ && fg42 -nw --script build.el
 
+
 .build-v3:
   image: debian:stable-slim
   stage: build
@@ -24,8 +25,20 @@ build-branches-v3:
   extends: .build-v3
   only:
     - branches
-  except:
-    - tags
+
+build-branches:
+  extends: .build
+  script:
+    - cd /root/.fg42/ && fg42 -nw --script build.el
+    - cd /root/ && tar zcf ~/fg42.$CI_COMMIT_REF_NAME.tar.gz .fg42/
+    - mv ~/fg42.$CI_COMMIT_REF_NAME.tar.gz /builds/$CI_PROJECT_PATH/
+  artifacts:
+    name: "fg42.$CI_COMMIT_REF_SLUG"
+    when: on_success
+    paths:
+    - fg42.$CI_COMMIT_REF_NAME.tar.gz
+  only:
+    - branches
 
 build-branches:
   extends: .build
