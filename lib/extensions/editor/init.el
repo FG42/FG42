@@ -300,6 +300,17 @@
            (setq ido-enable-flex-matching t)
            (ido-vertical-mode 1))
 
+  (ability selectrum ()
+           "Selectrum is a better replacement for IDO and Ivy"
+           (require 'selectrum)
+           (require 'selectrum-prescient)
+           (require 'ctrlf)
+
+           (selectrum-mode +1)
+           (selectrum-prescient-mode +1)
+           (prescient-persist-mode +1)
+           (ctrlf-mode +1)
+           (setq prescient-filter-method '(literal fuzzy regexp initialism)))
 
   (ability ivy ()
            "Completion using ivy."
