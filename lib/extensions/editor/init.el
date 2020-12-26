@@ -248,6 +248,7 @@
 
   ;; expand-region -------------------------------------------
   (global-set-key (kbd "C-=") 'er/expand-region)
+  (global-set-key (kbd "C-+") 'er/contract-region)
 
   ;; Multiple cursor -----------------------------------------
   ;; multiple cursor configurations
