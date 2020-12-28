@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+{% block title %}{{ SITENAME }} - {{ category }} category{% endblock %}
+
+{% block content_title %}
+<div class="hero is-primary">
+  <div class="hero-body">
+    <div class="column is-three-fifths">
+      <h1 class="title">Articles in the <strong>{{ category }}</strong> category:</h1>
+      <a href="{{ SITEURL }}/feeds/{{ category|lower }}.atom.xml" class="tag is-primary"><i class="fas fa-rss"></i>&nbsp;{{ category }}'s atom feed</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
