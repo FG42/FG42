@@ -41,12 +41,13 @@
   :group 'simple-serene-mode)
 
 (defvar serene-simple-mode-special-forms
-  '("do" "let" "def" "fn" "quote" "cond" "if"))
+  '("do" "let" "def" "fn" "quote" "cond" "if"
+    "defn" "defmacro" "list" "ns"))
 
 
 (defconst serene-simple-mode-builtin-fns
   '("=" ">" "<" ">=" "<=" "and" "or" "not" "first" "rest" "println"
-    "quit" "+" "*" "/" "-" "conj" "mod" "new"))
+    "quit" "+" "*" "/" "-" "conj" "mod" "new" "pr" "prn" "print"))
 
 
 (defconst serene-simple-mode-builtin-types
