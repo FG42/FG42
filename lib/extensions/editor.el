@@ -50,6 +50,11 @@
               (depends-on 'ivy)
               (depends-on 'counsel))
 
+(with-ability selectrum
+              (depends-on 'selectrum)
+              (depends-on 'selectrum-prescient)
+              (depends-on 'ctrlf))
+
 (with-ability ido
               (depends-on 'ido)
               (depends-on 'ido-completing-read+)

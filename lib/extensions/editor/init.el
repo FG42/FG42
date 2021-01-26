@@ -248,6 +248,7 @@
 
   ;; expand-region -------------------------------------------
   (global-set-key (kbd "C-=") 'er/expand-region)
+  (global-set-key (kbd "C-+") 'er/contract-region)
 
   ;; Multiple cursor -----------------------------------------
   ;; multiple cursor configurations
@@ -300,6 +301,18 @@
            (setq ido-enable-flex-matching t)
            (ido-vertical-mode 1))
 
+  (ability selectrum ()
+           "Selectrum is a better replacement for IDO and Ivy"
+           (require 'selectrum)
+           (require 'selectrum-prescient)
+
+           (selectrum-mode +1)
+           (selectrum-prescient-mode +1)
+           (prescient-persist-mode +1)
+           (when-not-wm
+             (require 'ctrlf)
+             (ctrlf-mode +1))
+           (setq prescient-filter-method '(literal fuzzy regexp initialism)))
 
   (ability ivy ()
            "Completion using ivy."
