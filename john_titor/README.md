@@ -1,3 +1,0 @@
-# John Titor
-
-# WTF?
