@@ -125,7 +125,6 @@
       `(fg42-install-extension ,(eval pkgname))
     `(use-package ,(eval pkgname) ,@details)))
 
-
 (defun depends-on (pkgname &rest args)
   "Install the package PKGNAME with respect to the ARGS."
   (let ((pkg (apply 'make-fpkg-dependency :name pkgname args)))
