@@ -1,6 +1,6 @@
-;;; FG42 --- The mighty editor for the emacsians -*- lexical-binding: t; -*-
+;;; ElispCube --- The elisp cube for FG42 -*- lexical-binding: t; -*-
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42
@@ -20,36 +20,22 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
+;; Cubes are the building blocks of any `FG42' editor.  Each `cube' is a
+;; unit which defines different abilities in a deterministic and idempotent
+;; way.  Cubes are composable and a composition of cubes creates an editor.
+;;
 ;;; Code:
 (require 'fg42/cube)
-(require 'fg42/state)
-(require 'fg42/system/utils)
-
-(defvar fg42-home (getenv "FG42_HOME")
-  "The pass to fg42-home.")
-
-(defvar fg42-tmp (concat fg42-home "/tmp"))
 
 
-(autoload 'fg42-system/start "fg42/system"
-  "Starts the given SYSTEM.")
+(defun fg42/elisp-cube ()
+  "Elisp Cube of FG42."
+  (fg42/state-return
+   (list
+    '(name . "elisp")
+    (cons 'keys '())
+    (cons 'dependencies '((paredit-mode . :latest))))))
 
 
-(defun load-user-config (file)
-  "Load the given FILE as user config file."
-  (if (file-exists-p file)
-      (load-file file)))
-
-
-(defun fg42/start! (system)
-  "Start the given SYSTEM description."
-  (fg42-system/set-system! system)
-
-  (add-hook 'window-setup-hook
-            (lambda ()
-              (fg42-system/start)
-              (fg42-extensions/setup-extensions system))))
-
-
-(provide 'fg42)
-;;; fg42.el ends here
+(provide 'cubes/elisp)
+;;; elisp.el ends here

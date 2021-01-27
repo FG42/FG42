@@ -1,4 +1,4 @@
-;;; system --- System library of FG42 -*- lexical-binding: t; -*-
+;;; dependencies --- System library of FG42 -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
 ;;
@@ -27,29 +27,17 @@
 (require 'fg42/state)
 
 
-(defun fg42/system-register-cube (name cube)
-  "Add the given CUBE with the given NAME to the system.
-
-System is a state monad that returns by state-cons"
-  (fg42/state-cons 'cubes (cons name cube)))
-
-
-(comment
-  (fg42/state-run
-   (fg42/system-add-cube 'sam '(1 2 3)) (funcall (fg42/state-unit) '())))
-
-
-;;;###autoload
-(defun fg42-system/start ()
-  "Start the system from `fg42-get-current-system'."
-  (require 'fg42/utils)
-  (require 'fg42/system/core)
-  (require 'fg42/system/utils)
-
-  (debug-message "Starting the default system.")
-  (let ((sys (fg42-system/get-active-system)))
-    (funcall (fg42-system-start sys) sys)))
+(defun fg42/system-merge-dependencies (cube-name deps)
+  "Retun an updated STATE with the given dependencies DEPS for CUBE-NAME."
+  (lambda (state)
+    (fg42/state-value
+     (if deps
+         ;; TODO: Validate the deps here
+         (cons (cons 'dependencies
+                     (append (assoc 'dependencies state) deps))
+               state)
+       state))))
 
 
-(provide 'fg42/system)
-;;; system.el ends here
+(provide 'fg42/system/dependencies)
+;;; dependencies.el ends here

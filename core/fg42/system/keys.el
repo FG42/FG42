@@ -1,4 +1,4 @@
-;;; fpkg --- Package manager for FG42 -*- lexical-binding: t; -*-
+;;; dependencies --- System library of FG42 -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
 ;;
@@ -20,10 +20,24 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
+;; `System' is just a state monad which holds the state of the editor.
+;; Each system has to have a `start' function to start the setup process.
+;;
 ;;; Code:
-(require 'fg42/system/api)
+(require 'fg42/state)
 
 
+(defun fg42/system-merge-keys (state cube-name keys)
+  "Retun an updated STATE with the given KEYS for CUBE-NAME."
+  (lambda (state)
+    (fg42/state-value
+     (if keys
+         ;; TODO: Validate the keys here
+         (cons (cons 'keys
+                     (append (assoc 'keys state) keys))
+               state)
+       state))))
 
-(provide 'fg42/fpkg/core)
-;;; core.el ends here
+
+(provide 'fg42/system/keys)
+;;; keys.el ends here

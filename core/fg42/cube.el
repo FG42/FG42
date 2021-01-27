@@ -31,18 +31,27 @@
 (require 'fg42/state)
 
 
-(defun fg42/cube-apply (state cube)
-  "Apply the given CUBE to the given STATE.
+(defun fg42/cube-apply (state cube-value)
+  "Apply the given CUBE-VALUE to the given STATE.
 It returns a new state."
-  state)
+  (let ((name (assoc 'name cube-value)))
+    (fg42/state-run
+     (fg42/state-compose-states
+      ;; insert the cube into the state
+      (fg42/system-register-cube name cube-value)
+      ;; Add the dependencies of the cube to the state
+      (fg42/system-merge-dependencies name (assoc 'dependencies cube-value))
+      ;; Add the keybindings of the cube to the state
+      (fg42/system-merge-keys name (assoc 'keys cube-value)))
+     state)))
 
 
 (defun fg42/cube-bind (m1 m2)
   "Bind the M1 to M2.
 M1 and M2 are state monads.  See `fg42/utils'"
   (lambda (state)
-    (let* ((v (funcall cube1 state)))
-      (funcall cube2
+    (let* ((v (funcall m1 state)))
+      (funcall m2
         (fg42/cube-apply
                  ;; State
                  (car v)
@@ -59,10 +68,10 @@ For example `(fg42/cube-compose #\'some-cube #\'some-other-cube)'"
      (funcall cube2))))
 
 
-(defun fg42/cube-identity ()
+(defun fg42/cube-empty ()
   "Cube identity function."
   (lambda (state)
-    (cons state '())))
+    (fg42/state-value state)))
 
 
 (defun fg42/cubes (&rest cubes)
@@ -70,8 +79,14 @@ For example `(fg42/cube-compose #\'some-cube #\'some-other-cube)'"
   (seq-reduce  (lambda (cube1 cube2)
                  (fg42/cube-bind cube1 cube2))
                cubes
-               (fg42/cube-identity)))
+               (fg42/cube-empty)))
 
+(comment
+  (fg42/system
+   (fg42/cubes
+    (python-cube 2 3)
+    (swag)
+    (asd))))
 
 (provide 'fg42/cube)
 ;;; cube.el ends here

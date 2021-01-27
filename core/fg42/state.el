@@ -24,14 +24,30 @@
 ;; unit which defines different abilities in a deterministic and idempotent
 ;; way.  Cubes are composable and a composition of cubes creates an editor.
 ;;
+;; 'M' => (state . value)
 ;;; Code:
+
+(require 'seq)
 (require 'fg42/utils)
+
+
+(defun fg42/state-value (s &optional v)
+  "Return a monadic value from state S and optional value V."
+  (cons s v))
+
+
+(comment
+  (fg42/state-value '(2)))
 
 
 (defun fg42/state-return (x)
   "Return a state monad containing X."
   (lambda (state)
-    (cons state x)))
+    (fg42/state-value state x)))
+
+
+(comment
+  (funcall (fg42/state-return 4) '(3)))
 
 
 (defun fg42/state-bind-maker (binder-fn)
@@ -58,26 +74,105 @@ This monad describes the entire editor configuration"
   ;; Why not a cl-struct ?
   ;; Because first, we want it to be human readable
   (lambda (state)
-    (cons
-     (list '(:mode->keybindings . ())
-           '(:mode->prefix . ())
-           '(:mode->fn . ())
-           '(:cubes . ()))
-     ())))
+    (let ((init (list '(mode->keybindings . ())
+                      '(mode->prefix . ())
+                      '(mode->fn . ())
+                      '(dependencies . ())
+                      '(cubes . ()))))
+      (fg42/state-value init init))))
+
+
+(comment
+  (assoc 'cubes (funcall (fg42/state-unit) 3)))
 
 
 (defun fg42/state-get (k &optional default)
   "Return the value of the given K from the STATE.
 It will return DEFAULT in case of a missing key."
   (lambda (state)
-    (or (cdr (assoc k state)) default)))
+    (fg42/state-value
+     state
+     (or (cdr (assoc k state)) default))))
 
+
+(comment
+  (funcall (fg42/state-get 'name) '((age . 22) (name . "sameer"))))
 
 
 (defun fg42/state-cons (k v)
   "Add the given value V to the list addressed by key K on STATE."
   (lambda (state)
-    (cons (cons k (cons v (or (fg42/state-get state k) '()))) state)))
+    (fg42/state-value
+     (cons
+      (cons k
+            (cons v
+                  (funcall (fg42/state-get k '()) state)))
+      state))))
+
+
+(defun fg42/state-bind (m f)
+  "Bind the monad M to the monadic function F."
+  (lambda (state)
+    (let ((v (funcall m state)))
+      (funcall (funcall f (cdr v)) (car v)))))
+
+
+(defun fg42/state-compose-states (&rest ms)
+  "Bind monad in MS together."
+  (lambda (state)
+    (cond
+     ((= 0 (length ms)) (fg42/state-value state))
+     ((= 1 (length ms)) (fg42/state-run (car ms) state))
+     (t
+      (seq-reduce
+       (lambda (composition m)
+         (fg42/state-run m (car composition)))
+       (cdr ms)
+       (fg42/state-run (car ms) state))))))
+
+
+(comment
+  (fg42/state-run
+   (fg42/state-compose-states
+    (lambda (s) (fg42/state-value (cons 4 s) 14))
+    (lambda (s) (fg42/state-value (cons 5 s) 15))
+    (lambda (s) (fg42/state-value (cons 6 s) 16)))
+   '())
+
+  (funcall
+   (fg42/state-bind
+    (lambda (state)
+      (cons '((age . 3)) '(4 5)))
+    (lambda (x)
+      (lambda (state)
+        (cons
+         state
+         (+ (car x) (cadr x) 10)))))
+   '()))
+
+
+(defun fg42/state-compose (f1 f2)
+  "Compose the given function F1 with F2."
+  (lambda (&rest xs)
+    (>>= (apply f1 xs) f2)))
+
+
+(comment
+  (setq s 10)
+  (defun add (x)
+    (lambda (state) (cons (+ state x) (- x 1))))
+  (defun mul (x)
+    (lambda (state)
+      (fg42/state-value (* state x) (- x 1))))
+
+  (funcall
+   (funcall (fg42/state-compose #'add #'mul) 20)
+   s))
+
+
+(defun fg42/state-run (m s)
+  "Evaluate the given state monad M with the given state S."
+  (funcall m s))
 
 
 (provide 'fg42/state)
