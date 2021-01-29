@@ -24,7 +24,7 @@
 ;; Each system has to have a `start' function to start the setup process.
 ;;
 ;;; Code:
-(require 'fg42/state)
+(require 'fg42/system/dependencies)
 
 
 ;;;###autoload
@@ -33,14 +33,9 @@
   (require 'fg42/utils)
   (require 'fg42/system/core)
   (require 'fg42/system/dependencies)
-  (require 'fg42/system/utils)
 
-  (debug-message "Starting the default system.")
   (let ((system-map (funcall system '())))
     (fg42/system-install-dependencies system-map)))
-
-
-
 
 
 (provide 'fg42/system)

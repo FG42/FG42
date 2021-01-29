@@ -35,7 +35,8 @@
      system
      '(:name "elisp"
        :keys nil
-       :dependencies ((paredit-mode . :latest))))))
+       :dependencies ((:name rainbow-delimiters
+                       :version :latest))))))
 
 
 (provide 'cubes/elisp)

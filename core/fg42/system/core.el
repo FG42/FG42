@@ -27,7 +27,7 @@
 
 (require 'cl-lib)
 (require 'fg42/utils)
-(require 'fg42/state)
+
 
 (defun fg42/system-cons (system k v)
   "Set the given key K to the given value V in the SYSTEM."
@@ -59,7 +59,7 @@
 
 
 (defmacro defsystem (name props &rest body)
-  "Define a system with the given NAME, DOCSTRING and BODY."
+  "Define a system with the given NAME, PROPS and BODY."
   (declare (indent 1))
   `(defun ,name ()
      (fg42/cube-compose ,@body)))

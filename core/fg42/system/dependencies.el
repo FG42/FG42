@@ -24,6 +24,7 @@
 ;; Each system has to have a `start' function to start the setup process.
 ;;
 ;;; Code:
+(require 'fpkg)
 (require 'fg42/system/core)
 
 
@@ -35,17 +36,51 @@
     system))
 
 
+(defun fg42/system-dependencies (system)
+  "Return a flat list of dependencies of the SYSTEM."
+  (seq-reduce
+   (lambda (lst pair)
+     (append lst (cdr pair)))
+   (fg42/system-get system :dependencies)
+   '()))
+
 (defun fg42/system-install-dependency (dep)
-  "Install the given dependency DEP."
-  (message ">>>> %s" dep))
+  "Install the given dependency list DEP.
+dep is in (cube-name (...dependencies...)) format."
+  (message "Installing dependencies of '%s' cube..." (car dep))
+  (mapcar #'fpkg/install-package (cdr dep)))
 
 
 (defun fg42/system-install-dependencies (system)
   "Install the dependencies in the SYSTEM."
-  (mapcar #'fg42/system-install-dependency
-          (fg42/system-get system :dependencies))
+  (when (not (fg42/system-dependencies-installed? system))
+    (fg42/system-refresh-package-index system)
+    (mapc #'fg42/system-install-dependency
+          (fg42/system-get system :dependencies)))
   system)
 
+
+(defun fg42/system-refresh-package-index (system)
+  "Refresh the package index of the SYSTEM is dependencies were missing."
+  (unless (fg42/system-dependencies-installed? system)
+    ;; check for new packages (package versions)
+    (message "Refreshing package database...")
+    ;; TODO: call different function to update every source
+    ;;       in the system. Something similar to what we do
+    ;;       with package-install on FPKG
+    (fpkg/initialize system)
+    (package-refresh-contents)))
+
+
+(defun fg42/system-dependencies-installed? (system)
+  "Return t if all the dependencies of the given SYSTEM are installed."
+  (let ((pkgs (fg42/system-dependencies system)))
+    (seq-reduce
+     (lambda (all-installed? pkg)
+       (and all-installed?
+            (fpkg/package-installed? pkg)))
+     pkgs
+     t)))
 
 
 (provide 'fg42/system/dependencies)

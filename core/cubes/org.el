@@ -35,7 +35,7 @@
      system
      '(:name "org"
        :keys nil
-       :dependencies ((org-mode . :latest))))))
+       :dependencies ((:name org :version :latest))))))
 
 
 (provide 'cubes/org)
