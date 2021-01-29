@@ -27,45 +27,42 @@
 
 (require 'cl-lib)
 (require 'fg42/utils)
+(require 'fg42/state)
+
+(defun fg42/system-cons (system k v)
+  "Set the given key K to the given value V in the SYSTEM."
+  (cons (cons k v) system))
 
 
-(cl-defstruct fg42-system
-  "A `system' describes a FG42 instance. Everything that is needed
-to load FG42."
-  name
-
-  ;; We will use this value for `describe-system' as a short
-  ;; documentation.
-  docstring
-
-  ;; TODO: guess the system root based on the `name' field
-  ;;       as the default value
-  (root (concat (getenv "HOME") "/.fg42"))
-
-  (fpkg-backend-version 5)
-  (fpkg-backend-path ".fpkg")
-  (fpkg-initilized nil)
-
-  (core-dependencies '())
-  ;; The directory to store all sort of temporary files including
-  ;; backups, flycheck temps and stuff like that.
-  (tmp-path "~/.tmp")
-
-  (extensions '())
-  (abilities '())
-  ;; A function which takes the `system' and starts it.
-  (start (lambda (system) system))
-  (stop nil))
+(defun fg42/system-cons-to (system k v)
+  "Add the given value V to the value of key K in SYSTEM."
+  (let* ((value (fg42/system-get system k))
+         (m (fg42/system-cons system k (cons v value))))
+    m))
 
 
-(defmacro defsystem (name &optional docstring &rest body)
+(defun fg42/system-get (system k)
+  "Return the value of the given key K in the SYSTEM."
+  (cdr (assoc k system)))
+
+(comment
+  (fg42/system-get (fg42/system-cons '((:1 . 4)) :1 2) :1)
+  (fg42/system-get '((:a . ((1 . 2)))) :a)
+  (fg42/system-get
+   (fg42/system-cons-to '() :a '((x . 5)))
+   :a))
+
+
+(defun fg42/system-register-cube (system name cube)
+  "Add the given CUBE with the given NAME to the SYSTEM."
+  (fg42/system-cons-to system :cubes (cons name cube)))
+
+
+(defmacro defsystem (name props &rest body)
   "Define a system with the given NAME, DOCSTRING and BODY."
-  (declare (doc-string 2) (indent 1))
-  (let ((form (if (boundp (intern (format "%s" name))) 'setq 'defvar)))
-    `(,form ,name (make-fg42-system
-                   :name ,(symbol-name name)
-                   :docstring ,docstring
-                   ,@body))))
+  (declare (indent 1))
+  `(defun ,name ()
+     (fg42/cube-compose ,@body)))
 
 
 (provide 'fg42/system/core)

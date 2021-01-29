@@ -24,19 +24,28 @@
 ;; Each system has to have a `start' function to start the setup process.
 ;;
 ;;; Code:
-(require 'fg42/state)
+(require 'fg42/system/core)
 
 
-(defun fg42/system-merge-dependencies (cube-name deps)
-  "Retun an updated STATE with the given dependencies DEPS for CUBE-NAME."
-  (lambda (state)
-    (fg42/state-value
-     (if deps
-         ;; TODO: Validate the deps here
-         (cons (cons 'dependencies
-                     (append (assoc 'dependencies state) deps))
-               state)
-       state))))
+(defun fg42/system-merge-dependencies (system cube-name deps)
+  "Retun an updated SYSTEM with the given dependencies DEPS for CUBE-NAME."
+  (if deps
+      ;; TODO: Validate the deps here
+      (fg42/system-cons-to system :dependencies (cons cube-name deps))
+    system))
+
+
+(defun fg42/system-install-dependency (dep)
+  "Install the given dependency DEP."
+  (message ">>>> %s" dep))
+
+
+(defun fg42/system-install-dependencies (system)
+  "Install the dependencies in the SYSTEM."
+  (mapcar #'fg42/system-install-dependency
+          (fg42/system-get system :dependencies))
+  system)
+
 
 
 (provide 'fg42/system/dependencies)

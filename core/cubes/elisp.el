@@ -28,13 +28,14 @@
 (require 'fg42/cube)
 
 
-(defun fg42/elisp-cube ()
+(defcube fg42/elisp-cube ()
   "Elisp Cube of FG42."
-  (fg42/state-return
-   (list
-    '(name . "elisp")
-    (cons 'keys '())
-    (cons 'dependencies '((paredit-mode . :latest))))))
+  (lambda (system)
+    (cons
+     system
+     '(:name "elisp"
+       :keys nil
+       :dependencies ((paredit-mode . :latest))))))
 
 
 (provide 'cubes/elisp)

@@ -27,28 +27,20 @@
 (require 'fg42/state)
 
 
-(defun fg42/system-register-cube (name cube)
-  "Add the given CUBE with the given NAME to the system.
-
-System is a state monad that returns by state-cons"
-  (fg42/state-cons 'cubes (cons name cube)))
-
-
-(comment
-  (fg42/state-run
-   (fg42/system-add-cube 'sam '(1 2 3)) (funcall (fg42/state-unit) '())))
-
-
 ;;;###autoload
-(defun fg42-system/start ()
-  "Start the system from `fg42-get-current-system'."
+(defun fg42/system-start (system)
+  "Start the given SYSTEM."
   (require 'fg42/utils)
   (require 'fg42/system/core)
+  (require 'fg42/system/dependencies)
   (require 'fg42/system/utils)
 
   (debug-message "Starting the default system.")
-  (let ((sys (fg42-system/get-active-system)))
-    (funcall (fg42-system-start sys) sys)))
+  (let ((system-map (funcall system '())))
+    (fg42/system-install-dependencies system-map)))
+
+
+
 
 
 (provide 'fg42/system)

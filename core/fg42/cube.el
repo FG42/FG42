@@ -28,65 +28,55 @@
 
 (require 'seq)
 (require 'fg42/utils)
-(require 'fg42/state)
+(require 'fg42/system/dependencies)
+(require 'fg42/system/keys)
 
 
-(defun fg42/cube-apply (state cube-value)
-  "Apply the given CUBE-VALUE to the given STATE.
-It returns a new state."
-  (let ((name (assoc 'name cube-value)))
-    (fg42/state-run
-     (fg42/state-compose-states
-      ;; insert the cube into the state
-      (fg42/system-register-cube name cube-value)
-      ;; Add the dependencies of the cube to the state
-      (fg42/system-merge-dependencies name (assoc 'dependencies cube-value))
-      ;; Add the keybindings of the cube to the state
-      (fg42/system-merge-keys name (assoc 'keys cube-value)))
-     state)))
+(defmacro defcube (name params &rest body)
+  "Define a cube with the given NAME, PARAMS and BODY."
+  (declare (indent 1))
+  `(defun ,name ,params ,@body))
 
 
-(defun fg42/cube-bind (m1 m2)
-  "Bind the M1 to M2.
-M1 and M2 are state monads.  See `fg42/utils'"
-  (lambda (state)
-    (let* ((v (funcall m1 state)))
-      (funcall m2
-        (fg42/cube-apply
-                 ;; State
-                 (car v)
-                 ;; Value of in the monad from M
-                 (cdr v))))))
+(defun fg42/cube-run (cube system)
+  "Run the given CUBE with the given SYSTEM.
+
+Returns a pair of new system and the cube vlaue."
+  (funcall cube system))
 
 
-(defun fg42/cube-compose (cube1 cube2)
-  "Compose CUBE1 and CUBE2 to create a new cube.
-For example `(fg42/cube-compose #\'some-cube #\'some-other-cube)'"
-  (lambda ()
-    (fg42/cube-bind
-     (funcall cube1)
-     (funcall cube2))))
+(defun fg42/cube-compose (&rest cubes)
+  "Compose the given CUBES."
+  (lambda (system)
+    (cond
+     ((null cubes) (cons system '()))
+     (t
+      (seq-reduce
+       (lambda (s cube)
+         (fg42/cube-apply (fg42/cube-run cube s)))
+       cubes
+       system)))))
 
 
-(defun fg42/cube-empty ()
-  "Cube identity function."
-  (lambda (state)
-    (fg42/state-value state)))
+
+(defun fg42/cube--apply (system cube)
+  "Apply thie given CUBE to given SYSTEM."
+  (if cube
+      (let ((name (plist-get cube :name)))
+        (-> system
+          ;; insert the cube into the state
+            (fg42/system-register-cube name cube)
+            ;; Add the dependencies of the cube to the state
+            (fg42/system-merge-dependencies name (plist-get cube :dependencies))
+            ;; Add the keybindings of the cube to the state
+            (fg42/system-merge-keys name (plist-get cube :keys))))
+    system))
 
 
-(defun fg42/cubes (&rest cubes)
-  "Create a new cube out of the given list of CUBES."
-  (seq-reduce  (lambda (cube1 cube2)
-                 (fg42/cube-bind cube1 cube2))
-               cubes
-               (fg42/cube-empty)))
+(defun fg42/cube-apply (system-cube-pair)
+  "Apply the cube in the given SYSTEM-CUBE-PAIR to the system inside of it."
+  (fg42/cube--apply (car system-cube-pair) (cdr system-cube-pair)))
 
-(comment
-  (fg42/system
-   (fg42/cubes
-    (python-cube 2 3)
-    (swag)
-    (asd))))
 
 (provide 'fg42/cube)
 ;;; cube.el ends here

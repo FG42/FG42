@@ -22,8 +22,9 @@
 ;;; Commentary:
 ;;; Code:
 (require 'fg42/cube)
-(require 'fg42/state)
-(require 'fg42/system/utils)
+(require 'fg42/utils)
+(require 'fg42/system/core)
+
 
 (defvar fg42-home (getenv "FG42_HOME")
   "The pass to fg42-home.")
@@ -31,24 +32,16 @@
 (defvar fg42-tmp (concat fg42-home "/tmp"))
 
 
-(autoload 'fg42-system/start "fg42/system"
+(autoload 'fg42/system-start "fg42/system"
   "Starts the given SYSTEM.")
-
-
-(defun load-user-config (file)
-  "Load the given FILE as user config file."
-  (if (file-exists-p file)
-      (load-file file)))
 
 
 (defun fg42/start! (system)
   "Start the given SYSTEM description."
-  (fg42-system/set-system! system)
-
   (add-hook 'window-setup-hook
             (lambda ()
-              (fg42-system/start)
-              (fg42-extensions/setup-extensions system))))
+              (require 'fg42/system)
+              (fg42/system-start system))))
 
 
 (provide 'fg42)

@@ -158,5 +158,11 @@ last item in second form, etc."
    (:else `(->> (->> ,x ,form) ,@more))))
 
 
+(defun load-user-config (file)
+  "Load the given FILE as user config file."
+  (if (file-exists-p file)
+      (load-file file)))
+
+
 (provide 'fg42/utils)
 ;;; utils.el ends here

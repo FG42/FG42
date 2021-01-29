@@ -1,4 +1,4 @@
-;;; dependencies --- System library of FG42 -*- lexical-binding: t; -*-
+;;; OrgCube --- The elisp cube for FG42 -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
 ;;
@@ -20,20 +20,23 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;;
 ;;; Commentary:
-;; `System' is just a state monad which holds the state of the editor.
-;; Each system has to have a `start' function to start the setup process.
+;; Cubes are the building blocks of any `FG42' editor.  Each `cube' is a
+;; unit which defines different abilities in a deterministic and idempotent
+;; way.  Cubes are composable and a composition of cubes creates an editor.
 ;;
 ;;; Code:
-(require 'fg42/system/core)
+(require 'fg42/cube)
 
 
-(defun fg42/system-merge-keys (system cube-name keys)
-  "Retun an updated SYSTEM with the given keys KEYS for CUBE-NAME."
-  (if keys
-      ;; TODO: Validate the deps here
-      (fg42/system-cons-to system :keys (cons cube-name keys))
-    system))
+(defcube fg42/org-cube ()
+  "Elisp Cube of FG42."
+  (lambda (system)
+    (cons
+     system
+     '(:name "org"
+       :keys nil
+       :dependencies ((org-mode . :latest))))))
 
 
-(provide 'fg42/system/keys)
-;;; keys.el ends here
+(provide 'cubes/org)
+;;; org.el ends here
