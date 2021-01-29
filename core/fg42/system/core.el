@@ -1,6 +1,6 @@
 ;;; system --- System library of FG42 -*- lexical-binding: t; -*-
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2021 Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42

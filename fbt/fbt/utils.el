@@ -1,6 +1,6 @@
 ;;; FGBuildTool --- The build tool for FG42
 ;;
-;; Copyright (c) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (c) 2010-2021  Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42

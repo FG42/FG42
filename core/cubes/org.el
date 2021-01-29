@@ -1,6 +1,6 @@
 ;;; OrgCube --- The elisp cube for FG42 -*- lexical-binding: t; -*-
 ;;
-;; Copyright (c) 2010-2020 Sameer Rahmani & Contributors
+;; Copyright (c) 2010-2021 Sameer Rahmani & Contributors
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; URL: https://gitlab.com/FG42/FG42

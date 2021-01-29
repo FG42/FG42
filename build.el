@@ -1,6 +1,6 @@
 ;;; build --- build script for FG42
 ;;
-;; Copyright (C) 2010-2020  Sameer Rahmani <lxsameer@gnu.org>
+;; Copyright (C) 2010-2021  Sameer Rahmani <lxsameer@gnu.org>
 ;;
 ;; Author: Sameer Rahmani <lxsameer@gnu.org>
 ;; Keywords: lisp fg42 IDE package manager
