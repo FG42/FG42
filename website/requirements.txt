@@ -3,7 +3,7 @@ blinker==1.4
 bs4==0.0.1
 docutils==0.15.2
 feedgenerator==1.9
-Jinja2==2.10.3
+Jinja2==2.11.3
 jsmin==2.2.2
 libsass==0.19.4
 Markdown==3.1.1
